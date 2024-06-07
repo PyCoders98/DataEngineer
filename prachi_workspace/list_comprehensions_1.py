@@ -95,3 +95,4 @@ word_list = ['apple', 'banana', 'cherry', 'date']
 
 swap_list = [(x[-1]+ x[1:-1]+x[0]) for x in word_list]
 print(swap_list)
+
