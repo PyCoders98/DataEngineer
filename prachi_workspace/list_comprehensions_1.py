@@ -57,6 +57,13 @@ str1 = 'mnDgsjEJyAjisAF'
 conversion = [letter.upper() if letter.islower() else letter.lower() for letter in str1 ]
 print(conversion)
 
+# or 
+
+the_list = ['apple', 'banana', 'cherry', 'date']
+
+swap_word = [x.swapcase() for x in the_list ]
+print(swap_word)
+
 # Que  Nested if.
 
 numbers = [3, 8, 4, 9, 10, 6, 7]
@@ -74,3 +81,17 @@ list1 = ['a', 'b' ,'c' ,'d']
 
 reversed_list = [list1[i] for i in range(len(list1)-1, -1, -1)]
 print(reversed_list)
+
+# Que .Create a list of characters that are not vowels from a string
+my_str = 'hellohithere'
+vowels = ['a','e','i','o','u']
+
+list_not_vow = [x for x in my_str if x not in vowels]
+print(list_not_vow)
+
+# Que .List of words with their first and last letter swapped
+
+word_list = ['apple', 'banana', 'cherry', 'date']
+
+swap_list = [(x[-1]+ x[1:-1]+x[0]) for x in word_list]
+print(swap_list)
