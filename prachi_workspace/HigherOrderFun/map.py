@@ -10,3 +10,4 @@ print(result)  # here it create a map object and map provides an iterator
 
 print(list(result))
 
+
