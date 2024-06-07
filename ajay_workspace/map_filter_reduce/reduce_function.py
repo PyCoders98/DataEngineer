@@ -21,6 +21,13 @@ l = [1, 2, 13, 34, 2, 34, 2, 2, 54, 23, -2, 34]
 print(reduce(lambda a, b: min(a, b), l))
 
 
+# 6. **Calculate cumulative sum**: Write a function that takes a list of numbers and returns a new list where each 
+# element is the cumulative sum up to that point.
+l = [1, 2, 13, 34, 2, 34, 2, 2, 54, 23, 2, 34]
+    # return reduce(lambda acc, num: acc + [acc[-1] + num], numbers[1:], [numbers[0]])
+
+print(reduce(lambda x,y: x + [x[-1] + y], l[1:], [l[0]]))
+
 # 8. **Concatenate strings in a list**: Write a function that takes a list of strings and returns a single string by
 # concatenating all the strings together.
 l = [
