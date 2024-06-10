@@ -2,7 +2,7 @@ import math
 
 # Q Write a function that takes a list of integers and returns a list where each element is squared.
 l = [1, 2, 3, 4, 5, 6, 7, 8]
-print(list(map(lambda x: x ** 2, l)))
+print(list(map(lambda x: x**2, l)))
 
 # Q Write a function that takes a list of strings and returns a list where each string is converted to upper case.
 l = ["hello", "how", "are", "you"]
@@ -15,7 +15,7 @@ print(list(map(lambda x: x.capitalize(), l)))
 # 1. **Square each element**: Write a function that takes a list of numbers and returns a new list where each element
 #  is the square of the corresponding element in the input list.
 l = [1, 2, 3, 4, 5, 6, 7, 8]
-print(list(map(lambda x: x ** 2, l)))
+print(list(map(lambda x: x**2, l)))
 
 # 2. **Convert Fahrenheit to Celsius**: Write a function that takes a list of temperatures in Fahrenheit and returns a
 # new list where each temperature is converted to Celsius.
@@ -47,6 +47,7 @@ print(list(map(lambda x: True if x % 2 == 0 else False, l)))
 l = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 print(list(map(lambda x: round(math.sqrt(x), 4), l)))
 
+
 # 8. **Count Occurrences of Characters in Strings**: Write a function that takes a list of strings and a character, and
 # returns a new list where each element is the count of the given character in the corresponding string.
 def occurence(l):
@@ -56,6 +57,10 @@ def occurence(l):
 
 l = ["hello", "how", "are", "you", "I", "am", "fine", "what", "about", "you"]
 print(list(map(occurence, l)))
+
+# 9. **Filter Strings by Length**: Write a function that takes a list of strings and a length threshold, and returns a new
+# list containing only the strings that are longer than the threshold.
+
 
 # 10. **Convert List of Lists to List of Sums**: Write a function that takes a list of lists of numbers and returns a new list
 # where each element is the sum of the corresponding list in the input list.
@@ -70,6 +75,7 @@ def sum(l):
 
 
 print(list(map(sum, l)))
+
 
 # 11. **Calculate Factorial of Numbers**: Write a function that takes a list of numbers and returns a new list where each
 # element is the factorial of the corresponding number in the input list.
@@ -108,4 +114,10 @@ print(list(map(lambda x: x.capitalize(), l)))
 # element is e raised to the power of the corresponding number in the input list.
 
 l = [1, 2, 3, 4, 5, 6]
-print(list(map(lambda x: x ** x, l)))
+print(list(map(lambda x: x**x, l)))
+
+# 15. **Calculate Cumulative Sum**: Write a function that takes a list of numbers and returns a new list where each element
+# is the cumulative sum up to that point.
+    
+l = [10, 20, 30, 40, 50]
+print(list(map(lambda x: sum(l[: x + 1]), range(len(l)))))

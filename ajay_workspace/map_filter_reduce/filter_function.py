@@ -15,7 +15,7 @@ print(list(filter(lambda x: x % 2 != 0, l)))
 l = [-23, 45, -1, 32, 32, -5, 6, 67, 85, -523, 0, 7643, -4, -6475, 78, -67, -8, 9]
 print(list(filter(lambda x: x > 0, l)))
 
-# **Filter negative numbers**: Write a function that takes a list of numbers and returns a
+# 4. **Filter negative numbers**: Write a function that takes a list of numbers and returns a
 # new list containing only the negative numbers.
 l = [-23, 45, -1, 32, 32, -5, 6, 67, 85, -523, 0, 7643, -4, -6475, 78, -67, -8, 9]
 print(list(filter(lambda x: x < 0, l)))
@@ -47,6 +47,7 @@ l = ["apple", "banana", "orange", "grape", "kiwi"]
 length = 4
 print(list(filter(lambda x: len(x) > length, l)))
 
+
 # 7. **Filter palindromes**: Write a function that takes a list of strings and returns a new list
 # containing only the palindromic strings.
 def is_pelindrome(str):
@@ -70,6 +71,7 @@ print(list(filter(lambda x: x == x.upper(), l)))
 l = ["APPLE", "banana", "ORRANGE", "grape", "kiwi", "PINAPPLE", "PAPAYA"]
 print(list(filter(lambda x: x != x.upper(), l)))
 
+
 # 10. **Filter strings containing a specific character**: Write a function that takes a list of strings
 # and a character, and returns a new list containing only the strings that contain the given character.
 def contains(l):
@@ -85,6 +87,7 @@ print(list(filter(contains, l)))
 # a new list containing only the strings that consist of digits only.
 l = ["1312", "banana", "73981", "grape", "kiwi", "23312", "1214"]
 print(list(filter(lambda x: x.isdigit(), l)))
+
 
 # 12. **Filter strings containing vowels**: Write a function that takes a list of strings and returns a new
 # list containing only the strings that contain at least one vowel.
@@ -113,6 +116,7 @@ l = ["hello", "how", "are", "you", "I", "am", "fine"]
 substring = "he"
 print(list(filter(lambda l: substring in l, l)))
 
+
 # 14. **Filter lists by sum**: Write a function that takes a list of lists of numbers and a threshold, and returns
 # a new list containing only the lists whose sum exceeds the threshold.
 def filter_by_sum(l, t):
@@ -124,6 +128,7 @@ def filter_by_sum(l, t):
 
 l = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [12, 21, 1], [11, 56, 21]]
 print(filter_by_sum(l, t=20))
+
 
 # 15. **Filter lists by average**: Write a function that takes a list of lists of numbers and an average threshold,
 # and returns a new list containing only the lists whose average exceeds the threshold.
