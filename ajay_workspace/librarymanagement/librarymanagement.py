@@ -1,3 +1,13 @@
+def generate_book_id():
+    file = open("t1.txt", "r")
+    data = file.readlines()
+    if data:
+        t = data[-1].split(",")
+        new_id = int(t[0])
+        return new_id + 1
+    return 101
+
+
 def add_book(book_id1, book_name, author_name, booked=False):
     book_id = book_id1
     book_name = book_name
@@ -80,10 +90,9 @@ def check_already_exist(book_id, indicator=False):
     file_data = file.readlines()
     flag = False
     if indicator:
-        print("indicator")
+
         for i in file_data:
             data = i.split(",")
-            print(book_id, data[0], data[-1][:-2], "False")
             if book_id == data[0] and data[-1][:-2] == "False":
                 file.close()
                 return "not borrowed"
@@ -103,27 +112,26 @@ def check_already_exist(book_id, indicator=False):
 
 def operation():
     while True:
-        print("1 for Add book.")
-        print("2 for Booking a book.")
-        print("3 for return book.")
-        print("4 for view available books.")
-        print("5 For Exit.")
-        n = int(input("Press key to perform operation : "))
+        print("Press 1 for Add book.")
+        print("Press 2 for Booking a book.")
+        print("Press 3 for return book.")
+        print("Press 4 for view available books.")
+        print("Press 5 for Exit.")
+        n = int(
+            input(
+                "Choose the number available in front of the options to perform the action:"
+            )
+        )
         if n == 1:
-            book_id = input("Enter book book_id : ")
-            if check_already_exist(book_id):
-                print("-" * 20)
-                print("Book Already Exists! ")
-                print("-" * 20)
-            else:
-                book_author = input("Enter author name : ")
-                book_name = input("Enter Book name : ")
-                add_book(book_id, book_author, book_name)
+            generate_book_id()
+            book_author = input("Enter author name : ")
+            book_name = input("Enter book name : ")
+            add_book(generate_book_id(), book_author, book_name)
         elif n == 2:
-            book_id = input("Enter book book_id You want to borrow : ")
+            book_id = input("Enter book_id you want to borrow : ")
             borrow_book(book_id)
         elif n == 3:
-            book_id = input("Enter book book_id You want to return : ")
+            book_id = input("Enter book_id you want to return : ")
             x = check_already_exist(book_id, indicator=True)
             if x == "not borrowed":
                 print("-" * 20)
@@ -135,8 +143,12 @@ def operation():
                 print("no book available")
         elif n == 4:
             view_available_books()
-        else:
+        elif n == 5:
             break
+        else:
+            print("-" * 60)
+            print("     Select only from the available options! ")
+            print("-" * 60)
 
 
 operation()
