@@ -1,4 +1,3 @@
-l=[i for i in range(0,100,3)]
-i=iter(l)
-for x in i:
-    print(x)
+text1 = "\\phi = \\\\ \\frac{1 + \\sqrt{5}}{2}"
+text2 = r"\phi = \\ \frac{1 + \sqrt{5}}{2}\n"
+print(text1)

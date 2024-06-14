@@ -66,6 +66,22 @@ class D(C):
         d="You."
         return d
 obj=D()
+print(D.mro())
 print(obj.f1(),obj.f2(),obj.f3(),obj.f4())
 
+# MRO: Method Resolution Order 
+class A:
+    def msg(self):
+        print("Class A")
+class B:
+    def msg(self):
+        print("Class B")
+class C(A,B):
+    pass
+class C(B,A):
+    pass
 
+obj=C()
+
+obj.msg()
+print(C.mro())
