@@ -1,4 +1,5 @@
 def generate_book_id():
+
     with open("t1.txt", "r") as file:
         data = file.readlines()
     if data:
@@ -18,12 +19,13 @@ def add_book(book_id1, book_name, author_name, booked=False):
     print("-" * 20)
     print("Added successfully...")
     print("-" * 20)
-    
+
 
 def borrow_book(book_id):
     with open("t1.txt", "r") as file:
         file_data = file.readlines()
     f_data = file_data
+
     for num, i in enumerate(f_data):
         data = i[:-2].split(",")
         if book_id == data[0]:
@@ -36,6 +38,49 @@ def borrow_book(book_id):
         f.writelines(file_data)
 
 
+def borrowed_books():
+    print("-" * 53)
+    print(
+        "|",
+        " book_id ",
+        "|",
+        "author_name".center(20),
+        "|",
+        "book_name".center(20),
+        "|",
+    )
+    print("-" * 53)
+    count = 0
+    with open("t1.txt", "r") as f:
+        for i in f.readlines():
+            if "True" in i:
+                count += 1
+                book_id, author_name, book_name, _ = i.split(",")
+                print(
+                    "|",
+                    book_id.center(4),
+                    "|",
+                    author_name.center(20),
+                    "|",
+                    book_name.center(20),
+                    "|",
+                )
+    if count == 0:
+        print("No books are borrowed!")
+        print("-" * 53)
+    else:
+        book_id = input("Enter book_id you want to return : ")
+        x = check_already_exist(book_id, indicator=True)
+        if x == "not borrowed":
+            print("-" * 20)
+            print("Book Already Exists!")
+            print("-" * 20)
+        elif x == "borrowed":
+            return_book(book_id)
+        else:
+            print("no book available")
+
+
 def return_book(book_id):
     with open("t1.txt", "r") as file:
         file_data = file.readlines()
@@ -43,14 +88,14 @@ def return_book(book_id):
     for num, i in enumerate(f_data):
         data = i[:-2].split(",")
         if book_id == data[0]:
-            data[-1] = "False"
-            file_data[num] = ",".join(data) + r"\n"
+            data[-1] = "False "
+            file_data[num] = ",".join(data) + "\n"
     with open("t1.txt", "w") as f:
         f.writelines(file_data)
     print("-" * 20)
     print("Returned Successfully...")
     print("-" * 20)
-    
+
 
 def view_available_books():
     print("-" * 53)
@@ -80,19 +125,18 @@ def view_available_books():
     print("-" * 53)
 
 
-def check_already_exist(book_id, indicator=False):
+def check_already_exist(book_id, indicator):
     with open("t1.txt", "r") as file:
         file_data = file.readlines()
     flag = False
     if indicator:
         for i in file_data:
             data = i.split(",")
+            print(book_id, data[0], data[-1], "False")
             if book_id == data[0] and data[-1][:-2] == "False":
                 return "not borrowed"
             elif book_id == data[0] and data[-1][:-2] == "True":
                 return "borrowed"
-        else:
-            return "index Error"
     else:
         for i in file_data:
             data = i.split(",")
@@ -120,19 +164,11 @@ def operation():
             book_name = input("Enter book name : ")
             add_book(generate_book_id(), book_author, book_name)
         elif n == 2:
+            view_available_books()
             book_id = input("Enter book_id you want to borrow : ")
             borrow_book(book_id)
         elif n == 3:
-            book_id = input("Enter book_id you want to return : ")
-            x = check_already_exist(book_id, indicator=True)
-            if x == "not borrowed":
-                print("-" * 20)
-                print("Book Already Exists!")
-                print("-" * 20)
-            elif x == "borrowed":
-                return_book(book_id)
-            else:
-                print("no book available")
+            borrowed_books()
         elif n == 4:
             view_available_books()
         elif n == 5:
