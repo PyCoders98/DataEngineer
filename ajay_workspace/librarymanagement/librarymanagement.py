@@ -1,6 +1,6 @@
 def generate_book_id():
-    file = open("t1.txt", "r")
-    data = file.readlines()
+    with open("t1.txt", "r") as file:
+        data = file.readlines()
     if data:
         t = data[-1].split(",")
         new_id = int(t[0])
@@ -13,52 +13,46 @@ def add_book(book_id1, book_name, author_name, booked=False):
     book_name = book_name
     author_name = author_name
     booked = booked
-    file = open("t1.txt", "a")
-    file.write(f"{book_id},{book_name},{author_name},{booked}\n")
+    with open("t1.txt", "a") as file:
+        file.write(f"{book_id},{book_name},{author_name},{booked}\n")
     print("-" * 20)
     print("Added successfully...")
     print("-" * 20)
-    file.close()
-
+    
 
 def borrow_book(book_id):
-    file = open("t1.txt", "r")
-    file_data = file.readlines()
+    with open("t1.txt", "r") as file:
+        file_data = file.readlines()
     f_data = file_data
-    file.close()
-    f = open("t1.txt", "w")
     for num, i in enumerate(f_data):
         data = i[:-2].split(",")
         if book_id == data[0]:
-            data[-1] = str(True)
-            file_data[num] = ",".join(data) + r"\n"
+            data[-1] = "True "
+            file_data[num] = ",".join(data) + "\n"
     print("-" * 20)
     print("Borrowed Successfully...")
     print("-" * 20)
-    f.writelines(file_data)
-    f.close()
+    with open("t1.txt", "w") as f:
+        f.writelines(file_data)
 
 
 def return_book(book_id):
-    file = open("t1.txt", "r")
-    file_data = file.readlines()
+    with open("t1.txt", "r") as file:
+        file_data = file.readlines()
     f_data = file_data
-    file.close()
-    f = open("t1.txt", "w")
     for num, i in enumerate(f_data):
         data = i[:-2].split(",")
         if book_id == data[0]:
             data[-1] = "False"
             file_data[num] = ",".join(data) + r"\n"
-    f.writelines(file_data)
+    with open("t1.txt", "w") as f:
+        f.writelines(file_data)
     print("-" * 20)
     print("Returned Successfully...")
     print("-" * 20)
-    f.close()
-
+    
 
 def view_available_books():
-    f = open("t1.txt", "r")
     print("-" * 53)
     print(
         "|",
@@ -70,31 +64,30 @@ def view_available_books():
         "|",
     )
     print("-" * 53)
-    for i in f.readlines():
-        if "False" in i:
-            book_id, author_name, book_name, _ = i.split(",")
-            print(
-                "|",
-                book_id.center(4),
-                "|",
-                author_name.center(20),
-                "|",
-                book_name.center(20),
-                "|",
-            )
+    with open("t1.txt", "r") as f:
+        for i in f.readlines():
+            if "False" in i:
+                book_id, author_name, book_name, _ = i.split(",")
+                print(
+                    "|",
+                    book_id.center(4),
+                    "|",
+                    author_name.center(20),
+                    "|",
+                    book_name.center(20),
+                    "|",
+                )
     print("-" * 53)
 
 
 def check_already_exist(book_id, indicator=False):
-    file = open("t1.txt", "r")
-    file_data = file.readlines()
+    with open("t1.txt", "r") as file:
+        file_data = file.readlines()
     flag = False
     if indicator:
-
         for i in file_data:
             data = i.split(",")
             if book_id == data[0] and data[-1][:-2] == "False":
-                file.close()
                 return "not borrowed"
             elif book_id == data[0] and data[-1][:-2] == "True":
                 return "borrowed"
@@ -104,7 +97,6 @@ def check_already_exist(book_id, indicator=False):
         for i in file_data:
             data = i.split(",")
             if book_id == data[0]:
-                file.close()
                 flag = True
                 break
         return flag
