@@ -20,6 +20,18 @@ def add_book(book_id1, book_name, author_name, booked=False):
     print("Added successfully...")
     print("-" * 20)
 
+def check_availability_to_borrow(book_id):
+    with open("t1.txt","r") as file:
+        file_data = file.readlines()
+    for i in file_data:
+        if book_id in i:
+            return True
+    return False
+
+
+
+        
+
 
 def borrow_book(book_id):
     with open("t1.txt", "r") as file:
@@ -65,7 +77,7 @@ def borrowed_books():
                     book_name.center(20),
                     "|",
                 )
-    if count==0:
+    if count == 0:
         print("No books are borrowed!")
         print("-" * 53)
     else:
@@ -166,7 +178,10 @@ def operation():
         elif n == 2:
             view_available_books()
             book_id = input("Enter book_id you want to borrow : ")
-            borrow_book(book_id)
+            if check_availability_to_borrow(book_id):
+                borrow_book(book_id)
+            else:
+                print("No book available!")
         elif n == 3:
             borrowed_books()
         elif n == 4:
