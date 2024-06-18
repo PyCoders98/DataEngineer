@@ -12,33 +12,29 @@
 #         - `get_balance()`: Returns the current balance.
 #         - `__str__()`: Returns a string representation of the account details.
 class Account:
-    # account_number
-    # holder_name
-    # balance
     def deposit(self, account_no, amount):
         with open("bankingsystem.txt", "r") as file:
             file_data = file.readlines()
         for num, i in enumerate(file_data):
             data = i.split(",")
-            print(data)
             if account_no in data:
-                data[-1] = amount
+                current_balance = int(data[-1])
+                data[-1] = str(current_balance + int(amount))
                 file_data[num] = ",".join(data) + "\n"
         with open("bankingsystem.txt", "w") as file:
             file.writelines(file_data)
 
     def withdraw(self, account_no, amount):
-        balance = 0
         with open("bankingsystem.txt", "r") as file:
             file_data = file.readlines()
-        for num, i in file_data:
+        for num, i in enumerate(file_data):
             data = i.split(",")
             if account_no in data:
-                current_balance = data[-1]
+                current_balance = int(data[-1])
                 new_balance = int(amount)
-                data[-1] = str(current_balance - new_balance)
+                data[-1] = str((current_balance - new_balance))
                 balance = int(amount)
-            file_data[num] = ",".join(data) + "\n"
+                file_data[num] = ",".join(data) + "\n"
         with open("bankingsystem.txt", "w") as file:
             file.writelines(file_data)
         # return balance
@@ -50,8 +46,7 @@ class Account:
             if account_no in i:
                 return i.split(",")
 
-    def __str__(self):
-        pass
+ 
 
 
 class UtilityClass:
@@ -60,10 +55,32 @@ class UtilityClass:
             file_data = file.readlines()
         if file_data != []:
             no = file_data[-1].split(",")
-            # new_ac_no=no[0]+1
             return int(no[0]) + 1
         else:
             return 100000000000
+
+    def verify_account_no(self, account_no):
+        flag = False
+        with open("bankingsystem.txt", "r") as file:
+            file_data = file.readlines()
+        for i in file_data:
+            data = i.split(",")
+            if account_no == data[0]:
+                return True
+        else:
+            False
+
+    def verify_balance(self, account_no, amount):
+        flag = False
+        with open("bankingsystem.txt", "r") as file:
+            file_data = file.readlines()
+        for i in file_data:
+            data = i.split(",")
+            if account_no == data[0]:
+                if int(amount) <= int(data[-1][:-1]):
+                    return True
+        else:
+            False
 
 
 # 2. **Define the `Bank` Class**:
@@ -95,18 +112,19 @@ class Bank(Account):
             file_data = file.readlines()
         for i in file_data:
             if account_no in i:
-                return i.split(",")
+                account_no, name, balance = i.split(",")
+                return account_no, name, balance[:-1]
 
     def deposit_to_account(self, account_no, amount):
         super().deposit(account_no, amount)
 
     def withdraw_from_account(self, account_no, amount):
-        super.withdraw(account_no, amount)
+        super().withdraw(account_no, amount)
 
     def transfer(self, from_account_number, to_account_number, amount):
-        super.withdraw(from_account_number, amount)
+        super().withdraw(from_account_number, amount)
         print(f"Account no {to_account_number} debited with amount {amount} !")
-        super.deposit(to_account_number, amount)
+        super().deposit(to_account_number, amount)
         print(f"Account no {to_account_number} credited with amount {amount} !")
 
     def close_account(self, account_no):
@@ -133,7 +151,8 @@ class Perform_Operation:
             print("Enter 1 for create new account : ")
             print("Enter 2 to find your account :  ")
             print("Enter 3 for deposit money in your account : ")
-            print("Enter 4 to transfer money from your account : ")
+            print("Enter 4 for withdraw money from your account : ")
+            print("Enter 5 to transfer money from your account : ")
             print("Enter 7 for exit : ")
             no = int(input("Follow the above instructions to peform operations : "))
             if no == 1:
@@ -145,17 +164,45 @@ class Perform_Operation:
                 print(obj.find_account(acc_no))
             elif no == 3:
                 acc_no = input("Enter account number : ")
-                amount = input("Enter ammount you want to deposite : ")
-                obj.deposit_to_account(acc_no, amount)
+                if utility_obj.verify_account_no(acc_no):
+                    amount = input("Enter amount you want to deposite : ")
+                    obj.deposit_to_account(amount)
+                else:
+                    print("Account Does Not Exists....")
+
             elif no == 4:
+                acc_no = input("Enter your account number : ")
+                if utility_obj.verify_account_no(acc_no):
+                    amount = input("Enter amount you want to withdraw : ")
+                    if utility_obj.verify_balance(acc_no, amount):
+                        obj.withdraw_from_account(acc_no, amount)
+                    else:
+                        print("Insufficient balance.")
+                else:
+                    print("Account Does Not Exists.")
+            elif no == 5:
                 acc_no1 = input(
                     "Enter account number from you want to transfer money : "
                 )
-                acc_no2 = input(
-                    "Enter account number in which you want to tranfer money : "
-                )
-                amount = input("Enter ammount you want to transfer : ")
-                obj.transfer(acc_no1,acc_no2,amount)
+                if utility_obj.verify_account_no(acc_no1):
+                    acc_no2 = input(
+                        "Enter account number in which you want to tranfer money : "
+                    )
+                    if utility_obj.verify_account_no(acc_no2):
+                        amount = input("Enter ammount you want to transfer : ")
+                        if utility_obj.verify_balance(acc_no1, amount):
+                            obj.transfer(acc_no1, acc_no2, amount)
+                        else:
+                            print("You Do Not Have Enough Ammount To Transfer.")
+                    else:
+                        print(
+                            "The Account Number In Which You Want To Transfer Money Does Not Exist."
+                        )
+                else:
+                    print(
+                        "The Account Number From Where You Want To Transfer Money Does Not Exists."
+                    )
+
             else:
                 break
 
