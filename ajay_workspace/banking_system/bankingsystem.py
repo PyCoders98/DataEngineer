@@ -12,24 +12,40 @@
 #         - `get_balance()`: Returns the current balance.
 #         - `__str__()`: Returns a string representation of the account details.
 class Account:
-    def deposit(self, account_no, amount):
+    account_no = ""
+    holder_name = ""
+    balance = ""
+    print(account_no, holder_name)
+
+    def __init__(self, account_no, holder_name, balance):
+        self.account_no = account_no
+        self.holder_name = holder_name
+        self.balance = balance
+
+    def deposit(self, amount):
+        print("name : ", self.holder_name)
+        print("account : ", self.account_no)
+        print("Amount : ", amount)
         with open("bankingsystem.txt", "r") as file:
             file_data = file.readlines()
         for num, i in enumerate(file_data):
             data = i.split(",")
-            if account_no in data:
+            if self.account_no in data:
                 current_balance = int(data[-1])
                 data[-1] = str(current_balance + int(amount))
                 file_data[num] = ",".join(data) + "\n"
         with open("bankingsystem.txt", "w") as file:
             file.writelines(file_data)
+        print("~" * 40)
+        print(f"Account No : {self.account_no} Credited With amount : {amount}")
+        print("~" * 40)
 
-    def withdraw(self, account_no, amount):
+    def withdraw(self, amount):
         with open("bankingsystem.txt", "r") as file:
             file_data = file.readlines()
         for num, i in enumerate(file_data):
             data = i.split(",")
-            if account_no in data:
+            if self.account_no in data:
                 current_balance = int(data[-1])
                 new_balance = int(amount)
                 data[-1] = str((current_balance - new_balance))
@@ -37,7 +53,9 @@ class Account:
                 file_data[num] = ",".join(data) + "\n"
         with open("bankingsystem.txt", "w") as file:
             file.writelines(file_data)
-        # return balance
+        print("~" * 40)
+        print(f"Account No : {self.account_no} debited With amount : {amount}")
+        print("~" * 40)
 
     def get_balance(self, account_no):
         with open("bankingsystem.txt", "r") as file:
@@ -46,7 +64,8 @@ class Account:
             if account_no in i:
                 return i.split(",")
 
- 
+    def __str__(self):
+        return f"{self.account_no}{self.holder_name}{self.balance}"
 
 
 class UtilityClass:
@@ -99,32 +118,48 @@ class Bank(Account):
     name = "Smart Bank"
     accounts = []
 
-    # accountopen karne ke liye holdername or bank name ki jrurat hogi
+    def __init__(self):
+        pass
+
     def add_account(self, holder_name, account_no):
-        # holder_name = str("Enter account holder name : ")
         with open("bankingsystem.txt", "a") as file:
             balance = 0
             file.write(f"{holder_name},{account_no},{balance}\n")
-        self.accounts.append([holder_name, account_no])
+        print("~"*40)
+        print("Account created successfully.")
+        print("~"*40)
 
-    def find_account(self, account_no):
+    def assign(self):
         with open("bankingsystem.txt", "r") as file:
             file_data = file.readlines()
-        for i in file_data:
-            if account_no in i:
-                account_no, name, balance = i.split(",")
-                return account_no, name, balance[:-1]
+        for num, i in enumerate(file_data):
+            acc_no, holder_name, balance = i.split(",")
+            obj = Account(acc_no, holder_name, balance)
+            self.accounts.append(obj)
+
+    def find_account(self, account_no):
+        for i in self.accounts:
+            acc_no = i.account_no
+            holder_name = i.holder_name
+            balance = i.balance
+            if account_no == acc_no:
+                obj = Account(acc_no, holder_name, balance)
+                return obj
+        else:
+            return False
 
     def deposit_to_account(self, account_no, amount):
-        super().deposit(account_no, amount)
+        super.account_no = account_no
+        self.find_account(account_no)
+        super().deposit(amount)
 
     def withdraw_from_account(self, account_no, amount):
-        super().withdraw(account_no, amount)
+        super().withdraw(amount)
 
     def transfer(self, from_account_number, to_account_number, amount):
-        super().withdraw(from_account_number, amount)
+        Account.withdraw(from_account_number, amount)
         print(f"Account no {to_account_number} debited with amount {amount} !")
-        super().deposit(to_account_number, amount)
+        Account.deposit(to_account_number, amount)
         print(f"Account no {to_account_number} credited with amount {amount} !")
 
     def close_account(self, account_no):
@@ -141,13 +176,16 @@ class Bank(Account):
 #     - Perform various operations such as depositing, withdrawing, transferring money, checking balances, and closing accounts.
 #     - Print the results of the operations to verify correctness.
 
-obj = Bank()
+
+bank_obj = Bank()
+bank_obj.assign()
 utility_obj = UtilityClass()
 
 
 class Perform_Operation:
-    def __init__(self):
+    def perform(self):
         while True:
+            print("\n\n\n")
             print("Enter 1 for create new account : ")
             print("Enter 2 to find your account :  ")
             print("Enter 3 for deposit money in your account : ")
@@ -155,56 +193,127 @@ class Perform_Operation:
             print("Enter 5 to transfer money from your account : ")
             print("Enter 7 for exit : ")
             no = int(input("Follow the above instructions to peform operations : "))
+
+            # for add Account
             if no == 1:
                 acc_no = utility_obj.generate_ac_no()
                 holder_name = input("Enter account holder name : ")
-                obj.add_account(acc_no, holder_name)
+                bank_obj.add_account(acc_no, holder_name)
+
+            # for find account and perform deposit,withdraw,get balance
             elif no == 2:
-                acc_no = input("Enter account number : ")
-                print(obj.find_account(acc_no))
-            elif no == 3:
-                acc_no = input("Enter account number : ")
-                if utility_obj.verify_account_no(acc_no):
-                    amount = input("Enter amount you want to deposite : ")
-                    obj.deposit_to_account(amount)
-                else:
-                    print("Account Does Not Exists....")
-
-            elif no == 4:
-                acc_no = input("Enter your account number : ")
-                if utility_obj.verify_account_no(acc_no):
-                    amount = input("Enter amount you want to withdraw : ")
-                    if utility_obj.verify_balance(acc_no, amount):
-                        obj.withdraw_from_account(acc_no, amount)
-                    else:
-                        print("Insufficient balance.")
-                else:
-                    print("Account Does Not Exists.")
-            elif no == 5:
-                acc_no1 = input(
-                    "Enter account number from you want to transfer money : "
-                )
-                if utility_obj.verify_account_no(acc_no1):
-                    acc_no2 = input(
-                        "Enter account number in which you want to tranfer money : "
-                    )
-                    if utility_obj.verify_account_no(acc_no2):
-                        amount = input("Enter ammount you want to transfer : ")
-                        if utility_obj.verify_balance(acc_no1, amount):
-                            obj.transfer(acc_no1, acc_no2, amount)
-                        else:
-                            print("You Do Not Have Enough Ammount To Transfer.")
-                    else:
-                        print(
-                            "The Account Number In Which You Want To Transfer Money Does Not Exist."
-                        )
-                else:
+                account_no = input("Enter Account Number : ")
+                if data := bank_obj.find_account(account_no):
+                    print("~" * 40)
                     print(
-                        "The Account Number From Where You Want To Transfer Money Does Not Exists."
+                        f"Name : {data.holder_name}\nAccount No : {data.account_no}\nBalance : {data.balance}"
                     )
+                    print("~" * 40)
+                    count = 3
+                    while count:
+                        print("Enter 1 to deposit money.")
+                        print("Enter 2 to withdraw money.")
+                        print("Enter 3 to get balance.")
+                        print("Enter 4 to main menu.")
+                        no = int(
+                            input(
+                                "Follow the above instructions to peform operations : "
+                            )
+                        )
+                        if no == 1:
+                            count_deposit = 3
+                            while count_deposit:
+                                amount = int(
+                                    input("Enter amount you want to deposit : ")
+                                )
+                                if amount > 0:
+                                    data.deposit(str(amount))
+                                    break
+                                else:
+                                    print("~" * 40)
+                                    print(
+                                        "Amount You Are Trying To Deposit Is Less Than 1"
+                                    )
+                                    print("~" * 40)
+                                    count_deposit -= 1
+                                    print(
+                                        f"You have only {count_deposit} chances are left to enter correct ammount ."
+                                    )
+                        elif no == 2:
 
-            else:
-                break
+                            count_withdraw = 3
+                            while count_withdraw:
+                                amount = int(
+                                    input("Enter amount you want to withdraw : ")
+                                )
+                                if amount < 1:
+                                    print("~" * 40)
+                                    print(
+                                        "Amount You Are Trying To withdraw Is Less Than 1!"
+                                    )
+                                    print("~" * 40)
+                                    count_withdraw -= 1
+                                    print(
+                                        f"You have only {count_withdraw} chances are left to enter correct ammount ."
+                                    )
+                                elif amount > int(data.balance):
+                                    print("~" * 40)
+                                    print("Insufficient balance!")
+                                    print("~" * 40)
+                                    count -= 1
+                                    print(
+                                        f"You have only {count_withdraw} chances are left to enter correct ammount ."
+                                    )
+                                else:
+                                    data.withdraw(str(amount))
+                                    break
+                        elif no == 3:
+                            print("~" * 40)
+                            print(
+                                f"Account balance of {data.account_no} is {data.balance}"
+                            )
+                            print("~" * 40)
+
+                        elif no == 4:
+                            break
+
+                else:
+                    count = 2
+                    for i in range(count):
+                        print("~" * 40)
+                        print("Account Does Not Exist!")
+                        print("~" * 40)
+            # for deposit money this belongs to bank class
+            elif no == 3:
+                count_deposit = 3
+                while count_deposit:
+                    account_no = input(
+                        "Enter account no in which you want to deposit : "
+                    )
+                    if data := bank_obj.find_account(account_no):
+                        count_deposit_inner = 3
+                        print(data.account_no, data.holder_name)
+                        while count_deposit_inner:
+                            amount = int(input("Enter amount you want to deposit : "))
+                            if amount < 1:
+                                print("~" * 40)
+                                print("The amount you want to deposit is less than 1")
+                                print("~" * 40)
+                                count_deposit -= 1
+                                print("~" * 40)
+                                print(
+                                    f"You have only {count_deposit} chances are left."
+                                )
+                                print("~" * 40)
+                            else:
+                                bank_obj.deposit_to_account(account_no, str(amount))
+                                break
+                    else:
+                        count_deposit -= 1
+                        print("~" * 40)
+                        print(f"You have only {count_deposit} chances are left.")
+                        print("~" * 40)
 
 
 perform_obj = Perform_Operation()
+perform_obj.perform()

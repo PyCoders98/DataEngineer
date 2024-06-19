@@ -12,34 +12,24 @@
 #         - `get_balance()`: Returns the current balance.
 #         - `__str__()`: Returns a string representation of the account details.
 class Account:
-    account_no = ""
-    holder_name = ""
-    balance = ""
-
-
-    def __init__(self, account_no, holder_name, balance):
-        self.account_no = account_no
-        self.holder_name = holder_name
-        self.balance = balance
-
-    def deposit(self, amount):
+    def deposit(self, account_no, amount):
         with open("bankingsystem.txt", "r") as file:
             file_data = file.readlines()
         for num, i in enumerate(file_data):
             data = i.split(",")
-            if self.account_no in data:
+            if account_no in data:
                 current_balance = int(data[-1])
                 data[-1] = str(current_balance + int(amount))
                 file_data[num] = ",".join(data) + "\n"
         with open("bankingsystem.txt", "w") as file:
             file.writelines(file_data)
 
-    def withdraw(self, amount):
+    def withdraw(self, account_no, amount):
         with open("bankingsystem.txt", "r") as file:
             file_data = file.readlines()
         for num, i in enumerate(file_data):
             data = i.split(",")
-            if self.account_no in data:
+            if account_no in data:
                 current_balance = int(data[-1])
                 new_balance = int(amount)
                 data[-1] = str((current_balance - new_balance))
@@ -56,8 +46,7 @@ class Account:
             if account_no in i:
                 return i.split(",")
 
-    def __str__(self):
-        return f"{self.account_no}{self.holder_name}{self.balance}"
+ 
 
 
 class UtilityClass:
@@ -106,45 +95,36 @@ class UtilityClass:
 #         - `transfer(from_account_number, to_account_number, amount)`: Transfers money between two accounts.
 #         - `close_account(account_number)`: Closes a specified account.
 #         - `__str__()`: Returns a string representation of the bank's details.
-class Bank:
+class Bank(Account):
     name = "Smart Bank"
     accounts = []
 
+    # accountopen karne ke liye holdername or bank name ki jrurat hogi
     def add_account(self, holder_name, account_no):
         # holder_name = str("Enter account holder name : ")
         with open("bankingsystem.txt", "a") as file:
             balance = 0
             file.write(f"{holder_name},{account_no},{balance}\n")
-
-    def assign(self):
-        with open("bankingsystem.txt", "r") as file:
-            file_data = file.readlines()
-            
-        for num,i in enumerate(file_data):
-            acc_no, holder_name, balance = i.split(",")
-            obj = Account(acc_no, holder_name, balance)
-            # print(obj.holder_name)
-            self.accounts.append(obj)
-            
-            # print(Bank.accounts[:])
+        self.accounts.append([holder_name, account_no])
 
     def find_account(self, account_no):
-        for obj in self.accounts:
-            print(obj.holder_name)
-            # if account_no == i[0]:
-            #     account_no, name, balance = i.split(",")
-            #     return account_no, name, balance[:-1]
+        with open("bankingsystem.txt", "r") as file:
+            file_data = file.readlines()
+        for i in file_data:
+            if account_no in i:
+                account_no, name, balance = i.split(",")
+                return account_no, name, balance[:-1]
 
-    # def deposit_to_account(self, account_no, amount):
-    #     Account.deposit(account_no, amount)
+    def deposit_to_account(self, account_no, amount):
+        super().deposit(account_no, amount)
 
-    # def withdraw_from_account(self, account_no, amount):
-    #     super().withdraw(account_no, amount)
+    def withdraw_from_account(self, account_no, amount):
+        super().withdraw(account_no, amount)
 
     def transfer(self, from_account_number, to_account_number, amount):
-        Account.withdraw(from_account_number, amount)
+        super().withdraw(from_account_number, amount)
         print(f"Account no {to_account_number} debited with amount {amount} !")
-        Account.deposit(to_account_number, amount)
+        super().deposit(to_account_number, amount)
         print(f"Account no {to_account_number} credited with amount {amount} !")
 
     def close_account(self, account_no):
@@ -161,107 +141,70 @@ class Bank:
 #     - Perform various operations such as depositing, withdrawing, transferring money, checking balances, and closing accounts.
 #     - Print the results of the operations to verify correctness.
 
-
-# def assign():
-#     with open("bankingsystem.txt", "r") as file:
-#         file_data = file.readlines()
-#     for i in file_data:
-#         acc_no, holder_name, balance = i.split(",")
-#         obj = Bank(acc_no, holder_name, balance)
-#         Bank.accounts.append(obj)
-# assign()
-# print(Bank.accounts)
 obj = Bank()
-obj.assign()
 utility_obj = UtilityClass()
-# obj.find_account("464564")
-for obj1 in obj.accounts:
-    print(obj1)
-
-# class Perform_Operation:
-#     def perform(self):
-#         while True:
-#             print("Enter 1 for create new account : ")
-#             print("Enter 2 to find your account :  ")
-#             print("Enter 3 for deposit money in your account : ")
-#             print("Enter 4 for withdraw money from your account : ")
-#             print("Enter 5 to transfer money from your account : ")
-#             print("Enter 7 for exit : ")
-#             no = int(input("Follow the above instructions to peform operations : "))
-#             if no == 1:
-#                 acc_no = utility_obj.generate_ac_no()
-#                 holder_name = input("Enter account holder name : ")
-#                 obj.add_account(acc_no, holder_name)
-#             if no == 2:
-#                 # account_no = input("Enter Account Number : ")
-#                 obj.find_account(account_no=3264872)
 
 
-# perform_obj = Perform_Operation()
-# perform_obj.perform()
+class Perform_Operation:
+    def __init__(self):
+        while True:
+            print("Enter 1 for create new account : ")
+            print("Enter 2 to find your account :  ")
+            print("Enter 3 for deposit money in your account : ")
+            print("Enter 4 for withdraw money from your account : ")
+            print("Enter 5 to transfer money from your account : ")
+            print("Enter 7 for exit : ")
+            no = int(input("Follow the above instructions to peform operations : "))
+            if no == 1:
+                acc_no = utility_obj.generate_ac_no()
+                holder_name = input("Enter account holder name : ")
+                obj.add_account(acc_no, holder_name)
+            elif no == 2:
+                acc_no = input("Enter account number : ")
+                print(obj.find_account(acc_no))
+            elif no == 3:
+                acc_no = input("Enter account number : ")
+                if utility_obj.verify_account_no(acc_no):
+                    amount = input("Enter amount you want to deposite : ")
+                    obj.deposit_to_account(amount)
+                else:
+                    print("Account Does Not Exists....")
+
+            elif no == 4:
+                acc_no = input("Enter your account number : ")
+                if utility_obj.verify_account_no(acc_no):
+                    amount = input("Enter amount you want to withdraw : ")
+                    if utility_obj.verify_balance(acc_no, amount):
+                        obj.withdraw_from_account(acc_no, amount)
+                    else:
+                        print("Insufficient balance.")
+                else:
+                    print("Account Does Not Exists.")
+            elif no == 5:
+                acc_no1 = input(
+                    "Enter account number from you want to transfer money : "
+                )
+                if utility_obj.verify_account_no(acc_no1):
+                    acc_no2 = input(
+                        "Enter account number in which you want to tranfer money : "
+                    )
+                    if utility_obj.verify_account_no(acc_no2):
+                        amount = input("Enter ammount you want to transfer : ")
+                        if utility_obj.verify_balance(acc_no1, amount):
+                            obj.transfer(acc_no1, acc_no2, amount)
+                        else:
+                            print("You Do Not Have Enough Ammount To Transfer.")
+                    else:
+                        print(
+                            "The Account Number In Which You Want To Transfer Money Does Not Exist."
+                        )
+                else:
+                    print(
+                        "The Account Number From Where You Want To Transfer Money Does Not Exists."
+                    )
+
+            else:
+                break
 
 
-# class Perform_Operation:
-#     def __init__(self):
-#         while True:
-#             print("Enter 1 for create new account : ")
-#             print("Enter 2 to find your account :  ")
-#             print("Enter 3 for deposit money in your account : ")
-#             print("Enter 4 for withdraw money from your account : ")
-#             print("Enter 5 to transfer money from your account : ")
-#             print("Enter 7 for exit : ")
-#             no = int(input("Follow the above instructions to peform operations : "))
-#             if no == 1:
-#                 acc_no = utility_obj.generate_ac_no()
-#                 holder_name = input("Enter account holder name : ")
-#                 obj.add_account(acc_no, holder_name)
-#             elif no == 2:
-#                 acc_no = input("Enter account number : ")
-#                 print(obj.find_account(acc_no))
-
-#             elif no == 3:
-#                 acc_no = input("Enter account number : ")
-#                 if utility_obj.verify_account_no(acc_no):
-#                     amount = input("Enter amount you want to deposite : ")
-#                     obj.deposit_to_account(acc_no, amount)
-#                 else:
-#                     print("Account Does Not Exists....")
-
-#             elif no == 4:
-#                 acc_no = input("Enter your account number : ")
-#                 if utility_obj.verify_account_no(acc_no):
-#                     amount = input("Enter amount you want to withdraw : ")
-#                     if utility_obj.verify_balance(acc_no, amount):
-#                         obj.withdraw_from_account(acc_no, amount)
-#                     else:
-#                         print("Insufficient balance.")
-#                 else:
-#                     print("Account Does Not Exists.")
-#             elif no == 5:
-#                 acc_no1 = input(
-#                     "Enter account number from you want to transfer money : "
-#                 )
-#                 if utility_obj.verify_account_no(acc_no1):
-#                     acc_no2 = input(
-#                         "Enter account number in which you want to tranfer money : "
-#                     )
-#                     if utility_obj.verify_account_no(acc_no2):
-#                         amount = input("Enter ammount you want to transfer : ")
-#                         if utility_obj.verify_balance(acc_no1, amount):
-#                             obj.transfer(acc_no1, acc_no2, amount)
-#                         else:
-#                             print("You Do Not Have Enough Ammount To Transfer.")
-#                     else:
-#                         print(
-#                             "The Account Number In Which You Want To Transfer Money Does Not Exist."
-#                         )
-#                 else:
-#                     print(
-#                         "The Account Number From Where You Want To Transfer Money Does Not Exists."
-#                     )
-
-#             else:
-#                 break
-
-
-# perform_obj = Perform_Operation()
+perform_obj = Perform_Operation()
