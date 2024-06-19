@@ -125,9 +125,9 @@ class Bank(Account):
         with open("bankingsystem.txt", "a") as file:
             balance = 0
             file.write(f"{holder_name},{account_no},{balance}\n")
-        print("~"*40)
+        print("~" * 40)
         print("Account created successfully.")
-        print("~"*40)
+        print("~" * 40)
 
     def assign(self):
         with open("bankingsystem.txt", "r") as file:
@@ -143,14 +143,15 @@ class Bank(Account):
             holder_name = i.holder_name
             balance = i.balance
             if account_no == acc_no:
+                self.account_no=acc_no
+                self.holder_name=holder_name
+                self.balance = balance
                 obj = Account(acc_no, holder_name, balance)
                 return obj
         else:
             return False
 
     def deposit_to_account(self, account_no, amount):
-        super.account_no = account_no
-        self.find_account(account_no)
         super().deposit(amount)
 
     def withdraw_from_account(self, account_no, amount):
@@ -286,11 +287,13 @@ class Perform_Operation:
             # for deposit money this belongs to bank class
             elif no == 3:
                 count_deposit = 3
+                
                 while count_deposit:
                     account_no = input(
                         "Enter account no in which you want to deposit : "
                     )
                     if data := bank_obj.find_account(account_no):
+                        print(data.account_no, data.holder_name)
                         count_deposit_inner = 3
                         print(data.account_no, data.holder_name)
                         while count_deposit_inner:
@@ -308,11 +311,19 @@ class Perform_Operation:
                             else:
                                 bank_obj.deposit_to_account(account_no, str(amount))
                                 break
+                    
+                            
                     else:
                         count_deposit -= 1
                         print("~" * 40)
                         print(f"You have only {count_deposit} chances are left.")
                         print("~" * 40)
+                    print("\n")
+                    no = input("Do you want to continue y/n : ")
+                    if no.lower() == "n":
+                        break
+
+
 
 
 perform_obj = Perform_Operation()
