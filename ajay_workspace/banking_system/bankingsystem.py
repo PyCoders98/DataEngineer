@@ -96,10 +96,10 @@ class Bank(Account):
     def __init__(self):
         pass
 
-    def add_account(self, account_no, holder_name):
+    def add_account(self,account_no, holder_name ):
         with open("bankingsystem.txt", "a") as file:
             balance = 0
-            file.write(f"{holder_name},{account_no},{balance}\n")
+            file.write(f"{account_no},{holder_name},{balance}\n")
         print("~" * 40)
         print("Account created successfully.")
         print("~" * 40)
@@ -377,6 +377,7 @@ class Perform_Operation:
             # for transfering money from your account to another account
 
             elif no == 5:
+                bank_obj.assign()
                 flag = True
                 account_no_from = input(
                     "Enter account no from which you want to transfer money : "
@@ -419,7 +420,7 @@ class Perform_Operation:
                                     print("~" * 40)
                                     print("Insufficient balance : ")
                                     print(
-                                        f"Your current balance is {data.balance} which is lower than the amount {amount} you want to transfer."
+                                        f"Your current balance is {data.balance}Which is lower than the amount {amount} you want to transfer."
                                     )
                                     print("~" * 40)
                                     count -= 1
@@ -457,7 +458,7 @@ class Perform_Operation:
                             bank_obj.close_account(account_no)
                             bank_obj.accounts.clear()
                             bank_obj.assign()
-                            
+                            break
                         else:
                             break
                     else:
