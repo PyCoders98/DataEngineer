@@ -457,7 +457,7 @@ class Perform_Operation:
                             bank_obj.close_account(account_no)
                             bank_obj.accounts.clear()
                             bank_obj.assign()
-                            break
+                            
                         else:
                             break
                     else:
