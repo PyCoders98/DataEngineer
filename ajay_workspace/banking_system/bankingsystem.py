@@ -1,3 +1,38 @@
+class UtilityClass:
+    def generate_ac_no(self):
+        with open("bankingsystem.txt", "r") as file:
+            file_data = file.readlines()
+        if file_data != []:
+            no = file_data[-1].split(",")
+            return int(no[0]) + 1
+        else:
+            return 100000000000
+
+    def verify_account_no(self, account_no):
+        flag = False
+        with open("bankingsystem.txt", "r") as file:
+            file_data = file.readlines()
+        for i in file_data:
+            data = i.split(",")
+            if account_no == data[0]:
+                return True
+        else:
+            False
+
+    def verify_balance(self, account_no, amount):
+        flag = False
+        with open("bankingsystem.txt", "r") as file:
+            file_data = file.readlines()
+        for i in file_data:
+            data = i.split(",")
+            if account_no == data[0]:
+                if int(amount) <= int(data[-1][:-1]):
+                    return True
+        else:
+            False
+
+
+utility_obj = UtilityClass()
 # ### Steps to Implement the Simple Banking System
 
 
@@ -68,40 +103,6 @@ class Account:
         return f"{self.account_no}{self.holder_name}{self.balance}"
 
 
-class UtilityClass:
-    def generate_ac_no(self):
-        with open("bankingsystem.txt", "r") as file:
-            file_data = file.readlines()
-        if file_data != []:
-            no = file_data[-1].split(",")
-            return int(no[0]) + 1
-        else:
-            return 100000000000
-
-    def verify_account_no(self, account_no):
-        flag = False
-        with open("bankingsystem.txt", "r") as file:
-            file_data = file.readlines()
-        for i in file_data:
-            data = i.split(",")
-            if account_no == data[0]:
-                return True
-        else:
-            False
-
-    def verify_balance(self, account_no, amount):
-        flag = False
-        with open("bankingsystem.txt", "r") as file:
-            file_data = file.readlines()
-        for i in file_data:
-            data = i.split(",")
-            if account_no == data[0]:
-                if int(amount) <= int(data[-1][:-1]):
-                    return True
-        else:
-            False
-
-
 # 2. **Define the `Bank` Class**:
 #     - Create the `Bank` class with attributes:
 #         - `name`
@@ -121,6 +122,16 @@ class Bank(Account):
     def __init__(self):
         pass
 
+    # finding account and updating value
+    #         with open("bankingsystem.txt", "r") as file:
+    #             file_data = file.readlines()
+    #         for line in file_data:
+    #             if account_no in line:
+    #                 account_details = i.split(",")
+    #                 data[-1] = account_details[-1][:-1]
+    #         new_data = ",".join(data)
+    #         self.accounts[count] = [new_data]
+
     def add_account(self, holder_name, account_no):
         with open("bankingsystem.txt", "a") as file:
             balance = 0
@@ -132,12 +143,13 @@ class Bank(Account):
     def assign(self):
         with open("bankingsystem.txt", "r") as file:
             file_data = file.readlines()
-        for num, i in enumerate(file_data):
+        for i in file_data:
             acc_no, holder_name, balance = i.split(",")
             obj = Account(acc_no, holder_name, balance)
             self.accounts.append(obj)
 
     def find_account(self, account_no):
+        self.assign()
         for i in self.accounts:
             acc_no = i.account_no
             holder_name = i.holder_name
@@ -150,7 +162,19 @@ class Bank(Account):
                 return obj
         else:
             return False
-
+        
+    
+    # def update_accounts(self, account_no):
+    #     with open("bankingsystem.txt", "r") as file:
+    #         file_data = file.readlines()
+    #     count = -1
+    #     for i in file_data:
+    #         count+=1
+    #         if account_no in i:
+    #             data = i.split(",")
+    #             for j in self.accounts:
+    #                 if account_no == j.account_no:
+    #                     self.accounts[count].balance = data[-1][:-1]
     def deposit_to_account(self, account_no, amount):
         super().deposit(amount)
 
@@ -167,19 +191,16 @@ class Bank(Account):
         new_file = []
         with open("bankingsystem.txt", "r") as file:
             file_data = file.readlines()
-        for i in enumerate(file_data):
+        for i in file_data:
             data = i.split(",")
             if account_no == data[0]:
                 continue
             new_file.append(",".join(data))
-            # print(data)
-        print(new_file)
         with open("bankingsystem.txt", "w") as file:
             file.writelines(new_file)
-
+            count = -1
     def __str__(self):
-        pass
-
+        return super().__str__()
 
 # 3. **Create a Main Script**:
 #     - Initialize a `Bank` object.
@@ -191,13 +212,11 @@ class Bank(Account):
 
 bank_obj = Bank()
 bank_obj.assign()
-utility_obj = UtilityClass()
-
 
 class Perform_Operation:
     def perform(self):
         while True:
-            print("\n\n\n")
+            print("\n")
             print("Enter 1 for create new account . ")
             print("Enter 2 to find your account .  ")
             print("Enter 3 for deposit money in your account . ")
@@ -210,13 +229,27 @@ class Perform_Operation:
 
             # for add Account
             if no == 1:
+
                 acc_no = utility_obj.generate_ac_no()
-                holder_name = input("Enter account holder name : ")
-                bank_obj.add_account(acc_no, holder_name)
+                count = 3
+                while count:
+                    holder_name = input("Enter account holder name : ")
+                    if holder_name=="":
+                        print("~"*40)
+                        print("You can't leave name blank : ")
+                        count-=1
+                        print("~"*40)
+                        print(f"you have only {count} chances are left")
+                        print("~"*40)
+                    else:
+                        bank_obj.add_account(acc_no, holder_name)
+                        break
 
             # for find account and perform deposit,withdraw,get balance
             elif no == 2:
                 account_no = input("Enter Account Number : ")
+                bank_obj.accounts.clear()
+                bank_obj.assign()
                 if data := bank_obj.find_account(account_no):
                     print("~" * 40)
                     print(
@@ -254,7 +287,7 @@ class Perform_Operation:
                                         f"You have only {count_deposit} chances are left to enter correct ammount ."
                                     )
                         elif no == 2:
-
+                            print(data.balance)
                             count_withdraw = 3
                             while count_withdraw:
                                 amount = int(
@@ -274,7 +307,7 @@ class Perform_Operation:
                                     print("~" * 40)
                                     print("Insufficient balance!")
                                     print("~" * 40)
-                                    count -= 1
+                                    count_withdraw -= 1
                                     print(
                                         f"You have only {count_withdraw} chances are left to enter correct ammount ."
                                     )
@@ -282,9 +315,11 @@ class Perform_Operation:
                                     data.withdraw(str(amount))
                                     break
                         elif no == 3:
+                            # bank_obj.update_accounts(account_no)
+                            account_details = bank_obj.get_balance(account_no)
                             print("~" * 40)
                             print(
-                                f"Account balance of {data.account_no} is {data.balance}"
+                                f"Account balance of {account_details[0]} is {account_details[-1][:-1]}"
                             )
                             print("~" * 40)
 
@@ -300,9 +335,10 @@ class Perform_Operation:
             # for deposit money this belongs to bank class
             elif no == 3:
                 count_deposit = 3
-
                 account_no = input("Enter account no in which you want to deposit : ")
                 while count_deposit:
+                    bank_obj.accounts.clear()
+                    bank_obj.assign()
                     if data := bank_obj.find_account(account_no):
                         print("~" * 40)
                         print(
@@ -310,6 +346,8 @@ class Perform_Operation:
                         )
                         count_deposit_inner = 3
                         while count_deposit_inner:
+                            # bank_obj.update_accounts(account_no)
+
                             amount = int(input("Enter amount you want to deposit : "))
                             if amount < 1:
                                 print("~" * 40)
@@ -334,13 +372,15 @@ class Perform_Operation:
                     no = input("Do you want to continue y/n : ")
                     if no.lower() == "n":
                         break
+            # for transfering money from your account to another account
             elif no == 4:
                 count_withdraw = 3
-
                 account_no = input(
                     "Enter account no from which you want to Withdraw money : "
                 )
                 while count_withdraw:
+                    bank_obj.accounts.clear()
+                    bank_obj.assign()
                     if data := bank_obj.find_account(account_no):
                         print("~" * 40)
                         print(
@@ -389,11 +429,14 @@ class Perform_Operation:
                             print("~" * 40)
                             print("Insufficient balance : ")
                             print("~" * 40)
+            # for closing account
             elif no == 6:
                 while True:
                     account_no = input("Enter account no you want to close : ")
                     if utility_obj.verify_account_no(account_no):
                         bank_obj.close_account(account_no)
+                        bank_obj.accounts.clear()
+                        bank_obj.assign()
                     else:
                         print("Account does not exists.")
                     decision = input("Do you want to continue? y/n : ")
@@ -408,3 +451,4 @@ class Perform_Operation:
 
 perform_obj = Perform_Operation()
 perform_obj.perform()
+print(bank_obj)
