@@ -9,7 +9,6 @@
  | /x/y     | /p/./q         | /p/q
 """
 
-print("Enter commands : ", end="")
 cwd = ""
 l = []
 cmd = ""
@@ -20,40 +19,42 @@ d1 = {
 lst = []
 temp = d1
 while True:
-    cd = input("Enter")
+
+    cd = input(f"ajay@ajay/{cwd}:$ ")
+    cd = cd.replace("cd ", "")
+    if cd=="ls":
+        print(tuple(temp.keys()))
+        continue
     if "/" in cd:
         lst1 = cd.split("/")
-        lst.append(lst1)
-
+        lst.extend(lst1)
+        lst = [i for i in lst if "" != i]
+        lst1.clear()
     else:
-        if cd == "..":
-            if len(lst):
-                lst.pop()
-                print("pop", lst)
-        elif cd in temp.keys():
-            lst.append(cd)
-            print("lst add", lst)
+        lst.append(cd)
     length = len(cd)
     temp = d1
     if "" == cd:
         pass
-    if ".." in cd:
-        # lst.pop()
-        if len(l):
-            l.pop()
-        else:
-            pass
-    if "." in cd:
-        pass
-    elif cd != "." and cd != "..":
-        print(temp)
-        l.clear()
-        print("lst", lst)
+    if "." in lst:
+        for i in range(lst.count(".")):
+            index = lst.index(".")
+            lst.pop(index)
+    elif cd != ".":
+        if ".." in lst:
+            # ["a","b","c","..","..","..","..","foo"]
+            for i in range(lst.count("..")):
+                index = lst.index("..")
+                if index-1 >= 0:
+                    lst.pop(index)
+                    lst.pop(index-1)
+                else:
+                    lst.pop(index)
+
         for k in lst:
             if k in temp.keys():
                 temp = temp[k]
-                l.append(k)
-                print(l)
             else:
+                lst.pop()
                 print("No such directory !")
-    cwd = "/".join(l)
+    cwd = "/".join(lst)
