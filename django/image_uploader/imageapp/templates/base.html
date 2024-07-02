@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+
+</head>
+
+<body>
+
+  <body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md mb-2">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo -->
+          <div class="flex-shrink-0">
+            <a href="#" class="text-xl font-bold text-gray-800">Logo</a>
+          </div>
+
+          <!-- Navbar links -->
+          <div class="hidden md:flex">
+            <a href="#" class="text-gray-800 hover:text-gray-900 px-3 py-2">Home</a>
+            <a href="#" class="text-gray-800 hover:text-gray-900 px-3 py-2">About</a>
+            <a href="#" class="text-gray-800 hover:text-gray-900 px-3 py-2">Services</a>
+            <a href="{% url 'get_all_images' %}" class="text-gray-800 hover:text-gray-900 px-3 py-2">All Images</a>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden">
+            <button class="text-gray-800 hover:text-gray-900 focus:outline-none">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Responsive menu -->
+    <div class="md:hidden bg-white shadow-md">
+      <div class="px-2 py-3">
+        <a href="#" class="block text-gray-800 hover:text-gray-900 px-3 py-2">Home</a>
+        <a href="#" class="block text-gray-800 hover:text-gray-900 px-3 py-2">About</a>
+        <a href="#" class="block text-gray-800 hover:text-gray-900 px-3 py-2">Services</a>
+        <a href="#" class="block text-gray-800 hover:text-gray-900 px-3 py-2">Contact</a>
+      </div>
+    </div>
+    {% block content%}
+    {% endblock %}
+  </body>
+
+</html>
