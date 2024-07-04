@@ -4,7 +4,8 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {% for item in data %}
         <!-- Image card (replace with your dynamic data) -->
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden px-2">
+          <h2 class = "m-2 ">{{item.user}}</h2>
           <a href="{% url 'get_image' item.id %}">
           <img src="/media/{{ item.image }}"
                alt="{{ item.desc }}"

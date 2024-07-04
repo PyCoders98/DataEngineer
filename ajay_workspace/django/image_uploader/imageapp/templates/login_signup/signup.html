@@ -14,7 +14,7 @@
 </ul>
 {% endif %}
     <div class="bg-white p-8 rounded shadow-md w-full sm:w-1/2 lg:w-1/3">
-      <h2 class="text-2xl font-bold mb-4">Login</h2>
+      <h2 class="text-2xl font-bold mb-4">Sign Up</h2>
       <form method="Post" action="{% url 'sign_up' %}">
         {% csrf_token %}
         <div class="mb-4">
@@ -32,12 +32,29 @@
           <input type="password" id="password" name="password" placeholder="Enter your password"
             class="w-full px-3 py-2 placeholder-gray-300 border rounded-md focus:outline-none focus:ring focus:border-blue-300">
         </div>
+        <div class="mb-6">
+          <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
+          <input type="password" id="password" name="confirm_password" placeholder="Enter your password"
+            class="w-full px-3 py-2 placeholder-gray-300 border rounded-md focus:outline-none focus:ring focus:border-blue-300">
+        </div>
         <button type="submit"
           class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-          Login
+          Signup
         </button>
       </form>
+      <a href = "{% url 'login' %}">
+        <h2 class="text-red-400 underline m-2">Already have an account.</h2>
+      </a>
     </div>
   </div>
-
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            var messages = document.querySelectorAll('.messages > li');
+            messages.forEach(function (message) {
+                message.classList.add('hidden');
+            });
+        }, 3000); // Hide messages after 3 seconds
+    });
+</script>
 {% endblock content %}

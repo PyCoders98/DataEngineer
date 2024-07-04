@@ -10,8 +10,24 @@ class ImageModel(models.Model):
     desc = models.CharField(max_length=200)
     like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
-    comment  =models.CharField(max_length=500,null=True)
+    # comment  =models.CharField(max_length=500,null=True)
     
     def __str__(self) -> str:
-        return self.desc
+        return self.user.username
+class ImageComment(models.Model):
+    username = models.CharField(max_length=300,default="h")
+    image = models.ForeignKey(ImageModel,on_delete=models.CASCADE)
+    comment  =models.CharField(max_length=500,null=True)
+    created_at = models.DateTimeField(auto_created=True,auto_now=True)
         
+    def __str__(self) -> str:
+        return self.image.user.username     
+    
+class ImageLike(models.Model):
+    username = models.CharField(max_length=300,default="h")
+    image = models.ForeignKey(ImageModel,on_delete=models.CASCADE)
+    like = models.BooleanField(default = False)
+    dislike = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return str(self.like)
