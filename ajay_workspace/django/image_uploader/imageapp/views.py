@@ -19,45 +19,36 @@ def image_portfolio(request, id):
     data = ImageModel.objects.get(id=id)
     if request.method == "POST":
         if request.POST.get("like") == "like" or request.POST.get("like") == "dislike":
-            try:
-                like_data = ImageLike.objects.get(image=id)
-                if like_data:
-                    if request.POST.get("like") == "like":
-                        if like_data.like == False:
-                            data.like += 1
-                            like_data.like = True
-                            data.dislike = False
-                        else:
-                            data.like -= 1
-                            like_data.like = False
-                            like_data.dislike = True
-                        like_data.save()
-                    elif request.POST.get("like") == "dislike":
-                        if like_data.dislike == False:
-                            data.dislike += 1
-                            like_data.dislike = True
-                            data.like = False
-                        else:
-                            data.dislike -= 1
-                            like_data.dislike = False
-                            like_data.like = True
-                        like_data.save()
-            except:
-                if request.POST.get("like") == "like":
-                    data.like += 1
-                    ImageLike.objects.create(
-                        username=request.user.username,
-                        image=data,
-                        like=True,
-                    )
-                else:
-                    data.dislike += 1
-                    ImageLike.objects.create(
-                        username=request.user.username,
-                        image=data,
-                        dislike=True,
-                    )
+            like_data, created = ImageLike.objects.get_or_create(
+                image=data, username=request.user.username
+            )
 
+            if request.POST.get("like") == "like":
+                if like_data.like:
+                    like_data.like = False
+                    if data.like > 0:
+                        data.like -= 1
+                else:
+                    like_data.like = True
+                    data.like += 1
+                    if like_data.dislike:
+                        like_data.dislike = False
+                        if data.dislike > 0:
+                            data.dislike -= 1
+            elif request.POST.get("like") == "dislike":
+                if like_data.dislike:
+                    like_data.dislike = False
+                    if data.dislike > 0:
+                        data.dislike -= 1
+                else:
+                    like_data.dislike = True
+                    data.dislike += 1
+                    if like_data.like:
+                        like_data.like = False
+                        if data.like > 0:
+                            data.like -= 1
+
+            like_data.save()
         else:
             return redirect(f"/comment-page/{id}")
 
@@ -75,8 +66,6 @@ def get_image(request, id):
 def comment_page(request, id):
     data = ImageModel.objects.get(id=id)
     comment_data = ImageComment.objects.filter(image=id)
-    # print(comment_data)
-    # comment_count = ImageComment.objects.get(id=id).count()
     context = {"data": data, "comment": comment_data}
     if request.method == "POST":
         if request.user.is_authenticated:
@@ -85,6 +74,8 @@ def comment_page(request, id):
             ImageComment.objects.create(
                 username=request.user.username, image=data, comment=comment
             )
+            data.comment += 1
+            data.save()
             return redirect("/")
         else:
             messages.info(request, "For comment you need to register first.")
@@ -104,13 +95,15 @@ def upload_image(request):
     if request.method == "POST":
         file = request.FILES.get("image")
         desc = request.POST.get("description")
-        ImageModel.objects.create(user=request.user, image=file, desc=desc)
+        data = ImageModel.objects.create(user=request.user, image=file, desc=desc)
+        ImageLike.objects.create(username=request.user.username, image=data)
         messages.success(request, "Added Successfully.")
     return render(request, "admin/upload.html")
 
 
 @login_required(login_url="/login/")
 def confirmation_page(request, id):
+
     data = ImageModel.objects.get(id=id)
     return render(request, "admin/delete_confirmation_page.html", {"data": data})
 
@@ -120,7 +113,7 @@ def delete_image(request, id):
     data = ImageModel.objects.filter(id=id)
     data.delete()
     messages.info(request, "Deleted Successfully.")
-    return redirect("/all-images/")
+    return redirect("/profile/")
 
 
 @login_required(login_url="/login/")
@@ -131,7 +124,7 @@ def edit_image(request, id):
         data.desc = request.POST.get("description")
         data.save()
         messages.success(request, "Image updated successfully.")
-        return redirect("/all-images/")
+        return redirect("/profile/")
     else:
         return render(request, "admin/edit_image.html", {"data": data})
 
@@ -153,7 +146,6 @@ def sign_up(request):
             username=data["name"], email=data["email"], password=data["password"]
         )
         if user.exists():
-            print("1")
             messages.info(request, "User already exists")
             return redirect("/signup/")
         else:
@@ -193,6 +185,10 @@ def login_fun(request):
             return redirect("/")
 
     return render(request, "login_signup/login.html")
+
+
+def logout_confirm(request):
+    return render(request, "admin/logout_confirmation_page.html")
 
 
 def logout_fun(request):

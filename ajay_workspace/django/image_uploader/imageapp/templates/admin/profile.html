@@ -17,7 +17,8 @@
     {% endif %}
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {% for i in data %}
-        <div class="bg-white rounded-lg overflow-hidden shadow-md">
+        <div class="bg-white rounded-lg overflow-hidden shadow-md p-2 ">
+            <h2 class = "m-2 ">{{i.user}}<sub>{{i.created_at.date}}</sub></h2>   
             <img src="/media/{{ i.image }}" alt="{{ i.desc }}" class="w-full h-48 object-cover rounded-t-lg">
             <div class="p-4">
                 <h2 class="text-lg font-semibold">{{ i.title }}</h2>

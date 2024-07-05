@@ -5,7 +5,8 @@
       {% for item in data %}
         <!-- Image card (replace with your dynamic data) -->
         <div class="bg-white rounded-lg shadow-md overflow-hidden px-2">
-          <h2 class = "m-2 ">{{item.user}}</h2>
+          <h2 class = "m-2 ">{{item.user}}<sub>{{item.created_at.date}}</sub></h2>
+          
           <a href="{% url 'get_image' item.id %}">
           <img src="/media/{{ item.image }}"
                alt="{{ item.desc }}"
@@ -39,7 +40,9 @@
                 {% csrf_token %}
                 <button type="submit" value="comment" name="like">
                   💬
-                  {% if item.comment %}{{ item.comment }}{% endif %}
+                  {% if item.comment %}
+                  
+                  {{ item.comment }}{% endif %}
                 </button>
               </form>
             </div>
