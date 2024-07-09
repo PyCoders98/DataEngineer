@@ -4,8 +4,9 @@ from django.contrib import admin
 
 from .models import *
 
+
 class StudentDetails(admin.ModelAdmin):
-    list_display=['id','sname','fname','email','phone']
+    list_display = ["id", "sname", "fname", "email", "phone"]
 
-admin.site.register(studentInfo,StudentDetails)
 
+admin.site.register(studentInfo, StudentDetails)

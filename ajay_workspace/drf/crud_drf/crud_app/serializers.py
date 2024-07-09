@@ -3,6 +3,7 @@ from .models import *
 
 
 class StudentInfoSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     sname = serializers.CharField(max_length=40)
     fname = serializers.CharField(max_length=40)
     address = serializers.CharField(max_length=100)
@@ -12,10 +13,11 @@ class StudentInfoSerializer(serializers.Serializer):
     phone = serializers.IntegerField()
 
     def validate(self, data):
-        phone = data.get('phone')
-        if len(str(phone))<10:
+        phone = data.get("phone")
+        if len(str(phone)) < 10 or len(str(phone)) > 10:
             raise serializers.ValidationError("Phone number is must be 10 digit long.")
         return data
+
     def create(self, validated_data):
         data = studentInfo.objects.create(**validated_data)
         return data
