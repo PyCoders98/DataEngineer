@@ -1,4 +1,6 @@
 from django.shortcuts import render
+import rest_framework.authentication
+import rest_framework.permissions
 from .serializers import *
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -10,13 +12,15 @@ from rest_framework.renderers import JSONRenderer
 import io
 from rest_framework.parsers import JSONParser
 from rest_framework import generics
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
-class StudentGenerics(
-    generics.ListAPIView, generics.CreateAPIView, generics.ListCreateAPIView
-):
+class StudentGenerics(generics.ListCreateAPIView):
     queryset = studentInfo.objects.all()
     serializer_class = StudentInfoSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 class StudentGenericsUpdateDelete(
@@ -27,6 +31,8 @@ class StudentGenericsUpdateDelete(
     queryset = studentInfo.objects.all()
     serializer_class = StudentInfoSerializer
     lookup_field = "id"
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 class StudentAPI(APIView):

@@ -1,3 +1,1 @@
-l=34535
-print(len(str(l)))
-
+print(len(str("79218bf713ea4828ab93f482878316047f95ec50")))
