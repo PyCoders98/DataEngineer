@@ -1,4 +1,6 @@
 from pathlib import Path
+import rest_framework
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-4r+mh^#!jh24hgl(!^swdw@st2y_4d@yrq3c%6e!y-ttw1urx^"
+SECRET_KEY = "django-insecure-$@=(hf=yu2l2$22&^u(hq13bwr0$*w0wm90&e3f4dlubo%+661"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -25,11 +27,30 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
-    "crud_app",
-    "crudauth",
-    "rest_framework.authtoken",
 ]
+
+EXTERNAL_APPS = [
+    "api",
+    "rest_framework",
+    "rest_framework_simplejwt",
+]
+INSTALLED_APPS += EXTERNAL_APPS
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+    "SLIDING_TOKEN_LIFETIME": timedelta(days=30),
+    "SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER": timedelta(days=1),
+    "SLIDING_TOKEN_LIFETIME_LATE_USER": timedelta(days=30),
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -41,7 +62,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "crud_project.urls"
+ROOT_URLCONF = "jwtauthentication.urls"
 
 TEMPLATES = [
     {
@@ -59,7 +80,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "crud_project.wsgi.application"
+WSGI_APPLICATION = "jwtauthentication.wsgi.application"
 
 
 # Database
@@ -97,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "Asia/Kolkata"
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
