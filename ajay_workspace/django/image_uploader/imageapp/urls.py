@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import *
 from django.urls import path
+from .context_processor import *
 
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path("login/", login_fun, name="login"),
     path("logout/", logout_fun, name="logout"),
     path("logout_confirm/", logout_confirm, name="logout_confirm"),
+   
 ]

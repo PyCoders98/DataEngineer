@@ -22,7 +22,6 @@ def image_portfolio(request, id):
             like_data, created = ImageLike.objects.get_or_create(
                 image=data, username=request.user.username
             )
-
             if request.POST.get("like") == "like":
                 if like_data.like:
                     like_data.like = False
