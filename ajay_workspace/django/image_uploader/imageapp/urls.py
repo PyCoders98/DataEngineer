@@ -12,6 +12,7 @@ urlpatterns = [
     path("upload_page/", upload_image, name="upload_image"),
     path("all-images/", get_all_images, name="get_all_images"),
     path("profile/", profile, name="profile"),
+    path("update-profile-picture/<int:id>",update_profile_picture,name="update_profile_picture"),
     path("confirmation-page/<int:id>", confirmation_page, name="confirmation_page"),
     path("delete-image/<int:id>/", delete_image, name="delete_image"),
     path("edit-image/<int:id>/", edit_image, name="edit_image"),

@@ -1,0 +1,92 @@
+{% extends "base.html" %}   
+{% block style %}
+    .profile-container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-picture {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: auto;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid #667eea;
+    }
+
+    .profile-picture img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-picture button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: white;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .profile-actions {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .profile-actions button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .profile-actions .update-button {
+      background-color: #667eea;
+      color: white;
+    }
+
+    .profile-actions .delete-button {
+      background-color: #e53e3e;
+      color: white;
+    }
+
+{% endblock style %}
+{% block content %}
+<div class="profile-container">
+    <h2 class="text-center text-2xl font-bold text-gray-800 mb-4">Update Profile Picture</h2>
+    <div class="profile-picture">
+      <img src="" alt="Profile Picture">
+      <button onclick="document.getElementById('profile-picture-input').click()"><i class="fas fa-camera"></i></button>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="mt-4">
+      {% csrf_token %}
+      <input type="file" name="profile_picture" id="profile-picture-input" class="hidden" onchange="document.getElementById('profile-picture-form').submit()">
+      <div class="profile-actions">
+        <button type="submit" class="update-button">Update</button>
+        <button type="button" class="delete-button" onclick="confirmDeletion()">Delete</button>
+      </div>
+    </form>
+
+    <form id="delete-form" method="post" action="" class="hidden">
+      {% csrf_token %}
+    </form>
+  </div>
+
+  <script>
+    function confirmDeletion() {
+      if (confirm('Are you sure you want to delete your profile picture?')) {
+        document.getElementById('delete-form').submit();
+      }
+    }
+  </script>
+{% endblock content %}

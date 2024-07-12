@@ -89,6 +89,17 @@ def profile(request):
     return render(request, "admin/profile.html", context)
 
 
+def update_profile_picture(request, id):
+    # data = ImageModel.objects.get(id=id)
+    # if request.method == "POST":
+    #     image = request.FILES("image")
+    #     data.image = image
+    #     data.save()
+    #     messages.info(request, "Profile Updated Successfully!")
+    #     return redirect("/profile/")
+    return render(request, "admin/update_profile_picture.html")
+
+
 @login_required(login_url="/login/")
 def upload_image(request):
     if request.method == "POST":
