@@ -121,7 +121,7 @@
           {% if request.user.is_authenticated %}
           <div class="user-info">
             <a href="{% url 'update_profile_picture' request.user.id %}">
-              <img src="" alt="User Icon">
+              <img src="{{ profile.pofile_image.url }}" alt="User Icon">
             </a>
             <h2 class="text-xl font-bold">{{ request.user }}</h2>
           </div>

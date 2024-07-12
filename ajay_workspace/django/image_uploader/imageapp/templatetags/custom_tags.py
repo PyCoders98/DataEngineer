@@ -25,6 +25,7 @@ def is_liked(context, id):
     except:
         return liked
 
+
 @register.simple_tag(takes_context=True)
 def is_disliked(context, id):
     request = context["request"]
