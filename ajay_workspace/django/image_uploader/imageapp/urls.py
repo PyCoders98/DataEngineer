@@ -10,9 +10,18 @@ urlpatterns = [
     path("comment-page/<int:id>/", comment_page, name="comment_page"),
     path("get_image/<int:id>/", get_image, name="get_image"),
     path("upload_page/", upload_image, name="upload_image"),
-    path("all-images/", get_all_images, name="get_all_images"),
     path("profile/", profile, name="profile"),
-    path("update-profile-picture/<int:id>",update_profile_picture,name="update_profile_picture"),
+    path("view-profile-image/<int:id>", view_profile_image, name="view_profile_image"),
+    path(
+        "update-profile-image/",
+        UpdateProfileImageView.as_view(),
+        name="updateprofileimage",
+    ),
+    path(
+        "delete-profile-image/",
+        DeleteProfileImageView.as_view(),
+        name="delete_profile_image",
+    ),
     path("confirmation-page/<int:id>", confirmation_page, name="confirmation_page"),
     path("delete-image/<int:id>/", delete_image, name="delete_image"),
     path("edit-image/<int:id>/", edit_image, name="edit_image"),
@@ -20,5 +29,4 @@ urlpatterns = [
     path("login/", login_fun, name="login"),
     path("logout/", logout_fun, name="logout"),
     path("logout_confirm/", logout_confirm, name="logout_confirm"),
-   
 ]

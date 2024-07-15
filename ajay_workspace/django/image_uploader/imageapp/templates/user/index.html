@@ -1,13 +1,84 @@
 {% extends "base.html" %}
-{% load custom_tags %} 
+{% load static %}
+{% load custom_tags %}
+
+{% block style %}
+<style>
+    .glassmorphism-bg {
+        background: rgba(255, 255, 255, 0.15); /* Adjust opacity as needed */
+        backdrop-filter: blur(10px); /* Adjust blur radius as needed */
+        border-radius: 20px; /* Adjust border radius */
+    }
+
+    .glassmorphism-card {
+        background: rgba(255, 255, 255, 0.08); /* Adjust opacity as needed */
+        backdrop-filter: blur(10px); /* Adjust blur radius as needed */
+        border-radius: 15px; /* Adjust border radius */
+        transition: all 0.3s ease;
+    }
+
+    .glassmorphism-card:hover {
+        transform: translateY(-5px); /* Example: Lift card on hover */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Adjust shadow as needed */
+    }
+
+    .glassmorphism-card img {
+        border-radius: 15px 15px 0 0; /* Rounded corners for the top of the image */
+    }
+
+    .glassmorphism-card-content {
+        padding: 1.5rem;
+    }
+
+    .glassmorphism-card-content h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .glassmorphism-card-content p {
+        font-size: 0.875rem;
+        color: #666;
+    }
+
+    .glassmorphism-card-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+    }
+
+    .glassmorphism-card-actions button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        font-size: 1rem;
+        color: #666;
+        display: flex;
+        align-items: center;
+    }
+
+    .glassmorphism-card-actions button i {
+        margin-right: 0.5rem;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="max-w-6xl mx-auto p-4">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {% for item in data %}
         <!-- Image card (replace with your dynamic data) -->
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="glassmorphism-card bg-white rounded-lg shadow-md overflow-hidden">
             <div class="flex items-center p-2">
-                <img class="w-10 h-10 rounded-full object-cover mr-2" src="https://i.imgur.com/7D7I6dI.png" alt="{{ item.user }}">
+                {% if item.pofile_image %}
+                <img class="w-10 h-10 rounded-full object-cover mr-2" src="/media/{{ item.pofile_image }}"
+                    alt="{{ item.user }}">
+                {% else %}
+                <img class="w-10 h-10 rounded-full object-cover mr-2"
+                    src="{% static 'static_profile_image/default_profile_image.jpg' %}" alt="User Icon">
+                {% endif %}
                 <div>
                     <h2 class="text-sm font-semibold">{{ item.user }}</h2>
                     <sub class="text-gray-500 text-xs">{{ item.created_at.date }}</sub>
@@ -16,7 +87,7 @@
             <a href="{% url 'get_image' item.id %}">
                 <img src="/media/{{ item.image }}" alt="{{ item.desc }}" class="w-full h-64 object-cover">
             </a>
-            <div class="p-4">
+            <div class="glassmorphism-card-content">
                 <div class="flex justify-between items-center mb-2">
                     <div class="flex space-x-4">
                         <div class="relative">
@@ -79,7 +150,7 @@
 
 {% block scripts %}
 <script>
-  console.log({{profile.pofile_image}})
+    console.log({{profile.pofile_image}})
     // JavaScript for handling likes and dislikes
     function like(itemId) {
         // Replace with your actual logic to handle like functionality

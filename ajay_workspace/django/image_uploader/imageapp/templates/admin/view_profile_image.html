@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block style %}
     .profile-container {
     max-width: 600px;
@@ -137,20 +138,22 @@
         <div class="profile-card">
             <!-- Left side: Profile Picture -->
             <div class="profile-picture">
-                <img src="{{ profile.pofile_image.url }}" alt="Profile Picture">
+                {% if profile.pofile_image %}
+                    <img src="{{ profile.pofile_image.url }}" alt="User Icon">
+                {% else %}
+                    <img src="{% static 'static_profile_image/default_profile_image.jpg' %}"
+                         alt="User Icon">
+                {% endif %}
             </div>
             <!-- Right side: Update and Delete Actions -->
             <div class="profile-actions">
-                <h2>Update Profile Picture</h2>
-                <form method="post" enctype="multipart/form-data" id="profile-picture-form">
-                    {% csrf_token %}
-                    <input type="file" name="update_image" id="profile-picture-input">
-                    <button type="button" class="delete-button mt-4">Update Image</button>
-                </form>
-                <form id="delete-form" method="post" action="" class="hidden">
-                    {% csrf_token %}
-                    <!-- Any additional hidden inputs for deletion confirmation can be added here if needed -->
-                </form>
+                <h2 style="color:gray;">Update Profile Picture</h2>
+                <a href={% url 'updateprofileimage' %}>
+                    <button class="update-button mt-4 ">Update Image</button>
+                </a>
+                <a href={% url 'delete_profile_image' %}>
+                    <button type="button" class="update-button mt-4 ">Delete Image</button>
+                </a>
             </div>
         </div>
     </div>

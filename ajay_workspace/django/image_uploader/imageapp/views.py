@@ -5,6 +5,9 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.views import View
+from .forms import *
+from django.templatetags.static import static
 
 
 # Create your views here.
@@ -14,6 +17,7 @@ def home(request):
     return render(request, "user/index.html", context)
 
 
+# ----------------Image portfolio (like, dislike, comment functionality)----------------
 @login_required(login_url="/login/")
 def image_portfolio(request, id):
     data = ImageModel.objects.get(id=id)
@@ -46,22 +50,22 @@ def image_portfolio(request, id):
                         like_data.like = False
                         if data.like > 0:
                             data.like -= 1
-
             like_data.save()
         else:
             return redirect(f"/comment-page/{id}")
-
         data.save()
         referring_url = request.META["HTTP_REFERER"]
         return redirect(referring_url)
 
 
+# ----------------Open image to download----------------
 def get_image(request, id):
     data = ImageModel.objects.get(id=id)
     context = {"data": data}
     return render(request, "user/get_image.html", context)
 
 
+# ----------------Comment on any image----------------
 def comment_page(request, id):
     data = ImageModel.objects.get(id=id)
     comment_data = ImageComment.objects.filter(image=id)
@@ -82,6 +86,7 @@ def comment_page(request, id):
     return render(request, "admin/comment_page.html", context)
 
 
+# ----------------User personnel profile----------------
 def profile(request):
     data = ImageModel.objects.filter(user=request.user)
     comment = ImageComment.objects.filter(image=request.user.id)
@@ -89,17 +94,45 @@ def profile(request):
     return render(request, "admin/profile.html", context)
 
 
-def update_profile_picture(request, id):
-    # data = ImageModel.objects.get(id=id)
-    # if request.method == "POST":
-    #     image = request.FILES("image")
-    #     data.image = image
-    #     data.save()
-    #     messages.info(request, "Profile Updated Successfully!")
-    #     return redirect("/profile/")
-    return render(request, "admin/update_profile_picture.html")
+# ----------------View profile image----------------
+def view_profile_image(request, id):
+    return render(request, "admin/view_profile_image.html")
 
 
+# ----------------Update profile image----------------
+class UpdateProfileImageView(View):
+    template = "admin/update_profile_image.html"
+
+    def get(self, request):
+        form = ProfileImage()
+        return render(request, self.template, {"form": form})
+
+    def post(self, request):
+        user_profile = ImageModel.objects.get(user=request.user)
+        form = ProfileImage(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Updated successfully!")
+            return redirect(f"/view-profile-image/{request.user.id}")
+
+
+# ----------------Remove profile image----------------
+class DeleteProfileImageView(View):
+    template = "admin/remove_profile_image_confirmation.html"
+
+    def get(self, request):
+        profile = ImageModel.objects.get(user=request.user)
+        return render(request, self.template)
+
+    def post(self, request):
+        user_profile = ImageModel.objects.get(user=request.user)
+        user_profile.pofile_image = None
+        user_profile.save()
+        messages.success(request, "Image removed successfully!")
+        return redirect(f"/view-profile-image/{request.user.id}")
+
+
+# ----------------Upload image----------------
 @login_required(login_url="/login/")
 def upload_image(request):
     if request.method == "POST":
@@ -111,13 +144,14 @@ def upload_image(request):
     return render(request, "admin/upload.html")
 
 
+# ----------------Confirmateion : Delete uploaded image from site ----------------
 @login_required(login_url="/login/")
 def confirmation_page(request, id):
-
     data = ImageModel.objects.get(id=id)
     return render(request, "admin/delete_confirmation_page.html", {"data": data})
 
 
+# ----------------Delete uploaded image from site----------------
 @login_required(login_url="/login/")
 def delete_image(request, id):
     data = ImageModel.objects.filter(id=id)
@@ -126,6 +160,7 @@ def delete_image(request, id):
     return redirect("/profile/")
 
 
+# ----------------Update uploaded image from site----------------
 @login_required(login_url="/login/")
 def edit_image(request, id):
     data = ImageModel.objects.get(id=id)
@@ -139,16 +174,7 @@ def edit_image(request, id):
         return render(request, "admin/edit_image.html", {"data": data})
 
 
-@login_required(login_url="/login/")
-def get_all_images(request):
-    data = ImageModel.objects.all()
-    context = {"data": data}
-    return render(request, "admin/all_images.html", context)
-
-
-# signup/login
-
-
+# ----------------User login/signup functionality----------------
 def sign_up(request):
     if request.method == "POST":
         data = request.POST
@@ -180,11 +206,9 @@ def login_fun(request):
     if request.method == "POST":
         username = request.POST.get("name")
         password = request.POST.get("password")
-
         if not User.objects.filter(username=username).exists():
             messages.error(request, "Invalid username or Password!")
             return redirect("/login/")
-
         user = authenticate(username=username, password=password)
         print(user)
         if user is None:
@@ -193,10 +217,10 @@ def login_fun(request):
         else:
             login(request, user)
             return redirect("/")
-
     return render(request, "login_signup/login.html")
 
 
+# ----------------Logout confirmation page----------------
 def logout_confirm(request):
     return render(request, "admin/logout_confirmation_page.html")
 
