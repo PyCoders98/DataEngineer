@@ -5,10 +5,9 @@ from django.contrib.auth.models import User
 # Create your models here.
 class ImageModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pofile_image = models.ImageField(upload_to="media", null=True)
     image = models.ImageField(upload_to="media")
     desc = models.CharField(max_length=200)
-    like = models.IntegerField(default=0)
+    like = models.IntegerField(default=0)   
     dislike = models.IntegerField(default=0)
     comment = models.IntegerField(default=0, null=True)
     created_at = models.DateTimeField(auto_created=True, auto_now=True, null=True)

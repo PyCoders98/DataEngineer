@@ -1,86 +1,84 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    {% if messages %}
-    <ul class="messages mb-4">
-        {% for message in messages %}
-        <li id="message-{{ forloop.counter }}"
-            class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4 shadow-md rounded">
-            {% if message.tags %}
-            <div class="font-bold">{{ message.tags }}</div>
-            {% endif %}
-            <div>{{ message }}</div>
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {% for i in data %}
-        <div class="bg-white rounded-lg overflow-hidden shadow-md p-2 ">
-            <h2 class = "m-2 ">{{i.user}}<sub>{{i.created_at.date}}</sub></h2>   
-            <img src="/media/{{ i.image }}" alt="{{ i.desc }}" class="w-full h-48 object-cover rounded-t-lg">
-            <div class="p-4">
-                <h2 class="text-lg font-semibold">{{ i.title }}</h2>
-                <p class="text-gray-600 mt-2">{{ i.desc }}</p>
-            </div>
-            <div class="flex justify-between items-center bg-gray-100 p-3">
-                <div class="flex justify-center items-center space-x-4">
-                    <div class="relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for i in data %}
+                <div class="bg-white rounded-lg overflow-hidden shadow-md p-2 ">
+                    <h2 class = "m-2 ">
+                        {{ i.user }}<sub>{{ i.created_at.date }}</sub>
+                    </h2>
+                    <img src="/media/{{ i.image }}"
+                         alt="{{ i.desc }}"
+                         class="w-full h-48 object-cover rounded-t-lg">
+                    <div class="p-4">
+                        <h2 class="text-lg font-semibold">{{ i.title }}</h2>
+                        <p class="text-gray-600 mt-2">{{ i.desc }}</p>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-100 p-3">
+                        <div class="flex justify-center items-center space-x-4">
+                            <div class="relative">
+                                <form method='POST' action="{% url 'image_portfolio' i.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            value="like"
+                                            name="like"
+                                            class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
+                                        &#x1F44D;
+                                        {% if i.like %}{{ i.like }}{% endif %}
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="relative">
+                                <form method='POST' action="{% url 'image_portfolio' i.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            value="dislike"
+                                            name="like"
+                                            class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
+                                        &#x1F44E;
+                                        {% if i.dislike %}{{ i.dislike }}{% endif %}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                         <form method='POST' action="{% url 'image_portfolio' i.id %}">
                             {% csrf_token %}
-                            <button type="submit" value="like" name="like"
-                                class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
-                                &#x1F44D; {% if i.like %}{{ i.like }}{% endif %}
+                            <button type="submit"
+                                    value="comment"
+                                    name="like"
+                                    class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
+                                💬
+                                {% if i.comment %}{{ i.comment }}{% endif %}
                             </button>
                         </form>
                     </div>
-                    <div class="relative">
-                        <form method='POST' action="{% url 'image_portfolio' i.id %}">
-                            {% csrf_token %}
-                            <button type="submit" value="dislike" name="like"
-                                class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
-                                &#x1F44E; {% if i.dislike %}{{ i.dislike }}{% endif %}
-                            </button>
-                        </form>
+                    <div class="flex justify-between items-center bg-gray-100 p-3">
+                        <a href="{% url 'confirmation_page' i.id %}"
+                           class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd" d="M12.293 4.293a1 1 0 00-1.414 0L6 9.586V13a2 2 0 002 2h4a2 2 0 002-2v-.414l-4.293-4.293a1 1 0 10-1.414 1.414L11 12.586V14h-2v-1.414l4.293-4.293a1 1 0 000-1.414z" clip-rule="evenodd" />
+                            </svg>
+                            <span>Delete</span>
+                        </a>
+                        <a href="{% url 'edit_image' i.id %}"
+                           class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="h-5 w-5"
+                                 viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd" d="M15 3a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h10zm2 2a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h5v2a1 1 0 102 0v-2h5a1 1 0 001-1V5z" clip-rule="evenodd" />
+                            </svg>
+                            <span>Edit</span>
+                        </a>
                     </div>
                 </div>
-                <form method='POST' action="{% url 'image_portfolio' i.id %}">
-                    {% csrf_token %}
-                    <button type="submit" value="comment" name="like"
-                        class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
-                        💬 {% if i.comment %}{{ i.comment }}{% endif %}
-                    </button>
-                </form>
-            </div>
-            <div class="flex justify-between items-center bg-gray-100 p-3">
-                <a href="{% url 'confirmation_page' i.id %}"
-                    class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                        fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M12.293 4.293a1 1 0 00-1.414 0L6 9.586V13a2 2 0 002 2h4a2 2 0 002-2v-.414l-4.293-4.293a1 1 0 10-1.414 1.414L11 12.586V14h-2v-1.414l4.293-4.293a1 1 0 000-1.414z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span>Delete</span>
-                </a>
-                <a href="{% url 'edit_image' i.id %}"
-                    class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                        fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M15 3a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h10zm2 2a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h5v2a1 1 0 102 0v-2h5a1 1 0 001-1V5z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span>Edit</span>
-                </a>
-            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-</div>
-
-<script>
+    <script>
     // JavaScript to remove messages after 5 seconds
     document.addEventListener('DOMContentLoaded', function () {
         setTimeout(function () {
@@ -92,5 +90,5 @@
             {% endfor %}
         }, 5000); // 5000 milliseconds = 5 seconds
     });
-</script>
+    </script>
 {% endblock %}

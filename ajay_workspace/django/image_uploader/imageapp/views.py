@@ -8,13 +8,15 @@ from django.contrib.auth.decorators import login_required
 from django.views import View
 from .forms import *
 from django.templatetags.static import static
+from django.views.generic import ListView
 
 
 # Create your views here.
-def home(request):
-    data = ImageModel.objects.all()
-    context = {"data": data}
-    return render(request, "user/index.html", context)
+class Home(ListView):
+    model = ImageModel
+    context_object_name = "data"
+    template_name = "user/index.html"
+    paginate_by = 20
 
 
 # ----------------Image portfolio (like, dislike, comment functionality)----------------
@@ -108,10 +110,11 @@ class UpdateProfileImageView(View):
         return render(request, self.template, {"form": form})
 
     def post(self, request):
-        user_profile = ImageModel.objects.get(user=request.user)
-        form = ProfileImage(request.POST, request.FILES, instance=user_profile)
+        user_profile = User.objects.get(id=request.user.id)
+        form = ProfileImage(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            user_profile.profile_image = request.FILES.get("profile_image")
+            user_profile.save()
             messages.success(request, "Updated successfully!")
             return redirect(f"/view-profile-image/{request.user.id}")
 
@@ -121,12 +124,12 @@ class DeleteProfileImageView(View):
     template = "admin/remove_profile_image_confirmation.html"
 
     def get(self, request):
-        profile = ImageModel.objects.get(user=request.user)
+        profile = User.objects.get(id=request.user.id)
         return render(request, self.template)
 
     def post(self, request):
-        user_profile = ImageModel.objects.get(user=request.user)
-        user_profile.pofile_image = None
+        user_profile = User.objects.get(id=request.user.id)
+        user_profile.profile_image = None
         user_profile.save()
         messages.success(request, "Image removed successfully!")
         return redirect(f"/view-profile-image/{request.user.id}")

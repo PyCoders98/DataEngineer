@@ -138,8 +138,8 @@
         <div class="profile-card">
             <!-- Left side: Profile Picture -->
             <div class="profile-picture">
-                {% if profile.pofile_image %}
-                    <img src="{{ profile.pofile_image.url }}" alt="User Icon">
+                {% if request.user.profile_image %}
+                    <img src="{{ request.user.profile_image.url }}" alt="User Icon">
                 {% else %}
                     <img src="{% static 'static_profile_image/default_profile_image.jpg' %}"
                          alt="User Icon">

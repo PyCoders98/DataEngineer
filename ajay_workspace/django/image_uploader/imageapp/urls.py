@@ -1,11 +1,12 @@
 from django.urls import path
 from .views import *
+from .views import Home
 from django.urls import path
 from .context_processor import *
 
 
 urlpatterns = [
-    path("", home, name="home_page"),
+    path("", Home.as_view(), name="home_page"),
     path("image-portfolio/<int:id>", image_portfolio, name="image_portfolio"),
     path("comment-page/<int:id>/", comment_page, name="comment_page"),
     path("get_image/<int:id>/", get_image, name="get_image"),
