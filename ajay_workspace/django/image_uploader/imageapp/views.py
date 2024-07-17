@@ -1,3 +1,6 @@
+from collections.abc import Sequence
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from .models import *
 from django.contrib import messages
@@ -17,6 +20,9 @@ class Home(ListView):
     context_object_name = "data"
     template_name = "user/index.html"
     paginate_by = 20
+
+    def get_queryset(self):
+        return self.model.objects.all().order_by("-id")
 
 
 # ----------------Image portfolio (like, dislike, comment functionality)----------------

@@ -1,94 +1,188 @@
 {% extends "base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% block style %}
+    <style>
+    /* Reset default margin and padding */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f3f4f6;
+    }
+
+    .glassmorphism-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .glassmorphism-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .glassmorphism-card-header {
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .glassmorphism-card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .glassmorphism-card-subtitle {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .glassmorphism-card-image {
+        height: 200px;
+        overflow: hidden;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .glassmorphism-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .glassmorphism-card-content {
+        padding: 1rem;
+    }
+
+    .glassmorphism-card-actions {
+        padding: 1rem; /* Adjust padding */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .glassmorphism-card-actions div {
+        display: flex;
+        align-items: center;
+    }
+
+    .glassmorphism-card-actions a,
+    .glassmorphism-card-actions button {
+        color: #666;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-right: 10px; /* Adjust spacing between action buttons */
+        padding: 5px;
+        border-radius: 5px;
+        
+    }
+
+    .glassmorphism-card-actions a:hover,
+    .glassmorphism-card-actions button:hover {
+        color: #333;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .glassmorphism-card-actions .edit-btn {
+        background-color: rgba(255, 255, 255, 0.15);
+        padding: 8px 12px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .glassmorphism-card-actions .edit-btn:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .glassmorphism-card-actions .delete-btn {
+        background-color: rgba(255, 0, 0, 0.8);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .glassmorphism-card-actions .delete-btn:hover {
+        background-color: rgba(255, 0, 0, 1);
+    }
+    </style>
+{% endblock %}
 {% block content %}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {% for i in data %}
-                <div class="bg-white rounded-lg overflow-hidden shadow-md p-2 ">
-                    <h2 class = "m-2 ">
-                        {{ i.user }}<sub>{{ i.created_at.date }}</sub>
-                    </h2>
-                    <img src="/media/{{ i.image }}"
-                         alt="{{ i.desc }}"
-                         class="w-full h-48 object-cover rounded-t-lg">
-                    <div class="p-4">
-                        <h2 class="text-lg font-semibold">{{ i.title }}</h2>
-                        <p class="text-gray-600 mt-2">{{ i.desc }}</p>
+            {% for item in data %}
+                <div class="glassmorphism-card">
+                    <div class="glassmorphism-card-header">
+                        <h2 class="glassmorphism-card-title">{{ item.user }}</h2>
+                        <sub class="glassmorphism-card-subtitle">{{ item.created_at.date }}</sub>
                     </div>
-                    <div class="flex justify-between items-center bg-gray-100 p-3">
-                        <div class="flex justify-center items-center space-x-4">
-                            <div class="relative">
-                                <form method='POST' action="{% url 'image_portfolio' i.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit"
-                                            value="like"
-                                            name="like"
-                                            class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
-                                        &#x1F44D;
-                                        {% if i.like %}{{ i.like }}{% endif %}
-                                    </button>
-                                </form>
-                            </div>
-                            <div class="relative">
-                                <form method='POST' action="{% url 'image_portfolio' i.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit"
-                                            value="dislike"
-                                            name="like"
-                                            class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
-                                        &#x1F44E;
-                                        {% if i.dislike %}{{ i.dislike }}{% endif %}
-                                    </button>
-                                </form>
-                            </div>
+                    <div class="glassmorphism-card-image">
+                        <img src="/media/{{ item.image }}" alt="{{ item.desc }}">
+                    </div>
+                    <div class="glassmorphism-card-actions">
+                        <div class="flex space-x-4">
+                            <form method="POST" action="{% url 'image_portfolio' item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" value="like" name="like">
+                                    {% is_liked item.id as liked %}
+                                    {% if liked %}
+                                        <i class="fa fa-heart text-red-600" style="font-size:24px;"></i>
+                                    {% else %}
+                                        <i class="fa fa-heart text-gray-400" style="font-size:24px;"></i>
+                                    {% endif %}
+                                    {% if item.like %}{{ item.like }}{% endif %}
+                                </button>
+                            </form>
+                            <form method="POST" action="{% url 'image_portfolio' item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" value="dislike" name="like">
+                                    {% is_disliked item.id as disliked %}
+                                    {% if disliked %}
+                                        <i class="fa fa-thumbs-down text-red-600" style="font-size:24px;"></i>
+                                    {% else %}
+                                        <i class="fa fa-thumbs-down text-gray-400" style="font-size:24px;"></i>
+                                    {% endif %}
+                                    {% if item.dislike %}{{ item.dislike }}{% endif %}
+                                </button>
+                            </form>
+                            <form method="POST" action="{% url 'image_portfolio' item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" value="comment"  name="like">
+                                    <i style='font-size:24px' class='far'>&#xf4ad;</i>
+                                    {% if item.comment %}{{ item.comment }}{% endif %}
+                                </button>
+                            </form>
                         </div>
-                        <form method='POST' action="{% url 'image_portfolio' i.id %}">
-                            {% csrf_token %}
-                            <button type="submit"
-                                    value="comment"
-                                    name="like"
-                                    class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
-                                💬
-                                {% if i.comment %}{{ i.comment }}{% endif %}
-                            </button>
-                        </form>
-                    </div>
-                    <div class="flex justify-between items-center bg-gray-100 p-3">
-                        <a href="{% url 'confirmation_page' i.id %}"
-                           class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 viewBox="0 0 20 20"
-                                 fill="currentColor">
-                                <path fill-rule="evenodd" d="M12.293 4.293a1 1 0 00-1.414 0L6 9.586V13a2 2 0 002 2h4a2 2 0 002-2v-.414l-4.293-4.293a1 1 0 10-1.414 1.414L11 12.586V14h-2v-1.414l4.293-4.293a1 1 0 000-1.414z" clip-rule="evenodd" />
-                            </svg>
-                            <span>Delete</span>
-                        </a>
-                        <a href="{% url 'edit_image' i.id %}"
-                           class="text-gray-500 hover:text-gray-700 flex items-center space-x-1">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 viewBox="0 0 20 20"
-                                 fill="currentColor">
-                                <path fill-rule="evenodd" d="M15 3a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h10zm2 2a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h5v2a1 1 0 102 0v-2h5a1 1 0 001-1V5z" clip-rule="evenodd" />
-                            </svg>
-                            <span>Edit</span>
-                        </a>
+                        <div class="flex space-x-4 mt-2">
+                            <a href="{% url 'confirmation_page' item.id %}" class="delete-btn">
+                                <i class="fa fa-trash text-white" style="font-size:24px;"></i>
+                                <span>Delete</span>
+                            </a>
+                            <a href="{% url 'edit_image' item.id %}" class="edit-btn">
+                                <i class="fa fa-edit text-white" style="font-size:24px;"></i>
+                                <span>Edit</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
-    <script>
-    // JavaScript to remove messages after 5 seconds
-    document.addEventListener('DOMContentLoaded', function () {
-        setTimeout(function () {
-            {% for message in messages %}
-            var messageElement = document.getElementById('message-{{ forloop.counter }}');
-            if (messageElement) {
-                messageElement.remove();
-            }
-            {% endfor %}
-        }, 5000); // 5000 milliseconds = 5 seconds
-    });
-    </script>
 {% endblock %}

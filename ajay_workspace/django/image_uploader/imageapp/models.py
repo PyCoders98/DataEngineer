@@ -7,10 +7,14 @@ class ImageModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="media")
     desc = models.CharField(max_length=200)
-    like = models.IntegerField(default=0)   
+    like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
     comment = models.IntegerField(default=0, null=True)
-    created_at = models.DateTimeField(auto_created=True, auto_now=True, null=True)
+    created_at = models.DateTimeField(
+        auto_created=True,
+        auto_now_add=True,
+    )
+    slug = models.SlugField(default="", null=False)
 
     def __str__(self) -> str:
         return self.user.username

@@ -1,15 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="bg-gray-100 p-6 m-4">
-    <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+  <div class="p-6 m-4" style="">
+    <div class="max-w-md mx-auto p-6 rounded-lg shadow-md glassmorphism">
       <h2 class="text-2xl font-bold mb-4">Upload Image</h2>
-      <!-- Form for uploading image and description --> 
+      <!-- Form for uploading image and description -->
       <form action="#" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <!-- Image Upload -->
         <div class="mb-4">
           <label for="image" class="block text-gray-800 font-bold">Choose Image:</label>
-          <input type="file" id="image" name="image" accept="image/*" class="mt-1" required>
+          <input type="file"
+                 id="image"
+                 name="image"
+                 accept="image/*"
+                 class="mt-1"
+                 required>
         </div>
         <!-- Image Description -->
         <div class="mb-4">
@@ -22,17 +27,37 @@
         </div>
         <!-- Submit Button -->
         <div class="flex justify-center">
-          <a href="{% url 'upload_image' %}">
-            <button type="submit"
-                    class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-              Upload
-            </button>
-          </a>
+          <button type="submit"
+                  class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Upload
+          </button>
         </div>
       </form>
     </div>
-    <script>
-// JavaScript to remove messages after 5 seconds
-
-    </script>
-  {% endblock %}
+  </div>
+  <script>
+    // JavaScript to remove messages after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        {% if messages %}
+          {% for message in messages %}
+            var messageElement = document.getElementById('message-{{ forloop.counter }}');
+            if (messageElement) {
+              messageElement.remove();
+            }
+          {% endfor %}
+        {% endif %}
+      }, 5000);
+    });
+  </script>
+  <style>
+    .glassmorphism {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      {% comment %} border: 1px solid rgba(255, 255, 255, 0.3); {% endcomment %}
+      box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    }
+  </style>
+{% endblock %}
