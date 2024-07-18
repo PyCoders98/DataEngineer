@@ -4,28 +4,25 @@
 {% block style %}
     <style>
     .glassmorphism-bg {
-        background: rgba(255, 255, 255, 0.15); /* Adjust opacity as needed */
-        backdrop-filter: blur(10px); /* Adjust blur radius as needed */
+        background: rgba(255, 255, 255, 0.50); /* Adjust opacity as needed */
+        backdrop-filter: blur(30px); /* Adjust blur radius as needed */
         border-radius: 20px; /* Adjust border radius */
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-    }
+        box-shadow: 5px 5px 20px;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        }
 
     .glassmorphism-card {
-        background: rgba(255, 255, 255, 0.08); /* Adjust opacity as needed */
+        background: rgba(255, 255, 255, 0.40); /* Adjust opacity as needed */
         backdrop-filter: blur(10px); /* Adjust blur radius as needed */
         border-radius: 15px; /* Adjust border radius */
         transition: all 0.3s ease;
-        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    }
+        box-shadow: 0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 8px 8px rgba(0,0,0,0.11), 0 16px 16px rgba(0,0,0,0.11), 0 32px 32px rgba(0,0,0,0.11);    }
 
     .glassmorphism-card:hover {
         transform: translateY(-5px); /* Example: Lift card on hover */
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Adjust shadow as needed */
+        box-shadow: 5px 5px 20px;
     }
 
-    .glassmorphism-card img {
-        border-radius: 15px 15px 0 0; /* Rounded corners for the top of the image */
-    }
+ 
 
     .glassmorphism-card-content {
         padding: 1.5rem;
@@ -74,14 +71,14 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {% for item in data %}
                 <!-- Image card (replace with your dynamic data) -->
-                <div class="glassmorphism-card bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="flex items-center p-2" style="">
+                <div class="glassmorphism-card bg-white  shadow-md overflow-hidden">
+                    <div class="flex items-center p-2 "  style="">
                         {% if item.user.profile_image %}
-                            <img class="w-10 h-10 rounded-full object-cover mr-2"
-                                 src="/media/{{ item.user.profile_image.url }}"
+                            <img class="w-10 h-10  object-cover mr-2 rounded-2xl"
+                                 src="/media/{{ item.user.profile_image }}"
                                  alt="{{ item.user }}">
                         {% else %}
-                            <img class="w-10 h-10 rounded-full object-cover mr-2"
+                            <img class="w-10 h-10  object-cover mr-2"
                                  src="{% static 'static_profile_image/default_profile_image.jpg' %}"
                                  alt="User Icon">
                         {% endif %}
@@ -93,9 +90,9 @@
                     <a href="{% url 'get_image' item.id %}">
                         <img src="/media/{{ item.image }}"
                              alt="{{ item.desc }}"
-                             class="w-full h-64 object-cover">
+                             class="w-full h-64 object-cover px-2">
                     </a>
-                    <div class="glassmorphism-card-content" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                    <div class="glassmorphism-card-content" style=" ">
                         <div class="flex justify-between items-center mb-2">
                             <div class="flex space-x-4" s>
                                 <div class="relative">
@@ -147,8 +144,7 @@
                                 </button>
                             </form>
                         </div>
-                        <h2 class="text-lg font-semibold">{{ item.title }}</h2>
-                        <p class="text-gray-600 mt-2">{{ item.desc }}</p>
+                        <p class=" mt-2" style="color:black;font-size:20px;">{{ item.desc }}</p>
                     </div>
                 </div>
             {% endfor %}
