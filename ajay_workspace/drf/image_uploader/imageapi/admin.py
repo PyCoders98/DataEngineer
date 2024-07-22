@@ -18,5 +18,5 @@ class ImageLikeDislikeDeatails(admin.ModelAdmin):
 
 admin.site.register(User, UserDetails)
 admin.site.register(ImageModel, ImageModelDetails)
-admin.site.register(ImageComment)
-admin.site.register(ImageLikeDislike)
+admin.site.register(ImageCommentModel)
+admin.site.register(ImageLikeDislikeModel)

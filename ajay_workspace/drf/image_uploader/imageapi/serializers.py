@@ -6,8 +6,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
+            "id",
             "username",
-            "password",
             "email",
             "profile_image",
         ]
@@ -28,26 +28,38 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ImageModelSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = ImageModel
         fields = "__all__"
 
+    def update(self, instance, validated_data):
+        validated_data.pop("user", None)
+        return super().update(instance, validated_data)
 
-class ImageLikeDislikeSerializer(serializers.ModelSerializer):
+
+class ImageLikeDislikeModelSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     image = ImageModelSerializer()
 
     class Meta:
-        model = ImageLikeDislike
+        model = ImageLikeDislikeModel
         fields = "__all__"
 
 
-class ImageCommentSerializer(serializers.ModelSerializer):
+class ImageCommentModelSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    image = ImageModelSerializer()
+    image = ImageModelSerializer(read_only=True)
 
     class Meta:
-        model = ImageComment
+        model = ImageCommentModel
         fields = "__all__"
+
+
+    def validate(self, attrs):
+        if len(attrs.get("comment")) > 400:
+            raise serializers.ValidationError(
+                "Comment length must be less than 501 characters."
+            )
+        return attrs

@@ -29,7 +29,7 @@ class ImageModel(models.Model):
         return self.user.username
 
 
-class ImageComment(models.Model):
+class ImageCommentModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ForeignKey(ImageModel, on_delete=models.CASCADE)
     comment = models.CharField(max_length=500, null=True)
@@ -39,8 +39,8 @@ class ImageComment(models.Model):
         return self.image.user.username
 
 
-class ImageLikeDislike(models.Model):
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
+class ImageLikeDislikeModel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ForeignKey(ImageModel, on_delete=models.CASCADE)
     like = models.BooleanField(default=False)
     dislike = models.BooleanField(default=False)
