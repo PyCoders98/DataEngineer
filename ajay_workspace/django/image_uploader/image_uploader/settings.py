@@ -32,6 +32,7 @@ INSTALLED_APPS = [
 
 EXTERNAL_APPS = [
     "imageapp",
+    "rest_framework",
 ]
 INSTALLED_APPS += EXTERNAL_APPS
 
@@ -47,9 +48,6 @@ MIDDLEWARE = [
 STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-# STATICFILES_DIRS = [
-#      BASE_DIR / "static"
-#  ]
 
 STATICFILES_DIR = {os.path.join(BASE_DIR, "/static/")}
 

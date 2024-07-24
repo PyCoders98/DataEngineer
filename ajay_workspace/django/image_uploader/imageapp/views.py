@@ -2,7 +2,6 @@ from collections.abc import Sequence
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from django.contrib import messages
 from django.http import HttpResponse
@@ -13,9 +12,6 @@ from django.views import View
 from .forms import *
 from django.templatetags.static import static
 from django.views.generic import ListView
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
-from django.http import *
 
 
 # Create your views here.
@@ -23,70 +19,17 @@ class Home(ListView):
     model = ImageModel
     context_object_name = "data"
     template_name = "user/index.html"
+    paginate_by = 20
 
     def get_queryset(self):
-        data = self.model.objects.all().order_by("-id")
-        return data
-
-
-def post(self, request, *args, **kwargs):
-    image_id = request.POST.get("id")
-    action = request.POST.get("like")
-
-    if not image_id or not action:
-        return HttpResponseBadRequest("Invalid request")
-
-    image = get_object_or_404(ImageModel, id=image_id)
-    response_data = {}
-
-    if action == "like" or action == "dislike":
-        like_data, created = ImageLike.objects.get_or_create(
-            image=image, username=request.user.username
-        )
-
-        if action == "like":
-            if like_data.like:
-                like_data.like = False
-                if image.like > 0:
-                    image.like -= 1
-            else:
-                like_data.like = True
-                image.like += 1
-                if like_data.dislike:
-                    like_data.dislike = False
-                    if image.dislike > 0:
-                        image.dislike -= 1
-            response_data["like"] = image.like
-
-        elif action == "dislike":
-            if like_data.dislike:
-                like_data.dislike = False
-                if image.dislike > 0:
-                    image.dislike -= 1
-            else:
-                like_data.dislike = True
-                image.dislike += 1
-                if like_data.like:
-                    like_data.like = False
-                    if image.like > 0:
-                        image.like -= 1
-            response_data["dislikes"] = image.dislike
-
-        like_data.save()
-        image.save()
-        return JsonResponse(response_data)
-    else:
-        return HttpResponseBadRequest("Invalid action")
+        return self.model.objects.all().order_by("-id")
 
 
 # ----------------Image portfolio (like, dislike, comment functionality)----------------
-
-
 @login_required(login_url="/login/")
 def image_portfolio(request, id):
-    data = get_object_or_404(ImageModel, id=id)
+    data = ImageModel.objects.get(id=id)
     if request.method == "POST":
-        response_data = {}
         if request.POST.get("like") == "like" or request.POST.get("like") == "dislike":
             like_data, created = ImageLike.objects.get_or_create(
                 image=data, username=request.user.username
@@ -103,7 +46,6 @@ def image_portfolio(request, id):
                         like_data.dislike = False
                         if data.dislike > 0:
                             data.dislike -= 1
-                response_data["like"] = data.like
             elif request.POST.get("like") == "dislike":
                 if like_data.dislike:
                     like_data.dislike = False
@@ -116,15 +58,12 @@ def image_portfolio(request, id):
                         like_data.like = False
                         if data.like > 0:
                             data.like -= 1
-                response_data["dislike"] = data.dislike
             like_data.save()
-            data.save()
         else:
             return redirect(f"/comment-page/{id}")
-
-        return JsonResponse(response_data)
-
-    return redirect(f"/image/{id}")
+        data.save()
+        referring_url = request.META["HTTP_REFERER"]
+        return redirect(referring_url)
 
 
 # ----------------Open image to download----------------

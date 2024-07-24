@@ -31,7 +31,7 @@ class ImageModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="media")
     desc = models.CharField(max_length=200)
-    like = models.IntegerField(default=0, verbose_name="liked_numbers")
+    like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
     comment = models.IntegerField(default=0, null=True)
     created_at = models.DateTimeField(
