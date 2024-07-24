@@ -8,9 +8,6 @@ class UserDetails(admin.ModelAdmin):
     list_display = ("username", "email", "password", "profile_image")
 
 
-# admin.site.unregister(User)
-# admin.site.register(User, UserDetails)
-
 
 class ImageModelDetails(admin.ModelAdmin):
     list_display = ("user", "like", "dislike", "created_at")
