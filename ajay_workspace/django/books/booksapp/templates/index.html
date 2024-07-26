@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Details List</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+              rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    </head>
+    <body class="bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+        <!-- Form Section -->
+        <div class="relative py-3 sm:max-w-xl sm:mx-auto w-full px-4">
+            <div class="relative p-8 bg-white shadow-sm sm:rounded-xl">
+                <form class="space-y-6" id="postform">
+                    <div class="mb-4 p-4">{{ form.as_p }}</div>
+                    <input type="submit" value="Save Employee"
+                           class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg">
+                </form>
+            </div>
+        </div>
+        <!-- Table Section -->
+        <div class="relative py-3 sm:max-w-xl sm:mx-auto w-full px-4 mt-6">
+            <div class="relative p-8 bg-white shadow-sm sm:rounded-xl overflow-x-auto">
+                <table class="min-w-full bg-white" id="detailsTableBody">
+                    <thead class="bg-gray-800 text-white">
+                        <tr>
+                            <th class="py-3 px-4 uppercase font-semibold text-sm">Name</th>
+                            <th class="py-3 px-4 uppercase font-semibold text-sm">Age</th>
+                            <th class="py-3 px-4 uppercase font-semibold text-sm">Phone</th>
+                            <th class="py-3 px-4 uppercase font-semibold text-sm">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        {% for detail in data %}
+                            <tr>
+                                <td class="py-3 px-4">{{ detail.name }}</td>
+                                <td class="py-3 px-4">{{ detail.age }}</td>
+                                <td class="py-3 px-4">{{ detail.phone }}</td>
+                                <td class="py-3 px-4">
+                                    <a href="" class="text-blue-500 hover:text-blue-700">Update</a>
+                                    <form action="" method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                                data-id="{{ detail.id }}"
+                                                class="text-red-500 hover:text-red-700 ml-4">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function(){
+                $("#postform").submit(function(e){
+                    e.preventDefault();
+                    console.log($(this).serialize());
+
+                    $.ajax({
+                        method: "POST",
+                        url: "{% url 'home_page' %}",
+                        data: $(this).serialize(),
+                        headers: {
+                            'X-CSRFToken': "{{ csrf_token }}"
+                        }
+                    }).done(function(response){
+                        console.log("Data:", response);
+
+                        // Append the new row to the table
+                        var newRow = '<tr>' +
+                            '<td class="py-3 px-4">' + response.name + '</td>' +
+                            '<td class="py-3 px-4">' + response.age + '</td>' +
+                            '<td class="py-3 px-4">' + response.phone + '</td>' +
+                            '<td class="py-3 px-4">' +
+                                '<a href="" class="text-blue-500 hover:text-blue-700">Update</a>' +
+                                '<form action="" method="post" style="display:inline;">' +
+                                    '<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">' +
+                                    '<button type="submit" class="text-red-500 hover:text-red-700 ml-4">Delete</button>' +
+                                '</form>' +
+                            '</td>' +
+                        '</tr>';
+                        $('#detailsTableBody tbody').append(newRow);
+                    }).fail(function(response){
+                        console.log(response);
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

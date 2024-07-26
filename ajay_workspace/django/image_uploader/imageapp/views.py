@@ -12,7 +12,7 @@ from django.views import View
 from .forms import *
 from django.templatetags.static import static
 from django.views.generic import ListView
-
+import json
 
 # Create your views here.
 class Home(ListView):
@@ -30,6 +30,7 @@ class Home(ListView):
 def image_portfolio(request, id):
     data = ImageModel.objects.get(id=id)
     if request.method == "POST":
+        response_data={}
         if request.POST.get("like") == "like" or request.POST.get("like") == "dislike":
             like_data, created = ImageLike.objects.get_or_create(
                 image=data, username=request.user.username
@@ -46,6 +47,7 @@ def image_portfolio(request, id):
                         like_data.dislike = False
                         if data.dislike > 0:
                             data.dislike -= 1
+
             elif request.POST.get("like") == "dislike":
                 if like_data.dislike:
                     like_data.dislike = False
@@ -59,11 +61,13 @@ def image_portfolio(request, id):
                         if data.like > 0:
                             data.like -= 1
             like_data.save()
+            data.save()
+            response_data["like"] = data.like
+            response_data["dislike"] = data.dislike
+            response_data["status"] = "success"
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
         else:
             return redirect(f"/comment-page/{id}")
-        data.save()
-        referring_url = request.META["HTTP_REFERER"]
-        return redirect(referring_url)
 
 
 # ----------------Open image to download----------------

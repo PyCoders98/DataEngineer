@@ -142,11 +142,8 @@
                                 {% csrf_token %}
                                 <button type="submit" value="like" name="like">
                                     {% is_liked item.id as liked %}
-                                    {% if liked %}
-                                        <i class="fa fa-heart text-red-600" style="font-size:24px;"></i>
-                                    {% else %}
-                                        <i class="fa fa-heart text-gray-400" style="font-size:24px;"></i>
-                                    {% endif %}
+                                    <i class="fa fa-heart {% if liked %}text-red-600 {% else %}text-gray-400 {% endif %}"
+                                       style="font-size:24px"></i>
                                     {% if item.like %}{{ item.like }}{% endif %}
                                 </button>
                             </form>
@@ -154,18 +151,22 @@
                                 {% csrf_token %}
                                 <button type="submit" value="dislike" name="like">
                                     {% is_disliked item.id as disliked %}
-                                    {% if disliked %}
-                                        <i class="fa fa-thumbs-down text-red-600" style="font-size:24px;"></i>
-                                    {% else %}
-                                        <i class="fa fa-thumbs-down text-gray-400" style="font-size:24px;"></i>
-                                    {% endif %}
+                                    <i style="background-image: {% if disliked %} url('{% static 'icons/disliketrue.png' %}') {% else %} url('{% static 'icons/dislikefalse.png' %}') {% endif %};
+                                              background-size: cover;
+                                              width: 24px;
+                                              height: 24px;
+                                              display: inline-block"></i>
                                     {% if item.dislike %}{{ item.dislike }}{% endif %}
                                 </button>
                             </form>
                             <form method="POST" action="{% url 'image_portfolio' item.id %}">
                                 {% csrf_token %}
                                 <button type="submit" value="comment"  name="like">
-                                    <i style='font-size:24px' class='far'>&#xf4ad;</i>
+                                    <i style="background-image: url('{% static 'icons/three-dots-in-a-speech-bubble-svgrepo-com.svg' %}');
+                                              background-size: cover;
+                                              width: 24px;
+                                              height: 24px;
+                                              display: inline-block"></i>
                                     {% if item.comment %}{{ item.comment }}{% endif %}
                                 </button>
                             </form>

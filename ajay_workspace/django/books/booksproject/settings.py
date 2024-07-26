@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "booksapp",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -48,8 +49,17 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
-
+LANGUAGES = [
+    ("en", "English"),
+    ("es", "Spanish"),
+    # Add more languages here
+]
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
+# LOCALE_PATHS = (BASE_DIR + 'locale/', )
 ROOT_URLCONF = "booksproject.urls"
 
 TEMPLATES = [

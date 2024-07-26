@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Models List</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+                integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+                crossorigin="anonymous"
+                referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <div>
+            <h1>Office Form</h1>
+            <form action="javascript:void(0)" id="officeform">
+                {{ officeform.as_p }}
+                <input type="submit" value="save office">
+            </form>
+            <form action="javascript:void(0)" id="employeeform">
+                <hr>
+                <h1>Employee Form</h1>
+                {{ employeeform.as_p }}
+                <input type="submit" value="save employee">
+            </form>
+        </div>
+        <script>
+            $(document).ready(function(){
+                $("#officeform").submit(function(e){
+                    e.preventDefault(); // Prevent form submission
+
+                    console.log($(this).serialize());
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    });
+                    $.ajax({
+                        method: "POST",
+                        url: "office/",
+                        data: $(this).serialize(), // Serialize form data
+                    }).done(function(response){
+                        console.log(response);
+                    }).fail(function(response){
+                        console.log(response);
+                    });
+                });
+
+                $("#employeeform").submit(function(e){
+                    e.preventDefault(); // Prevent form submission
+                    alert('Employee form submitted');
+                });
+            });
+        </script>
+    </body>
+</html>

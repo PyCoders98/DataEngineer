@@ -1,0 +1,35 @@
+<!-- details_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Details Form</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+              rel="stylesheet">
+    </head>
+    <body class="bg-gray-100 py-6 flex flex-col justify-center relative overflow-hidden sm:py-12">
+        <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+            <div class="relative p-8 bg-white shadow-sm sm:rounded-xl">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="id_name" class="block text-sm font-medium text-gray-700">Name</label>
+                        {{ form.name|as_crispy_field }}
+                    </div>
+                    <div class="mb-4">
+                        <label for="id_age" class="block text-sm font-medium text-gray-700">Age</label>
+                        {{ form.age|as_crispy_field }}
+                    </div>
+                    <div class="mb-4">
+                        <label for="id_phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                        {{ form.phone|as_crispy_field }}
+                    </div>
+                    <button type="submit"
+                            class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
