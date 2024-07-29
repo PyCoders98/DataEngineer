@@ -13,6 +13,9 @@ from .forms import *
 from django.templatetags.static import static
 from django.views.generic import ListView
 import json
+from django.http import JsonResponse
+from django.forms import model_to_dict
+from django.core import serializers
 
 
 # Create your views here.
@@ -29,7 +32,6 @@ class Home(ListView):
 # ----------------Image portfolio (like, dislike, comment functionality)----------------
 # @login_required(login_url="/login/")
 def image_portfolio(request, id):
-
 
     data = ImageModel.objects.get(id=id)
     if request.method == "POST":
@@ -73,6 +75,15 @@ def image_portfolio(request, id):
             )
         else:
             return redirect(f"/comment-page/{id}")
+
+
+def get_like_dislike_count(request, id):
+    image = ImageModel.objects.get(id=id)
+    response = {}
+    response["like"] = image.like
+    response["dislike"]=image.dislike
+    print(image.like)   
+    return JsonResponse(response, safe=False)
 
 
 # ----------------Open image to download----------------
