@@ -3,6 +3,7 @@
 {% load custom_tags %}
 {% block style %}
     <style>
+
         .glassmorphism-bg {
             background: rgba(255, 255, 255, 0.5); /* Adjust opacity as needed */
             backdrop-filter: blur(30px); /* Adjust blur radius as needed */
@@ -81,6 +82,7 @@
                 font-size: 0.75rem;
             }
         }
+
     </style>
 {% endblock %}
 {% block content %}
@@ -112,32 +114,45 @@
                         <div class="glassmorphism-card-actions">
                             <div class="flex space-x-4">
                                 <div class="relative">
+                                    {% comment %} --------Like Button-------- {% endcomment %}
                                     {% is_liked item.id as liked %}
-                                    <form class="likeform" >
-                                        <button type="submit"
-                                                name="like"
-                                                data-id="item.id"
-                                                class="focus:outline-none">
+                                    <form class="like-dislike-form" data-id="{{ item.id }}" data-action="like">
+                                        {% csrf_token %}
+                                        <button type="submit" name="like" value="like" class="focus:outline-none">
                                             <i style="background-image: {% if liked %} url('{% static 'icons/liketrue.png' %}') {% else %} url('{% static 'icons/likefalse.png' %}') {% endif %};
                                                       background-size: cover;
                                                       width: 24px;
                                                       height: 24px;
                                                       display: inline-block"></i>
-                                            {% if item.like %}{{ item.like }}{% endif %}
+                                            <span class="like-count">
+                                                {% if item.like %}
+                                                    {{ item.like }}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                            </span>
                                         </button>
                                     </form>
                                 </div>
                                 <div class="relative">
                                     {% is_disliked item.id as disliked %}
-                                    <form method="POST" action="{% url 'image_portfolio' item.id %}">
+                                    <form class="like-dislike-form"
+                                          data-id="{{ item.id }}"
+                                          data-action="dislike">
                                         {% csrf_token %}
-                                        <button type="submit" value="dislike" name="like" class="focus:outline-none">
+                                        <button type="submit" name="like" value="dislike" class="focus:outline-none">
                                             <i style="background-image: {% if disliked %} url('{% static 'icons/disliketrue.png' %}') {% else %} url('{% static 'icons/dislikefalse.png' %}') {% endif %};
                                                       background-size: cover;
                                                       width: 24px;
                                                       height: 24px;
                                                       display: inline-block"></i>
-                                            {% if item.dislike %}{{ item.dislike }}{% endif %}
+                                            <span class="dislike-count">
+                                                {% if item.dislike %}
+                                                    {{ item.dislike }}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                            </span>
                                         </button>
                                     </form>
                                 </div>
@@ -160,46 +175,111 @@
             {% endfor %}
         </div>
     </div>
+<div class="max-w-6xl mx-auto p-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {% for item in data %}
+        <div class="glassmorphism-card bg-white shadow-md overflow-hidden">
+            <div class="flex items-center p-2">
+                {% if item.user.profile_image %}
+                <img class="w-12 h-12 object-cover mr-2 rounded-full" src="/media/{{ item.user.profile_image }}" alt="{{ item.user.username }}">
+                {% else %}
+                <img class="w-12 h-12 object-cover mr-2 rounded-full" src="{% static 'static_profile_image/default_profile_image.jpg' %}" alt="Default Profile Image">
+                {% endif %}
+                <div>
+                    <h2 class="text-base font-semibold">{{ item.user.username }}</h2>
+                    <sub class="text-gray-500 text-sm">{{ item.created_at.date }}</sub>
+                </div>
+            </div>
+            <a href="{% url 'get_image' item.id %}">
+                <img src="/media/{{ item.image }}" alt="{{ item.desc }}" class="w-full h-48 object-cover px-2">
+            </a>
+            <div class="glassmorphism-card-content">
+                <div class="glassmorphism-card-actions">
+                    <div class="flex space-x-4">
+                        <div class="relative">
+                            {% comment %} --------Like Button-------- {% endcomment %}
+                            {% is_liked item.id as liked %}
+                            <form class="like-dislike-form" data-id="{{ item.id }}" data-action="like">
+                                {% csrf_token %}
+                                <button type="submit" name="like" value="like" class="focus:outline-none">
+                                    <i style="background-image: {% if liked %} url('{% static 'icons/liketrue.png' %}') {% else %} url('{% static 'icons/likefalse.png' %}') {% endif %};
+                                          background-size: cover;
+                                          width: 24px;
+                                          height: 24px;
+                                          display: inline-block"></i>
+                                    <span class="like-count">{% if item.like %}{{ item.like }}{% else %}0{% endif %}</span>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="relative">
+                            {% is_disliked item.id as disliked %}
+                            <form class="like-dislike-form" data-id="{{ item.id }}" data-action="dislike">
+                                {% csrf_token %}
+                                <button type="submit" name="like" value="dislike" class="focus:outline-none">
+                                    <i style="background-image: {% if disliked %} url('{% static 'icons/disliketrue.png' %}') {% else %} url('{% static 'icons/dislikefalse.png' %}') {% endif %};
+                                          background-size: cover;
+                                          width: 24px;
+                                          height: 24px;
+                                          display: inline-block"></i>
+                                    <span class="dislike-count">{% if item.dislike %}{{ item.dislike }}{% else %}0{% endif %}</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <form method="POST" action="{% url 'image_portfolio' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" value="comment" name="like" class="focus:outline-none">
+                            <i style="background-image: url('{% static 'icons/three-dots-in-a-speech-bubble-svgrepo-com.svg' %}');
+                                  background-size: cover;
+                                  width: 24px;
+                                  height: 24px;
+                                  display: inline-block"></i>
+                            {% if item.comment %}{{ item.comment }}{% endif %}
+                        </button>
+                    </form>
+                </div>
+                <p class="mt-2 text-lg">{{ item.desc }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
-{% block scripts %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-    // JavaScript for handling likes and dislikes
-    function like(itemId) {
-        // Replace with your actual logic to handle like functionality
-        alert('Liked item ' + itemId);
-    }
 
-    function dislike(itemId) {
-        // Replace with your actual logic to handle dislike functionality
-        alert('Disliked item ' + itemId);
-    }
-    $(document).ready(function(){
-        $(".likeform").submit(function(e)
-        {
-    
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".like-dislike-form").submit(function(e) {
             e.preventDefault();
-            var id = $(this).data("id");
-            console.log(id)
+            
+            var $form = $(this);
+            var id = $form.data("id");
+            var action = $form.data("action");
+            
             $.ajax({
-                type:"POST",
-                url: "{% url 'image_portfolio' 1 %}".replace('1', id ),
-                processData: false,
-                contentType: false,
-                data:{
-                    like: $(this).find('button[name=like]').val(),
-                    },
-                headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
+                type: "POST",
+                url: `{% url 'image_portfolio' 0 %}`.replace('0', id),
+                data: {
+                    like: action,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.status === "success") {
+                        var $form = $(".like-dislike-form[data-id='" + id + "'][data-action='" + action + "']");
+                        $form.find('button[name="like"]').val(action);
+                        $form.find('i').css("background-image", `url('{% static 'icons/liketrue.png' %}')`);
+                        
+                        // Update the like and dislike counts
+                        $form.closest('.glassmorphism-card-content').find('.like-count').text(response.like);
+                        $form.closest('.glassmorphism-card-content').find('.dislike-count').text(response.dislike);
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while processing your request.");
                 }
-            }).done(function(response){
-                alert("Like added");
-            })
-            .fail(function(response){
-                alert("Error");
-            })
-        })
-    })
-    </script>
+            });
+        });
+    });
+</script>
 {% endblock %}

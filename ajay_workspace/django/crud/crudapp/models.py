@@ -29,6 +29,9 @@ class Office(models.Model):
     name = models.CharField(max_length=124, default="")
     location = models.CharField(max_length=124, default="")
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Employee(models.Model):
     genders = [

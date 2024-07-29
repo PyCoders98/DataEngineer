@@ -14,6 +14,7 @@ from django.templatetags.static import static
 from django.views.generic import ListView
 import json
 
+
 # Create your views here.
 class Home(ListView):
     model = ImageModel
@@ -26,11 +27,13 @@ class Home(ListView):
 
 
 # ----------------Image portfolio (like, dislike, comment functionality)----------------
-@login_required(login_url="/login/")
+# @login_required(login_url="/login/")
 def image_portfolio(request, id):
+
+
     data = ImageModel.objects.get(id=id)
     if request.method == "POST":
-        response_data={}
+        response_data = {}
         if request.POST.get("like") == "like" or request.POST.get("like") == "dislike":
             like_data, created = ImageLike.objects.get_or_create(
                 image=data, username=request.user.username
@@ -65,7 +68,9 @@ def image_portfolio(request, id):
             response_data["like"] = data.like
             response_data["dislike"] = data.dislike
             response_data["status"] = "success"
-            return HttpResponse(json.dumps(response_data), content_type="application/json")
+            return HttpResponse(
+                json.dumps(response_data), content_type="application/json"
+            )
         else:
             return redirect(f"/comment-page/{id}")
 

@@ -41,7 +41,10 @@ INSTALLED_APPS = [
 
 EXTERNAL_APPS = [
     "crudapp",
+      'crispy_forms',
+      'crispy_bootstrap4'
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 INSTALLED_APPS += EXTERNAL_APPS
 

@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.db import models
 
 
@@ -24,3 +25,6 @@ class Details(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("article_detail", kwargs={"pk": self.pk})

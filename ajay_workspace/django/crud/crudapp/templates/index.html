@@ -1,55 +1,210 @@
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>My Models List</title>
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+        <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        h1, h2 {
+            color: #007bff;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .table-container {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        @media (max-width: 768px) {
+            .row > .col-md-6 {
+                margin-bottom: 30px;
+            }
+        }
+        </style>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
                 integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
                 crossorigin="anonymous"
                 referrerpolicy="no-referrer"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
     </head>
     <body>
-        <div>
-            <h1>Office Form</h1>
-            <form action="javascript:void(0)" id="officeform">
-                {{ officeform.as_p }}
-                <input type="submit" value="save office">
-            </form>
-            <form action="javascript:void(0)" id="employeeform">
-                <hr>
-                <h1>Employee Form</h1>
-                {{ employeeform.as_p }}
-                <input type="submit" value="save employee">
-            </form>
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-md-6 form-container">
+                    <h1 class="mb-4">Office Form</h1>
+                    <form id="officeform" class="mb-5">
+                        {% csrf_token %}
+                        {{ officeform|crispy }}
+                        <button type="submit" class="btn btn-primary mt-3">Save Office</button>
+                    </form>
+                </div>
+                <div class="col-md-6 form-container">
+                    <h2 class="mb-4">Office List</h2>
+                    <div class="table-container">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Sno</th>
+                                    <th>Name</th>
+                                    <th>Location</th>
+                                </tr>
+                            </thead>
+                            <tbody id="officetableid">
+                                <!-- Office rows will be appended here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-container">
+                    <h1 class="mb-4">Employee Form</h1>
+                    <form id="employeeform" class="mb-5">
+                        {% csrf_token %}
+                        {{ employeeform|crispy }}
+                        <button type="submit" class="btn btn-primary mt-3">Save Employee</button>
+                    </form>
+                </div>
+                <div class="col-md-6 form-container">
+                    <h2 class="mb-4">Employee List</h2>
+                    <div class="table-container">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Sno</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Gender</th>
+                                    <th>Office</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeestableid">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
         <script>
-            $(document).ready(function(){
-                $("#officeform").submit(function(e){
-                    e.preventDefault(); // Prevent form submission
-
-                    console.log($(this).serialize());
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        }
-                    });
-                    $.ajax({
-                        method: "POST",
-                        url: "office/",
-                        data: $(this).serialize(), // Serialize form data
-                    }).done(function(response){
-                        console.log(response);
-                    }).fail(function(response){
-                        console.log(response);
-                    });
-                });
-
-                $("#employeeform").submit(function(e){
-                    e.preventDefault(); // Prevent form submission
-                    alert('Employee form submitted');
+            var officeList = []
+            var employeesList = []
+    $(document).ready(function () {
+        getAllOffice()
+        getAllEmployees()
+        function handleFormSubmit(formId, url) {
+            $(formId).submit(function (e) {
+                e.preventDefault(); // Prevent form submission
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    data: $(this).serialize(), // Serialize form data
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+                        e.target.reset();
+                        alert(formId + " saved successfully!");
+                        getAllOffice()
+                        getAllEmployees()
+                    },
+                    error: function (response) {
+                        alert("Error saving " + formId);
+                    }
                 });
             });
+        }
+        function getAllOffice(e){
+            $.ajax({
+                method:"GET",
+                url:"offices/"
+            }).done(function(response){
+                console.log(response);
+                const tempOffices = JSON.parse(response)
+                officeList= tempOffices
+                renderOfficeTable()
+            })
+            .fail(function(response){
+                console.log("failed.........")
+            })
+        } 
+
+        function getAllEmployees(e){
+            $.ajax({
+                method:"GET",
+                url:"employees/"
+            }).done(function(response){
+                console.log("employees= ",response)
+                const tempEmployees = JSON.parse(response)
+                employeesList = tempEmployees
+                renderEmployeesTable()
+            })
+            .fail(function(response){
+                console.log("failed.........")
+            })
+        } 
+
+        function renderOfficeTable(event){
+            const tableBody = document.getElementById("officetableid")
+            officeList.forEach(function(office, index){
+                office = office.fields
+                const row = tableBody.insertRow()
+                const count = row.insertCell(0)
+                count.innerHTML = index+1
+                const name = row.insertCell(1)
+                const location = row.insertCell(2)
+                name.innerHTML = office.name
+                location.innerHTML = office.location
+              
+            })
+        }
+
+        function renderEmployeesTable(event){
+            const tableBody = document.getElementById("employeestableid")
+            employeesList.forEach(function(employees, index){
+                employees = employees.fields
+                const row = tableBody.insertRow()
+                const count = row.insertCell(0)
+                const first = row.insertCell(1)
+                const last = row.insertCell(2)
+                const Email = row.insertCell(3)
+                const Gender = row.insertCell(4)
+                const office = row.insertCell(5)
+                count.innerHTML = index+1
+                first.innerHTML = employees.first_name
+                last.innerHTML = employees.last_name
+                Email.innerHTML = employees.email
+                Gender.innerHTML = employees.gender
+                office.innerHTML = employees.office          
+            })
+        }
+        
+        handleFormSubmit("#officeform", "office/");
+        handleFormSubmit("#employeeform", "employee/");
+    });
         </script>
     </body>
 </html>
