@@ -35,8 +35,9 @@ def image_portfolio(request, id):
 
     data = ImageModel.objects.get(id=id)
     if request.method == "POST":
+        print("request.post : ", request.POST.get("like"))
         response_data = {}
-        if request.POST.get("like") == "like" or request.POST.get("like") == "dislike":
+        if request.POST.get("like") == "like":
             like_data, created = ImageLike.objects.get_or_create(
                 image=data, username=request.user.username
             )
@@ -48,23 +49,7 @@ def image_portfolio(request, id):
                 else:
                     like_data.like = True
                     data.like += 1
-                    if like_data.dislike:
-                        like_data.dislike = False
-                        if data.dislike > 0:
-                            data.dislike -= 1
 
-            elif request.POST.get("like") == "dislike":
-                if like_data.dislike:
-                    like_data.dislike = False
-                    if data.dislike > 0:
-                        data.dislike -= 1
-                else:
-                    like_data.dislike = True
-                    data.dislike += 1
-                    if like_data.like:
-                        like_data.like = False
-                        if data.like > 0:
-                            data.like -= 1
             like_data.save()
             data.save()
             response_data["like"] = data.like
@@ -81,8 +66,8 @@ def get_like_dislike_count(request, id):
     image = ImageModel.objects.get(id=id)
     response = {}
     response["like"] = image.like
-    response["dislike"]=image.dislike
-    print(image.like)   
+    response["dislike"] = image.dislike
+    print(image.like)
     return JsonResponse(response, safe=False)
 
 
