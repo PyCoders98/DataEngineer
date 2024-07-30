@@ -82,7 +82,7 @@ def get_image(request, id):
 def comment_page(request, id):
     data = ImageModel.objects.get(id=id)
     comment_data = ImageComment.objects.filter(image=id)
-    context = {"data": data, "comment": comment_data}
+    context = {"data": data, "comments": comment_data}
     if request.method == "POST":
         if request.user.is_authenticated:
             comment = request.POST.get("comment")

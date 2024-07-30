@@ -3,104 +3,225 @@
 {% load custom_tags %}
 {% block style %}
     <style>
-    /* Modal Enter Animation */
-    .modal-enter {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-  
-    .modal-enter-active {
-      opacity: 1;
-      transform: scale(1);
-      transition: opacity 300ms, transform 300ms;
-    }
-  
-    /* Modal Exit Animation */
-    .modal-exit {
-      opacity: 1;
-      transform: scale(1);
-    }
-  
-    .modal-exit-active {
-      opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 300ms, transform 300ms;
-    }
+        /* Additional styles for modal animations */
+        .modal-enter-active {
+            @apply opacity-100 scale-100;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
 
-    /* Glassmorphism Effect */
-    .glass {
-        backdrop-filter: blur(10px);
-        background-color: rgba(255, 255, 255, 0.3);
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.5);
-    }
+        .modal-exit-active {
+            @apply opacity-0 scale-95;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        /* Glassmorphism effect */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Light border for contrast */
+            backdrop-filter: blur(10px); /* Blur effect for glassmorphism */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Card styles */
+        .card {
+            border: none; /* Remove any border */
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.2s ease; /* Smooth transition for scaling */
+        }
+
+        .card:hover {
+            transform: scale(1.02); /* Scale the entire card on hover */
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        /* Profile header */
+        .profile-header {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .profile-image {
+            grid-row: span 2; /* Span two rows for the profile image */
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .profile-username {
+            font-weight: 700;
+            color: #1f2937; /* Tailwind gray-900 */
+        }
+
+        .profile-date {
+            color: #4b5563; /* Tailwind gray-600 */
+            font-size: 0.875rem; /* Tailwind text-sm */
+        }
+
+        .card-image {
+            margin-top: -20px; /* Moves the image up */
+            transition: none; /* Disable transition effects on the image */
+        }
+
+        .action-buttons {
+            background: transparent; /* Semi-transparent background */
+       
+            padding: 0.25rem; /* Reduced padding */
+        }
+
+        .like-dislike-form, .comment-form {
+            background: transparent; /* Remove default background */
+            border: none; /* Remove border */
+        }
+
+        .like-dislike-form button, .comment-form button {
+            display: flex;
+            align-items: center;
+            background: transparent; /* Glassmorphism effect */
+            border-radius: 10px;
+            padding: 0.25rem; /* Reduced padding */
+            font-size: 0.75rem; /* Reduced font size */
+        }
+
+        .like-dislike-form button i, .comment-form button i {
+            width: 20px; /* Adjust icon size */
+            height: 20px; /* Adjust icon size */
+        }
+
+        .like-count, .comment-form span {
+            margin-left: 0.5rem; /* Reduced margin */
+        }
+
+        /* Responsive styles */
+        @media (max-width: 640px) {
+            .profile-header {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
+            }
+
+            .profile-image {
+                grid-row: auto; /* Adjust profile image row span on smaller screens */
+            }
+
+            .card-image {
+                height: auto; /* Adjust image height for smaller screens */
+            }
+        }
+
+        /* Description styles */
+        .description-container {
+            overflow: hidden; /* Hide overflow */
+            position: relative; /* Ensure absolute positioning of child */
+            
+        }
+
+        .description {
+            color: #1f2937; /* Tailwind gray-900 */
+            font-size: 0.75rem; /* Reduced font size */
+            background: rgba(255, 255, 255, 0.7); /* Semi-transparent background for contrast */
+            backdrop-filter: blur(10px); /* Blur effect */
+            height: 3rem; /* Fixed height */
+            overflow: hidden; /* Hide overflow text */
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Limit to 2 lines */
+            -webkit-box-orient: vertical; /* Vertical box orientation */
+            text-overflow: ellipsis; /* Clip text with ellipsis */
+            white-space: normal; /* Allow text to wrap */
+            background: transparent;
+        }
+
+        .description:hover {
+            cursor: pointer; /* Change cursor to indicate clickability */
+        }
+
+        /* Modal styles */
+        #modalContent {
+            max-height: 90vh; /* Limit height to viewport height */
+            overflow-y: auto; /* Enable vertical scrolling if needed */
+        }
+
+        #modalDescription {
+            padding: 1rem;
+            font-size: 1rem; /* Larger font size for better readability */
+            color: #1f2937; /* Tailwind gray-900 */
+        }
     </style>
 {% endblock style %}
 {% block content %}
     <div class="max-w-6xl mx-auto p-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {% for item in data %}
-                <div class="p-4">
-                    <div class="bg-white glass rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out flex flex-col h-full">
-                        <a href="{% url 'get_image' item.id %}">
-                            <img src="/media/{{ item.image }}"
-                                 alt="{{ item.desc }}"
-                                 class="w-full h-48 object-cover rounded-t-xl">
-                        </a>
-                        <div class="flex flex-col p-4 flex-grow">
-                            <div class="flex items-center mb-4">
-                                {% if item.user.profile_image %}
-                                    <img class="w-12 h-12 object-cover rounded-full border-2 border-indigo-500"
-                                         src="/media/{{ item.user.profile_image }}"
-                                         alt="{{ item.user.username }}">
-                                {% else %}
-                                    <img class="w-12 h-12 object-cover rounded-full border-2 border-indigo-500"
-                                         src="{% static 'static_profile_image/default_profile_image.jpg' %}"
-                                         alt="Default Profile Image">
-                                {% endif %}
-                                <div class="ml-3">
-                                    <p class="font-semibold text-gray-800">{{ item.user.username }}</p>
-                                    <p class="text-sm text-gray-600">{{ item.created_at.date }}</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-800 text-base mb-4 truncate hover:underline cursor-pointer"
-                               onclick="openModal('{{ item.id }}', '{{ item.desc }}', '/media/{{ item.image }}')">
-                                {{ item.desc }}
-                            </p>
-                            <div class="flex items-center justify-between space-x-4">
-                                <form class="like-dislike-form flex items-center space-x-2"
-                                      data-id="{{ item.id }}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="action" value="like">
-                                    <input type="hidden" name="like" value="{{ item.like }}">
-                                    {% is_liked item.id as liked %}
-                                    <button type="submit"
-                                            name="like"
-                                            class="flex items-center space-x-2 text-gray-600 hover:text-red-600 transition-colors duration-300">
-                                        <i style="background-image:{% if liked %} url('{% static 'icons/liketrue.png' %}') {% else %} url('{% static 'icons/likefalse.png' %}') {% endif %};
-                                                  background-size: cover;
-                                                  width: 24px;
-                                                  height: 24px;
-                                                  display: inline-block"></i>
-                                        <span class="like-count text-sm">{{ item.like|default:"0" }}</span>
-                                    </button>
-                                </form>
-                                <form method="POST" action="{% url 'image_portfolio' item.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit"
-                                            value="comment"
-                                            name="comment"
-                                            class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors duration-300">
-                                        <i style="background-image: url('{% static 'icons/three-dots-in-a-speech-bubble-svgrepo-com.svg' %}');
-                                                  background-size: cover;
-                                                  width: 24px;
-                                                  height: 24px;
-                                                  display: inline-block"></i>
-                                        {% if item.comment %}{{ item.comment }}{% endif %}
-                                    </button>
-                                </form>
-                            </div>
+                <div class="glassmorphism rounded-lg shadow-lg overflow-hidden flex flex-col card"
+                     style="height: 375px">
+                    <div class="profile-header">
+                        <img src="{% if item.user.profile_image %}/media/{{ item.user.profile_image }}{% else %}{% static 'static_profile_image/default_profile_image.jpg' %}{% endif %}"
+                             alt="{{ item.user.username }}"
+                             class="w-12 h-12 rounded-full border-2 border-blue-500 profile-image">
+                        <div class="profile-info">
+                            <p class="profile-username">{{ item.user.username }}</p>
+                            <p class="profile-date">{{ item.created_at.date }}</p>
                         </div>
+                    </div>
+                    <a href="{% url 'get_image' item.id %}" class="block">
+                        <img src="/media/{{ item.image }}"
+                             alt="{{ item.desc }}"
+                             class="w-full h-36 object-contain card-image">
+                    </a>
+                    <div class="action-buttons flex justify-left items-center p-2 ">
+                        <form class="like-dislike-form mr-4 flex items-center space-x-4 "
+                              data-id="{{ item.id }}">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="like">
+                            <input type="hidden" name="like" value="{{ item.like }}">
+                            {% is_liked item.id as liked %}
+                            <button type="submit"
+                                    name="like"
+                                    class="flex items-center space-x-1 text-gray-600 hover:text-red-600 transition duration-300">
+                                <i class="icon"
+                                   style="background-image: url('{% if liked %}{% static 'icons/liketrue.png' %}{% else %}{% static 'icons/likefalse.png' %}{% endif %}');
+                                          width: 20px;
+                                          height: 20px;
+                                          background-size: contain;
+                                          background-repeat: no-repeat"></i>
+                                <span class="like-count">{{ item.like|default:"0" }}</span>
+                            </button>
+                        </form>
+                        <form method="POST"
+                              action="{% url 'image_portfolio' item.id %}"
+                              class="comment-form">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    value="comment"
+                                    name="comment"
+                                    class="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition duration-300">
+                                <i class="icon"
+                                   style="background-image: url('{% static 'icons/three-dots-in-a-speech-bubble-svgrepo-com.svg' %}');
+                                          width: 20px;
+                                          height: 20px;
+                                          background-size: contain;
+                                          background-repeat: no-repeat"></i>
+                                {% if item.comment %}<span>{{ item.comment }}</span>{% endif %}
+                            </button>
+                        </form>
+                    </div>
+                    <div class="description-container">
+                        <p class="description"
+                           onclick="openModal('{{ item.id }}', '{{ item.desc|escapejs }}', '/media/{{ item.image }}')">
+                            {{ item.desc|truncatewords:10 }}
+                        </p>
                     </div>
                 </div>
             {% endfor %}
@@ -108,25 +229,20 @@
     </div>
     <!-- Modal -->
     <div id="descriptionModal"
-         class="fixed inset-0 z-50 flex items-center justify-center hidden bg-gray-800 bg-opacity-75">
-        <div class="bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 p-6 relative transition-transform duration-300 ease-in-out transform scale-0"
-             id="modalContent">
+         class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+        <div id="modalContent"
+             class="glassmorphism max-w-lg w-full mx-4 p-6 relative transform scale-95 opacity-1">
             <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
                     onclick="closeModal()">
-                <svg class="w-6 h-6"
-                     fill="none"
-                     stroke="currentColor"
-                     viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
             <img id="modalImage"
                  src=""
                  alt="Modal Image"
-                 class="w-full h-64 object-cover mx-auto my-4 p-6 rounded-lg">
-            <p id="modalDescription"
-               class="text-gray-800 text-base text-center px-4 py-2"></p>
+                 class="w-full h-64 object-cover rounded-lg shadow-md mb-4">
+            <p id="modalDescription" class="text-white text-center"></p>
         </div>
     </div>
 {% endblock %}
@@ -140,9 +256,9 @@
                 var id = $form.data("id");
                 var action = $form.find('input[name="action"]').val();
                 var $likeButton = $form.find('button[name="like"]');
-                var currentLikeCount = parseInt($likeButton.siblings('input[name="like"]').val(), 10);
-                console.log()
-        
+                var $likeInput = $form.find('input[name="like"]');
+                var currentLikeCount = parseInt($likeInput.val(), 10);
+
                 $.ajax({
                     type: "POST",
                     url: `{% url 'image_portfolio' 0 %}`.replace('0', id),
@@ -153,22 +269,14 @@
                         "X-CSRFToken": "{{ csrf_token }}"
                     },
                     success: function(response) {
-                        $.ajax({
-                            type: "GET",
-                            url: `getlikedislikecount/${id}`,
-                            success: function(response) {
-                                var newLikeCount = response.like;
-                                $form.find("span.like-count").text(newLikeCount);
-                                if (newLikeCount > currentLikeCount) {
-                                    $form.find('button[name="like"] i').css("background-image", `url('{% static 'icons/liketrue.png' %}')`);
-                                } else {
-                                    $form.find('button[name="like"] i').css("background-image", `url('{% static 'icons/likefalse.png' %}')`);
-                                }
-                            },
-                            error: function() {
-                                console.error("Error fetching updated like and dislike counts.");
-                            }
-                        });
+                        var newLikeCount = response.like;
+                        $likeInput.val(newLikeCount); // Update the hidden input with the new like count
+                        $form.find("span.like-count").text(newLikeCount); // Update the displayed like count
+                        if (newLikeCount > currentLikeCount) {
+                            $likeButton.find('i').css("background-image", `url('{% static 'icons/liketrue.png' %}')`);
+                        } else {
+                            $likeButton.find('i').css("background-image", `url('{% static 'icons/likefalse.png' %}')`);
+                        }
                     },
                     error: function() {
                         alert("An error occurred while processing your request.");
@@ -176,29 +284,30 @@
                 });
             });
         });
-        
+
         function openModal(id, description, imageSrc) {
             var modal = document.getElementById('descriptionModal');
             var modalContent = document.getElementById('modalContent');
             document.getElementById('modalDescription').innerText = description;
             document.getElementById('modalImage').src = imageSrc;
             modal.classList.remove('hidden');
-            modalContent.classList.remove('scale-0');
-            modalContent.classList.add('scale-100');
-            modalContent.classList.add('modal-enter-active');
-            setTimeout(() => modalContent.classList.remove('modal-enter-active'), 300); // Remove class after animation
+            setTimeout(() => {
+                modalContent.classList.add('modal-enter-active');
+                modalContent.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10); // Delay to allow transition to take effect
         }
         
         function closeModal() {
             var modal = document.getElementById('descriptionModal');
             var modalContent = document.getElementById('modalContent');
             modalContent.classList.add('modal-exit-active');
-            modalContent.classList.remove('scale-100');
-            modalContent.classList.add('scale-0');
             setTimeout(() => {
                 modal.classList.add('hidden');
                 modalContent.classList.remove('modal-exit-active');
-            }, 300); // Delay hiding to allow animation to complete
+                modalContent.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+            }, 300); // Delay hiding to allow transition to complete
         }
     </script>
 {% endblock %}
