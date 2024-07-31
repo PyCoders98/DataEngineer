@@ -78,7 +78,6 @@
 
         .action-buttons {
             background: transparent; /* Semi-transparent background */
-       
             padding: 0.25rem; /* Reduced padding */
         }
 
@@ -110,6 +109,7 @@
             .profile-header {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto;
+                gap: 0.5rem;
             }
 
             .profile-image {
@@ -117,6 +117,7 @@
             }
 
             .card-image {
+                margin-top: 0; /* Reset margin for smaller screens */
                 height: auto; /* Adjust image height for smaller screens */
             }
         }
@@ -125,7 +126,6 @@
         .description-container {
             overflow: hidden; /* Hide overflow */
             position: relative; /* Ensure absolute positioning of child */
-            
         }
 
         .description {
@@ -180,8 +180,8 @@
                              alt="{{ item.desc }}"
                              class="w-full h-36 object-contain card-image">
                     </a>
-                    <div class="action-buttons flex justify-left items-center p-2 ">
-                        <form class="like-dislike-form mr-4 flex items-center space-x-4 "
+                    <div class="action-buttons flex justify-left items-center p-2">
+                        <form class="like-dislike-form mr-4 flex items-center space-x-4"
                               data-id="{{ item.id }}">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="like">
@@ -231,26 +231,33 @@
     <div id="descriptionModal"
          class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
         <div id="modalContent"
-             class="glassmorphism max-w-lg w-full mx-4 p-6 relative transform scale-95 opacity-1">
+             class="glassmorphism max-w-lg w-full mx-4 p-6 relative transform scale-95 opacity-0 transition">
             <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
                     onclick="closeModal()">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                <svg class="w-6 h-6"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
             <img id="modalImage"
                  src=""
                  alt="Modal Image"
                  class="w-full h-64 object-cover rounded-lg shadow-md mb-4">
-            <p id="modalDescription" class="text-white text-center"></p>
+            <p id="modalDescription"
+               class="text-white text-center"></p>
         </div>
     </div>
 {% endblock %}
 {% block script %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $(".like-dislike-form").submit(function(e) {
+        $(document).ready(function () {
+            $(".like-dislike-form").submit(function (e) {
                 e.preventDefault();
                 var $form = $(this);
                 var id = $form.data("id");
@@ -268,7 +275,7 @@
                     headers: {
                         "X-CSRFToken": "{{ csrf_token }}"
                     },
-                    success: function(response) {
+                    success: function (response) {
                         var newLikeCount = response.like;
                         $likeInput.val(newLikeCount); // Update the hidden input with the new like count
                         $form.find("span.like-count").text(newLikeCount); // Update the displayed like count
@@ -278,7 +285,7 @@
                             $likeButton.find('i').css("background-image", `url('{% static 'icons/likefalse.png' %}')`);
                         }
                     },
-                    error: function() {
+                    error: function () {
                         alert("An error occurred while processing your request.");
                     }
                 });
@@ -297,7 +304,7 @@
                 modalContent.classList.remove('scale-95');
             }, 10); // Delay to allow transition to take effect
         }
-        
+
         function closeModal() {
             var modal = document.getElementById('descriptionModal');
             var modalContent = document.getElementById('modalContent');

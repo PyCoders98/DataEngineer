@@ -12,10 +12,12 @@ from django.views import View
 from .forms import *
 from django.templatetags.static import static
 from django.views.generic import ListView
+from django.conf import settings
 import json
 from django.http import JsonResponse
 from django.forms import model_to_dict
 from django.core import serializers
+from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -32,7 +34,6 @@ class Home(ListView):
 # ----------------Image portfolio (like, dislike, comment functionality)----------------
 # @login_required(login_url="/login/")
 def image_portfolio(request, id):
-
     data = ImageModel.objects.get(id=id)
     if request.method == "POST":
         print("request.post : ", request.POST.get("like"))
@@ -210,6 +211,13 @@ def sign_up(request):
                 messages.success(
                     request, "User created successfully.You can login now."
                 )
+                subject = "Welcome to the ImageSphere!"
+                message = f"{user.username}, thank you for beign a part of ImageSphere."
+                email_from = settings.EMAIL_HOST_USER
+                receipient_list = [
+                    user.email,
+                ]
+                send_mail(subject, message, email_from, receipient_list)
                 return redirect("/login/")
             else:
                 messages.info(request, "Password does not match")
@@ -220,12 +228,13 @@ def login_fun(request):
     if request.method == "POST":
         username = request.POST.get("name")
         password = request.POST.get("password")
-        if not User.objects.filter(username=username).exists():
+        data = User.objects.filter(username=username).values_list("email", flat=True)
+        if not data.exists():
             messages.error(request, "Invalid username or Password!")
             return redirect("/login/")
         user = authenticate(username=username, password=password)
-        print(user)
         if user is None:
+
             messages.error(request, "Invalid Password!")
             return redirect("/login/")
         else:
