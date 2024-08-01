@@ -42,6 +42,8 @@ INSTALLED_APPS = [
 EXTERNAL_APPS = [
     "rest_framework",
     "routerapp",
+    "books",
+    'rest_framework_nested',
 ]
 INSTALLED_APPS+=EXTERNAL_APPS
 
