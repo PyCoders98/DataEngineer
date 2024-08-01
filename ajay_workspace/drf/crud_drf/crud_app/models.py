@@ -7,7 +7,8 @@ class studentInfo(models.Model):
     fname = models.CharField(max_length=40)
     address = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
-    phone = models.IntegerField()
+    phone = models.CharField(max_length=15)
+    city = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self) -> str:
         return self.sname

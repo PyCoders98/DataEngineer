@@ -6,7 +6,7 @@ from .models import *
 
 
 class StudentDetails(admin.ModelAdmin):
-    list_display = ["id", "sname", "fname", "email", "phone"]
+    list_display = ["id", "sname", "fname", "email", "phone", "city"]
 
 
 admin.site.register(studentInfo, StudentDetails)

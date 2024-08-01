@@ -5,7 +5,7 @@ from .serializers import *
 from rest_framework import status
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
-
+from django.contrib.auth.views import LoginView
 
 class RegisterUser(APIView):
     permission_classes = []

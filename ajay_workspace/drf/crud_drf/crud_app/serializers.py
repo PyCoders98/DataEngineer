@@ -10,7 +10,8 @@ class StudentInfoSerializer(serializers.Serializer):
     email = serializers.EmailField(
         max_length=100,
     )
-    phone = serializers.IntegerField()
+    phone = serializers.CharField(max_length=50)
+    city = serializers.CharField(max_length = 50)
 
     def validate(self, data):
         phone = data.get("phone")
