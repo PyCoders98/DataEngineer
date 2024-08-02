@@ -3,7 +3,7 @@
 {% load custom_tags %}
 {% block style %}
     <style>
-        /* Additional styles for modal animations */
+        /* Modal animations */
         .modal-enter-active {
             @apply opacity-100 scale-100;
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
@@ -110,15 +110,46 @@
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto;
                 gap: 0.5rem;
+                padding: 0.5rem; /* Reduced padding */
             }
 
             .profile-image {
                 grid-row: auto; /* Adjust profile image row span on smaller screens */
+                width: 48px; /* Smaller profile image size */
+                height: 48px; /* Smaller profile image size */
+            }
+
+            .profile-info {
+                font-size: 0.875rem; /* Smaller font size */
             }
 
             .card-image {
                 margin-top: 0; /* Reset margin for smaller screens */
                 height: auto; /* Adjust image height for smaller screens */
+            }
+
+            .description-container {
+                padding: 0.5rem; /* Reduced padding */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-header {
+                padding: 0.25rem; /* Even smaller padding on very small screens */
+            }
+
+            .profile-image {
+                width: 40px; /* Further reduced profile image size */
+                height: 40px; /* Further reduced profile image size */
+            }
+
+            .card-image {
+                height: 200px; /* Fixed height for card image on very small screens */
+            }
+
+            .description {
+                font-size: 0.625rem; /* Further reduced font size */
+                height: 4rem; /* Adjust height for better fit */
             }
         }
 

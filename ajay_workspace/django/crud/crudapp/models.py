@@ -55,3 +55,34 @@ class EmployeeForm(ModelForm):
     class Meta:
         model = Employee
         fields = "__all__"
+
+
+class Ab(models.Model):
+    name = models.CharField(max_length=124, default="")
+    name2 = models.CharField(max_length=124, default="")
+    name3 = models.CharField(max_length=124, default="")
+
+    class Meta:
+        abstract = True
+
+class Abc(Ab):
+    name4 = models.CharField(max_length=124, default="")
+
+
+class Ba(models.Model):
+    name = models.CharField(max_length=124, default="")
+    name2 = models.CharField(max_length=124, default="")
+    name3 = models.CharField(max_length=124, default="")
+    name5 = models.CharField(max_length=124, default="")
+
+
+
+class Bac(Ba):
+    class Meta:
+        proxy = True
+
+class Bacd(Ba):
+    class Meta:
+        proxy = True
+
+    

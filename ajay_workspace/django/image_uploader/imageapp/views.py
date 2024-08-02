@@ -32,7 +32,7 @@ class Home(ListView):
 
 
 # ----------------Image portfolio (like, dislike, comment functionality)----------------
-# @login_required(login_url="/login/")
+@login_required(login_url="/login/")
 def image_portfolio(request, id):
     data = ImageModel.objects.get(id=id)
     if request.method == "POST":

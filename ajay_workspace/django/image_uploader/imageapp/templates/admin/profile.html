@@ -149,18 +149,6 @@
                             </form>
                             <form method="POST" action="{% url 'image_portfolio' item.id %}">
                                 {% csrf_token %}
-                                <button type="submit" value="dislike" name="like">
-                                    {% is_disliked item.id as disliked %}
-                                    <i style="background-image: {% if disliked %} url('{% static 'icons/disliketrue.png' %}') {% else %} url('{% static 'icons/dislikefalse.png' %}') {% endif %};
-                                              background-size: cover;
-                                              width: 24px;
-                                              height: 24px;
-                                              display: inline-block"></i>
-                                    {% if item.dislike %}{{ item.dislike }}{% endif %}
-                                </button>
-                            </form>
-                            <form method="POST" action="{% url 'image_portfolio' item.id %}">
-                                {% csrf_token %}
                                 <button type="submit" value="comment"  name="like">
                                     <i style="background-image: url('{% static 'icons/three-dots-in-a-speech-bubble-svgrepo-com.svg' %}');
                                               background-size: cover;
