@@ -118,10 +118,30 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        margin-bottom: 1rem; /* Added margin to space out messages */
+        position: relative; /* Required for positioning close button */
       }
 
       .messages li i {
         font-size: 1.25rem;
+      }
+
+      .messages .close-message {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: #e0e0e0;
+        color: #333;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 0.25rem;
+        font-size: 1rem;
+        transition: background 0.3s ease;
+      }
+
+      .messages .close-message:hover {
+        background: #d0d0d0;
       }
 
       /* Ensure the modal behaves responsively */
@@ -160,11 +180,11 @@
           </div>
           <!-- Navbar links -->
           <div class="hidden md:flex">
-            <a href="{% url 'home_page' %}" class="nav-link"><i class="fa fa-home"></i> Home</a>
+            <a href="{% url 'home_page' %}" class="nav-link">Home</a>
             {% if request.user.is_authenticated %}
-              <a href="{% url 'upload_image' %}" class="nav-link"><i class="fa fa-upload"></i> Upload Image</a>
-              <a href="{% url 'logout_confirm' %}" class="nav-link"><i class="fa fa-sign-out-alt"></i> Log Out</a>
-              <a href="{% url 'profile' %}" class="nav-link"><i class="fa fa-user"></i> Profile</a>
+              <a href="{% url 'upload_image' %}" class="nav-link">Upload Image</a>
+              <a href="{% url 'logout_confirm' %}" class="nav-link">Log Out</a>
+              <a href="{% url 'profile' %}" class="nav-link">Profile</a>
             {% else %}
               <a href="{% url 'login' %}" class="nav-link"><i class="fa fa-sign-in-alt"></i> Login</a>
             {% endif %}
@@ -181,13 +201,13 @@
     <!-- Responsive menu -->
     <div id="mobile-menu" class="mobile-menu md:hidden shadow-md">
       <div class="flex flex-col">
-        <a href="{% url 'home_page' %}" class="nav-link"><i class="fa fa-home"></i> Home</a>
+        <a href="{% url 'home_page' %}" class="nav-link">Home</a>
         {% if request.user.is_authenticated %}
-          <a href="{% url 'upload_image' %}" class="nav-link"><i class="fa fa-upload"></i> Upload Image</a>
-          <a href="{% url 'logout_confirm' %}" class="nav-link"><i class="fa fa-sign-out-alt"></i> Log Out</a>
-          <a href="{% url 'profile' %}" class="nav-link"><i class="fa fa-user"></i> Profile</a>
+          <a href="{% url 'upload_image' %}" class="nav-link">Upload Image</a>
+          <a href="{% url 'logout_confirm' %}" class="nav-link">Log Out</a>
+          <a href="{% url 'profile' %}" class="nav-link">Profile</a>
         {% else %}
-          <a href="{% url 'login' %}" class="nav-link"><i class="fa fa-sign-in-alt"></i> Login</a>
+          <a href="{% url 'login' %}" class="nav-link">Login</a>
         {% endif %}
       </div>
     </div>
@@ -210,6 +230,7 @@
                 <i class="fas fa-info-circle text-gray-500"></i>
               {% endif %}
               <span>{{ message }}</span>
+              <button class="close-message">&times;</button>
             </li>
           {% endfor %}
         </ul>
@@ -217,23 +238,37 @@
       {% block content %}<!-- Your content goes here -->{% endblock %}
     </div>
     <script>
+      // Function to hide messages after 5 seconds
+      document.addEventListener('DOMContentLoaded', function() {
+        var messages = document.querySelectorAll('.messages li');
+        messages.forEach(function(message) {
+          var closeButton = message.querySelector('.close-message');
+          setTimeout(function() {
+            message.style.transition = 'opacity 0.5s ease-out';
+            message.style.opacity = 0;
+            setTimeout(function() {
+              message.style.display = 'none';
+            }, 500); // Matches the duration of the fade-out
+          }, 5000); // 5000 milliseconds = 5 seconds
+
+          // Add click event listener to close button
+          if (closeButton) {
+            closeButton.addEventListener('click', function() {
+              message.style.transition = 'opacity 0.5s ease-out';
+              message.style.opacity = 0;
+              setTimeout(function() {
+                message.style.display = 'none';
+              }, 500);
+            });
+          }
+        });
+      });
+
       function toggleMobileMenu() {
         var menu = document.getElementById('mobile-menu');
         menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
       }
-      
-      document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-          {% for message in messages %}
-          var messageElement = document.getElementById('message-{{ forloop.counter }}');
-          if (messageElement) {
-            messageElement.remove();
-          }
-          {% endfor %}
-        }, 5000); // 5000 milliseconds = 5 seconds
-      });
-      
-      {% block script %}{% endblock %}
+      {% block script %}{% endblock script %}
     </script>
   </body>
 </html>

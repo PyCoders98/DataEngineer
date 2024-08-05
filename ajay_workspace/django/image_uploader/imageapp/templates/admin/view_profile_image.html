@@ -1,285 +1,100 @@
 {% extends "base.html" %}
 {% load static %}
-{% block style %}
-    .profile-container {
-    max-width: 600px;
-    margin: auto;
-    padding: 40px;
-    background-color: #0f1c1c;
-    background-image: url("https://www.transparenttextures.com/patterns/xv.png");
-    border-radius: 20px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    perspective: 1000px;
-    }
-    .profile-card {
-    opacity:1;
-    width: 100%;
-    height: 100%;
-    background-color: #cbcbcb;
-    border-radius: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    transform-style: preserve-3d;
-    background: rgba(255, 255, 255, 0.10);
-    border-radius: 16px;
-    backdrop-filter: blur(1.4px);
-    -webkit-backdrop-filter: blur(1.4px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-    .profile-card:hover {
-    transform: scale(1.1);
-    }
-    .profile-picture {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: translateZ(10px);
-    }
-    .profile-picture img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 4px solid #667eea;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, border-width 0.3s ease;
-    }
-    .profile-picture:hover img {
-    transform: scale(1.05);
-    border-width: 2px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-    .profile-actions {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transform: translateZ(0);
-    }
-    .profile-actions h2 {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-    }
-    .profile-actions form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    }
-    .profile-actions input[type="file"] {
-    display: none;
-    }
-    .profile-actions button {
-    margin-top: 20px;
-    padding: 12px 24px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    }
-    .profile-actions button:hover {
-    opacity: 0.9;
-    }
-    .update-button {
-    background-color: #667eea;
-    color: white;
-    }
-    .delete-button {
-    background-color: #e53e3e;
-    color: white;
-    }
-    .profile-actions .choose-image-button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 12px 24px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 8px;
-    }
-    .profile-actions .choose-image-button:hover {
-    background-color: #45a049;
-    opacity: 0.9;
-    }
-    /* Modal styles */
-    .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-    animation: fadeIn 0.3s ease-out;
-    }
-    .modal-content {
-    background: linear-gradient(to top left, #f0f0f0, #ffffff);
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    width: 80%;
-    max-width: 500px;
-    position: relative;
-    animation: slideIn 0.3s ease-out;
-    }
-    .close {
-    color: #888;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    }
-    .close:hover {
-    color: black;
-    text-decoration: none;
-    }
-    /* Modal animations */
-    @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-    }
-    @keyframes slideIn {
-    from { transform: translateY(-50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-    }
-    /* Button styles in modals */
-    .modal-content button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    }
-    .modal-content .update-button {
-    background-color: #667eea;
-    color: white;
-    }
-    .modal-content .update-button:hover {
-    background-color: #5a67d8;
-    }
-    .modal-content .delete-button {
-    background-color: #e53e3e;
-    color: white;
-    }
-    .modal-content .delete-button:hover {
-    background-color: #c53030;
-    }
-{% endblock style %}
 {% block content %}
-    <div class="profile-container">
-        <div class="profile-card">
-            <div class="profile-picture">
-                {% if request.user.profile_image %}
-                    <img src="{{ request.user.profile_image.url }}" alt="User Icon">
-                {% else %}
-                    <img src="{% static 'static_profile_image/default_profile_image.jpg' %}"
-                         alt="User Icon">
-                {% endif %}
-            </div>
-            <div class="profile-actions">
-                <h2 style="color:gray;">Update Profile Picture</h2>
-                <button class="update-button mt-4" id="updateImageBtn">Update Image</button>
-                <button type="button" class="delete-button mt-4" id="deleteImageBtn">Delete Image</button>
+    <div class="flex justify-center items-center min-h-screen bg-transparent">
+        <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl shadow-xl overflow-hidden w-full max-w-md mx-auto">
+            <div class="flex flex-col items-center p-6">
+                <div class="bg-white bg-opacity-30 backdrop-filter backdrop-blur-lg rounded-full p-2 shadow-lg mb-4 relative">
+                    {% if request.user.profile_image %}
+                        <img src="{{ request.user.profile_image.url }}"
+                             alt="User Icon"
+                             class="w-36 h-36 rounded-full border-4 border-indigo-400 transform transition duration-300 hover:scale-105 hover:border-2 shadow-lg">
+                    {% else %}
+                        <img src="{% static 'static_profile_image/default_profile_image.jpg' %}"
+                             alt="User Icon"
+                             class="w-36 h-36 rounded-full border-4 border-indigo-400 transform transition duration-300 hover:scale-105 hover:border-2 shadow-lg">
+                    {% endif %}
+                    <button class="absolute right-2 bottom-2 bg-indigo-500 text-white p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            id="updateImageBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-5 w-5"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 4.232l4.536 4.536m-4.536-4.536a2.5 2.5 0 113.536 3.536L7.5 19.5H3v-4.5L15.232 4.232z" />
+                        </svg>
+                    </button>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-100 mb-6">Update Profile Picture</h2>
+                <button type="button"
+                        class="delete-button bg-red-500 text-white px-4 py-2 rounded-lg font-semibold transition duration-300 hover:bg-red-600"
+                        id="deleteImageBtn">Delete Image</button>
             </div>
         </div>
     </div>
     <!-- Update Image Modal -->
-    <div id="updateImageModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeUpdateModal">&times;</span>
-            <h2>Update Profile Image</h2>
-            <form action="{% url 'updateprofileimage' %}"
-                  method="post"
+    <div class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="modal-content bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-6 w-full max-w-lg relative">
+            <span class="close absolute top-2 right-2 text-gray-700 text-3xl font-bold cursor-pointer">&times;</span>
+            <form method="post"
                   enctype="multipart/form-data"
-                  id="updateImageForm">
+                  class="flex flex-col items-center"
+                  action="{% url 'updateprofileimage' %}">
                 {% csrf_token %}
-                <input type="file" name="profile_image" id="fileInput" required>
-                <button type="submit" class="update-button" data-id={{ request.user.id }}>Upload Image
+                <input type="file"
+                       name="profile_image"
+                       id="profileImageInput"
+                       class="hidden"
+                       required>
+                <label for="profileImageInput"
+                       class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold transition duration-300 hover:bg-green-600 cursor-pointer mb-4 inline-block">
+                    Choose Image
+                </label>
+                <button type="submit"
+                        class="update-button bg-indigo-500 text-white px-4 py-2 rounded-lg font-semibold transition duration-300 hover:bg-indigo-600">
+                    Update Image
                 </button>
             </form>
         </div>
     </div>
-    <!-- Delete Image Modal -->
-    <div id="deleteImageModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeDeleteModal">&times;</span>
-            <h2>Are you sure you want to delete your profile picture?</h2>
-            <form id="deleteForm"
-            action="{% url 'delete_profile_image' %}"
-            method="post">
-            {% csrf_token %}
-            <button type="submit" class="delete-button">Yes, Delete</button>
-            <button type="button" class="update-button" id="cancelDelete">Cancel</button>
-        </form>
+    <!-- Delete Confirmation Modal -->
+    <div class="delete-modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="modal-content bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-6 w-full max-w-sm relative">
+            <span class="close-delete absolute top-2 right-2 text-gray-700 text-3xl font-bold cursor-pointer">&times;</span>
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-gray-100 mb-6">Confirm Deletion</h2>
+                <p class="text-gray-100 mb-6">Are you sure you want to delete your profile picture?</p>
+                <form method="post" action="{% url 'delete_profile_image' %}">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="delete-button bg-red-500 text-white px-4 py-2 rounded-lg font-semibold transition duration-300 hover:bg-red-600">
+                        Delete
+                    </button>
+                    <button type="button"
+                            class="cancel-button bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold transition duration-300 hover:bg-gray-600 ml-2">
+                        Cancel
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
 {% endblock content %}
 {% block script %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    // Get modals
-    var updateModal = document.getElementById("updateImageModal");
-    var deleteModal = document.getElementById("deleteImageModal");
-    
-    // Get buttons
-    var updateBtn = document.getElementById("updateImageBtn");
-    var deleteBtn = document.getElementById("deleteImageBtn");
-
-    // Get <span> elements to close modals
-        var closeUpdate = document.getElementById("closeUpdateModal");
-        var closeDelete = document.getElementById("closeDeleteModal");
-        var cancelDelete = document.getElementById("cancelDelete");
-
-        updateBtn.onclick = function() {
-            updateModal.style.display = "block";
-        }
-        deleteBtn.onclick = function() {
-            deleteModal.style.display = "block";
-        }
-        
-        // Close modals
-        closeUpdate.onclick = function() {
-            updateModal.style.display = "none";
-        }
-        closeDelete.onclick = function() {
-            deleteModal.style.display = "none";
-        }
-        cancelDelete.onclick = function() {
-            deleteModal.style.display = "none";
-        }
-        
-        // Close modal when clicking outside of the modal content
-        window.onclick = function(event) {
-            if (event.target == updateModal) {
-                updateModal.style.display = "none";
-            }
-            if (event.target == deleteModal) {
-                deleteModal.style.display = "none";
-            }
-        }
-        
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#updateImageBtn').click(function() {
+            $('.modal').removeClass('hidden');
+        });
+        $('.close').click(function() {
+            $('.modal').addClass('hidden');
+        });
+        $('#deleteImageBtn').click(function() {
+            $('.delete-modal').removeClass('hidden');
+        });
+        $('.close-delete, .cancel-button').click(function() {
+            $('.delete-modal').addClass('hidden');
+        });
+    });
     </script>
-    {% endblock script %}
-    
+{% endblock script %}

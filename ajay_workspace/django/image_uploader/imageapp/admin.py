@@ -1,15 +1,13 @@
 from django.contrib import admin
 from imageapp.models import *
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
 
 
 class UserDetails(admin.ModelAdmin):
-    list_display = ("username", "email", "password", "profile_image")
+    list_display = ("username", "email", "profile_image")
 
 
-# admin.site.unregister(User)
-# admin.site.register(User, UserDetails)
+admin.site.register(User, UserDetails)
 
 
 class ImageModelDetails(admin.ModelAdmin):

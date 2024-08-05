@@ -32,7 +32,7 @@
             <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-md border border-gray-300 rounded-md p-4 mb-2 shadow-lg">
                 <div class="flex items-start">
                     <div class="w-12 h-12 mr-4">
-                        <img src="{% if request.user.profile_image %}/media/{{ comment.image }}{% else %}{% static 'static_profile_image/default_profile_image.jpg' %}{% endif %}"
+                        <img src="/media/{{ comment.image.user.profile_image }}"
                              alt="{{ comment.username }}"
                              class="w-full h-full object-cover rounded-full">
                     </div>

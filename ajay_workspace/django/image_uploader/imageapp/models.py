@@ -28,7 +28,7 @@ class User(AbstractUser):
 
 
 class ImageModel(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Uploded By")
     image = models.ImageField(upload_to="media")
     desc = models.CharField(max_length=200)
     like = models.IntegerField(default=0)
@@ -42,6 +42,10 @@ class ImageModel(models.Model):
 
     def __str__(self) -> str:
         return self.user.username
+
+    class Meta:
+        verbose_name = "Uploaded Images"
+        db_table = "Uploaded Images"
 
 
 class ImageComment(models.Model):
@@ -62,3 +66,23 @@ class ImageLike(models.Model):
 
     def __str__(self) -> str:
         return str(self.like)
+
+
+class RequestModel(models.Model):
+    receiver_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="reciever"
+    )
+    sender_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="sender"
+    )
+    send_at = models.DateTimeField(auto_now_add=True)
+
+
+class FollowerModel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_admin")
+    follower = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, related_name="follower"
+    )
+    following = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, related_name="follwing"
+    )

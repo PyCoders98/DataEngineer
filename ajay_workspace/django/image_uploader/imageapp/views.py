@@ -31,6 +31,45 @@ class Home(ListView):
         return self.model.objects.all().order_by("-id")
 
 
+# ----------------following Posts----------------
+def h(request):
+    pass
+
+
+# ----------------Follow button----------------
+def follow(request, id):
+    pass
+
+
+def follow_request(request, id):
+    current_user = request.user
+    post_admin = User.objects.get(id=id)
+    response_data = {}
+
+    if request.method == "POST":
+        try:
+            data = RequestModel.objects.get(
+                receiver_user=post_admin, sender_user=request.user
+            )
+            data.delete()
+            response_data["total_requests"] = RequestModel.objects.filter(
+                receiver_user=post_admin, sender_user=request.user
+            ).count()
+            return HttpResponse(
+                json.dumps(response_data), content_type="application/json"
+            )
+        except:
+            data = RequestModel.objects.create(
+                receiver_user=post_admin, sender_user=request.user
+            )
+            response_data["total_requests"] = RequestModel.objects.filter(
+                receiver_user=post_admin, sender_user=request.user
+            ).count()
+            return HttpResponse(
+                json.dumps(response_data), content_type="application/json"
+            )
+
+
 # ----------------Image portfolio (like, dislike, comment functionality)----------------
 @login_required(login_url="/login/")
 def image_portfolio(request, id):
