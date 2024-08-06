@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 
 
 class UserDetails(admin.ModelAdmin):
-    list_display = ("username", "email", "profile_image")
+    list_display = ("id", "username", "email", "profile_image")
 
 
 admin.site.register(User, UserDetails)
@@ -26,3 +26,17 @@ class ImageModelDetails(admin.ModelAdmin):
 admin.site.register(ImageModel, ImageModelDetails)
 admin.site.register(ImageComment)
 admin.site.register(ImageLike)
+
+
+class RequestDetails(admin.ModelAdmin):
+    list_display = ("id", "receiver_user", "sender_user", "send_at")
+
+
+admin.site.register(RequestModel, RequestDetails)
+
+
+class FollowerDetails(admin.ModelAdmin):
+    list_display = ("id", "user", "follower", "following")
+
+
+admin.site.register(FollowerModel, FollowerDetails)

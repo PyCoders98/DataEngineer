@@ -11,7 +11,11 @@ urlpatterns = [
     path("comment-page/<int:id>/", comment_page, name="comment_page"),
     path("get_image/<int:id>/", get_image, name="get_image"),
     path("upload_page/", upload_image, name="upload_image"),
-    path("getlikedislikecount/<int:id>",get_like_dislike_count,name = "get_like_dislike_count"),
+    path(
+        "getlikedislikecount/<int:id>",
+        get_like_dislike_count,
+        name="get_like_dislike_count",
+    ),
     path("profile/", profile, name="profile"),
     path("view-profile-image/<int:id>", view_profile_image, name="view_profile_image"),
     path(
@@ -27,6 +31,9 @@ urlpatterns = [
     path("confirmation-page/<int:id>", confirmation_page, name="confirmation_page"),
     path("delete-image/<int:id>/", delete_image, name="delete_image"),
     path("edit-image/<int:id>/", edit_image, name="edit_image"),
+    path("follow/<int:id>/", follow_request, name="follow_request"),
+    path("all-requests/", all_requests, name="all_requests"),
+    path("accept-request/<int:id>/", accept_request, name="accept_request"),
     path("signup/", sign_up, name="sign_up"),
     path("login/", login_fun, name="login"),
     path("logout/", logout_fun, name="logout"),

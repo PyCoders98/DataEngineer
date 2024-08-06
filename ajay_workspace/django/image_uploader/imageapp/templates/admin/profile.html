@@ -2,146 +2,106 @@
 {% load static %}
 {% load custom_tags %}
 
-{% block style %}
-    <style>
-        .glassmorphism-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            padding: 1rem;
-            margin: 0.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .glassmorphism-card img {
-            border-radius: 8px;
-        }
-
-        .glassmorphism-card-image img {
-            border-radius: 8px;
-        }
-
-        .glassmorphism-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn {
-            display: flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            outline: none;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .btn:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .btn i {
-            margin-right: 0.5rem;
-        }
-
-        .btn-delete {
-            background-color: #e53e3e;
-        }
-
-        .btn-delete:hover {
-            background-color: #c53030;
-        }
-
-        .btn-edit {
-            background-color: #3182ce;
-        }
-
-        .btn-edit:hover {
-            background-color: #2b6cb0;
-        }
-
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            margin-top: auto;
-        }
-    </style>
-{% endblock %}
-
 {% block content %}
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="flex items-center justify-center">
+        <div class="max-w-3xl mx-auto rounded-lg overflow-hidden bg-white bg-opacity-30 backdrop-blur-md border border-white border-opacity-20 shadow-lg p-6 flex flex-col md:flex-row items-center space-x-6">
+            <img src="https://via.placeholder.com/100"
+                 alt="Profile Image"
+                 class="w-24 h-24 object-cover rounded-full border-2 border-blue-500 mb-4 md:mb-0">
+            <div class="flex-grow">
+                <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+                    <div class="text-center md:text-left">
+                        <div class="font-bold text-2xl">User Name</div>
+                        <div class="text-gray-600">@username</div>
+                    </div>
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 text-center">
+                        <div>
+                            <div class="text-xl font-semibold" id="followersCount">100</div>
+                            <div class="text-sm text-gray-600">Followers</div>
+                        </div>
+                        <div>
+                            <div class="text-xl font-semibold" id="followingCount">150</div>
+                            <div class="text-sm text-gray-600">Following</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-gray-600 text-sm mb-4">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, pulvinar facilisis.</p>
+                </div>
+                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                    <button id="followButton"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Follow
+                    </button>
+                    <button id="messageButton"
+                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        Message
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {% for item in data %}
-                <div class="glassmorphism-card">
-                    <div class="flex items-center px-4 py-2 bg-white bg-opacity-25">
+                <div class="bg-white bg-opacity-30 backdrop-blur-md border border-white border-opacity-20 shadow-md rounded-lg overflow-hidden flex flex-col">
+                    <div class="flex items-center px-3 py-2 bg-white bg-opacity-40 backdrop-blur-md border-b border-white border-opacity-20">
                         <div class="flex-shrink-0">
-                            <img class="h-12 w-12 rounded-full" src="/media/{{ item.user.profile_image }}" alt="{{ item.user }}">
+                            <img class="h-10 w-10 rounded-full"
+                                 src="/media/{{ item.user.profile_image }}"
+                                 alt="{{ item.user }}">
                         </div>
-                        <div class="ml-3">
-                            <p class="text-lg font-medium text-gray-800">{{ item.user }}</p>
-                            <p class="text-sm text-gray-500">{{ item.created_at.date }}</p>
+                        <div class="ml-2">
+                            <p class="text-base font-semibold text-gray-800">{{ item.user }}</p>
+                            <p class="text-xs text-gray-500">{{ item.created_at.date }}</p>
                         </div>
                     </div>
-                    <div class="glassmorphism-card-image">
-                        <img class="w-full object-cover h-64" src="/media/{{ item.image }}" alt="{{ item.desc }}">
+                    <div class="my-2">
+                        <img class="object-cover h-48 w-full"
+                             src="/media/{{ item.image }}"
+                             alt="{{ item.desc }}">
                     </div>
-                    <div class="px-4 py-2 bg-white bg-opacity-25 flex-1">
-                        <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <div class="px-3 py-2 bg-white bg-opacity-40 backdrop-blur-md flex-1">
+                        <div class="flex flex-col md:flex-row justify-between text-xs text-gray-600 mb-1">
                             <span><strong>{{ item.followers }}</strong> Followers</span>
                             <span><strong>{{ item.followings }}</strong> Following</span>
                         </div>
-                        <p class="text-gray-800 line-clamp-2">{{ item.desc }}</p>
+                        <p class="text-gray-800 text-sm line-clamp-2">{{ item.desc }}</p>
                     </div>
-                    <div class="card-footer px-4 py-2 bg-white bg-opacity-25">
-                        <div class="flex space-x-4">
+                    <div class="px-3 py-2 bg-white bg-opacity-40 backdrop-blur-md">
+                        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
                             <form method="POST" action="{% url 'image_portfolio' item.id %}">
                                 {% csrf_token %}
-                                <button type="submit" value="like" name="like" class="focus:outline-none btn">
+                                <button type="submit" value="like" name="like" class="focus:outline-none bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded text-xs">
                                     {% is_liked item.id as liked %}
-                                    <i class="fa fa-heart {% if liked %}text-red-600{% else %}text-gray-400{% endif %} text-2xl"></i>
+                                    <i class="fa fa-heart {% if liked %}text-red-600{% else %}text-gray-400{% endif %} text-lg"></i>
                                     {% if item.like %}{{ item.like }}{% endif %}
                                 </button>
                             </form>
                             <form method="POST" action="{% url 'image_portfolio' item.id %}">
                                 {% csrf_token %}
-                                <button type="submit" value="comment" name="like" class="focus:outline-none btn">
+                                <button type="submit" value="comment" name="like" class="focus:outline-none bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded text-xs">
                                     <i style="background-image: url('{% static 'icons/three-dots-in-a-speech-bubble-svgrepo-com.svg' %}');
                                               background-size: cover;
-                                              width: 24px;
-                                              height: 24px;
+                                              width: 20px;
+                                              height: 20px;
                                               display: inline-block"></i>
                                     {% if item.comment %}{{ item.comment }}{% endif %}
                                 </button>
                             </form>
                         </div>
-                        <div class="flex space-x-4">
+                        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mt-2">
                             <form method="POST" action="{% url 'confirmation_page' item.id %}" class="inline">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-delete">
-                                    <i class="fa fa-trash text-white text-lg"></i>
+                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-xs">
+                                    <i class="fa fa-trash text-white text-sm"></i>
                                     <span>Delete</span>
                                 </button>
                             </form>
                             <form method="GET" action="{% url 'edit_image' item.id %}" class="inline">
-                                <button type="submit" class="btn btn-edit">
-                                    <i class="fa fa-edit text-white text-lg"></i>
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded text-xs">
+                                    <i class="fa fa-edit text-white text-sm"></i>
                                     <span>Edit</span>
                                 </button>
                             </form>

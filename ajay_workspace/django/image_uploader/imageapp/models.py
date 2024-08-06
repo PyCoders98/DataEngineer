@@ -49,7 +49,7 @@ class ImageModel(models.Model):
 
 
 class ImageComment(models.Model):
-    username = models.CharField(max_length=300, default="h")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ForeignKey(ImageModel, on_delete=models.CASCADE)
     comment = models.CharField(max_length=500, null=True)
     created_at = models.DateTimeField(auto_created=True, auto_now=True)

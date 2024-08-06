@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% block style %}
+    <style>
+    body {
+        background-color: #f3f6f9;
+        font-family: Arial, sans-serif;
+    }
+
+    .card {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 16px;
+        border: 1px solid #dbe0e5;
+    }
+
+    .card-header {
+        border-bottom: 1px solid #dbe0e5;
+        padding: 16px;
+        background: #f9f9f9;
+    }
+
+    .card-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 16px;
+    }
+
+    .request-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #dbe0e5;
+        padding: 12px 0;
+    }
+
+    .request-item:last-child {
+        border-bottom: none;
+    }
+
+    .request-item img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #0073b1;
+    }
+
+    .request-details {
+        flex-grow: 1;
+        margin-left: 16px;
+    }
+
+    .request-details h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .request-details p {
+        margin: 4px 0 0;
+        color: #6a6f73;
+    }
+
+    .request-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .request-actions button {
+        background: #0073b1;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-size: 0.875rem;
+        font-weight: bold;
+    }
+
+    .request-actions button.decline {
+        background: #e4e6eb;
+        color: #333;
+    }
+
+    .request-actions button:hover {
+        background-color: #005a9e;
+    }
+
+    .request-actions button.decline:hover {
+        background-color: #d0d2d5;
+    }
+
+    .no-requests {
+        text-align: center;
+        color: #6a6f73;
+        font-size: 1rem;
+        padding: 16px;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container mx-auto p-4 max-w-2xl">
+        <div class="card">
+            <div class="card-header">
+                <h2>Pending Requests</h2>
+            </div>
+            <div class="card-body">
+                {% for req in requests %}
+                    <div class="request-item">
+                        <img src="{% if req.sender_user.profile_image %}{{ req.sender_user.profile_image.url }}{% else %}{% static 'default_profile_image.jpg' %}{% endif %}"
+                             alt="User Photo">
+                        <div class="request-details">
+                            <h3>{{ req.sender_user }}</h3>
+                            <p>Wants to connect with you</p>
+                        </div>
+                        <div class="request-actions">
+                            <form method="post" action="{% url 'accept_request' req.sender_user.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="accept" value="{{ req.sender_user.id }}">
+                                <button type="submit" name="accept" value="accept">Accept</button>
+                            </form>
+                            <form method="post" action="{% url 'accept_request' req.sender_user.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="accept" value="{{ req.sender_user.id }}">
+                                <button type="submit" name="accept" value="decline" class="decline">Decline</button>
+                            </form>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="no-requests">You have no pending requests</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -41,9 +41,11 @@ def follow(request, id):
     pass
 
 
+# ----------------follow saving requests----------------
 def follow_request(request, id):
     current_user = request.user
-    post_admin = User.objects.get(id=id)
+    post = ImageModel.objects.get(id=id)
+    post_admin = post.user
     response_data = {}
 
     if request.method == "POST":
@@ -68,6 +70,38 @@ def follow_request(request, id):
             return HttpResponse(
                 json.dumps(response_data), content_type="application/json"
             )
+    else:
+        response_data["total_requests"] = RequestModel.objects.filter(
+            receiver_user=post_admin, sender_user=request.user
+        ).count()
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def all_requests(request):
+    current_user = request.user
+    requests = RequestModel.objects.filter(receiver_user=current_user)
+    return render(request, "admin/requests.html", {"requests": requests})
+
+
+# ----------------Accept or Cencel follow requests----------------
+def accept_request(request, id):
+    current_user = request.user
+    requested_user = User.objects.get(id=id)
+    print(requested_user)
+    requests = RequestModel.objects.filter(receiver_user=current_user)
+    if request.method == "POST":
+        if request.POST.get("accept") == "accept":
+            FollowerModel.objects.create(user=current_user, follower=requested_user)
+            RequestModel.objects.filter(
+                receiver_user=current_user, sender_user=requested_user
+            ).delete()
+        else:
+            RequestModel.objects.filter(
+                receiver_user=current_user, sender_user=requested_user
+            ).delete()
+        return redirect("/all-requests")
+
+    return redirect("/all-requests/")
 
 
 # ----------------Image portfolio (like, dislike, comment functionality)----------------
@@ -126,10 +160,7 @@ def comment_page(request, id):
     if request.method == "POST":
         if request.user.is_authenticated:
             comment = request.POST.get("comment")
-            print(request.user.username)
-            ImageComment.objects.create(
-                username=request.user.username, image=data, comment=comment
-            )
+            ImageComment.objects.create(user=request.user, image=data, comment=comment)
             data.comment += 1
             data.save()
             return redirect("/")

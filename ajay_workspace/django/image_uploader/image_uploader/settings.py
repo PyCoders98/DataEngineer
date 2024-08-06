@@ -78,6 +78,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "imageapp.context_processor.profile_image",
+                "imageapp.context_processor.follow_count",
             ],
         },
     },

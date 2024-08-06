@@ -221,15 +221,8 @@
                             <p class="profile-username">{{ item.user.username }}</p>
                             <p class="profile-date">{{ item.created_at.date }}</p>
                         </div>
-                        <form method="POST" action="/">
-                            {% csrf_token %}
-                            <button type="submit" class="follow-button">
-                                {% if user_following %}
-                                    Unfollow
-                                {% else %}
-                                    Follow
-                                {% endif %}
-                            </button>
+                        <form class="follow-request-form" data-id="{{ item.id }}">
+                            <button type="submit" class="follow-button">Follow</button>
                         </form>
                     </div>
                     <a href="{% url 'get_image' item.id %}" class="block">
@@ -291,22 +284,15 @@
              class="glassmorphism max-w-lg w-full mx-4 p-6 relative transform scale-95 opacity-0 transition">
             <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
                     onclick="closeModal()">
-                <svg class="w-6 h-6"
-                     fill="none"
-                     stroke="currentColor"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M6 18L18 6M6 6l12 12"></path>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
             <img id="modalImage"
                  src=""
                  alt="Modal Image"
                  class="w-full h-64 object-cover rounded-lg shadow-md mb-4">
-            <p id="modalDescription"
-               class="text-white text-center"></p>
+            <p id="modalDescription" class="text-white text-center"></p>
         </div>
     </div>
 {% endblock %}
@@ -322,7 +308,7 @@
                 var $likeButton = $form.find('button[name="like"]');
                 var $likeInput = $form.find('input[name="like"]');
                 var currentLikeCount = parseInt($likeInput.val(), 10);
-
+        
                 $.ajax({
                     type: "POST",
                     url: `{% url 'image_portfolio' 0 %}`.replace('0', id),
@@ -347,7 +333,32 @@
                     }
                 });
             });
+        
+            $(".follow-request-form").submit(function (e) {
+                e.preventDefault();
+                var $form = $(this);
+                var id = $form.data("id");
+        
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'follow_request' 0 %}".replace('0', id),
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    success: function (response) {
+                        console.log("successful.")
+                        // Handle success for follow request
+                        alert("Follow request successful.");
+                    },
+                    error: function () {
+                        console.log("failed")
+                        alert("An error occurred while processing your follow request.");
+                    }
+                });
+            });
         });
+        
+        {% comment %} follow request {% endcomment %}
 
         function openModal(id, description, imageSrc) {
             var modal = document.getElementById('descriptionModal');

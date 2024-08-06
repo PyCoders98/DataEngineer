@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="{% static 'css/tailwind.min.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="{% static 'jquery/jquery.min.js' %}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
       * {
         font-family: "Balsamiq Sans", sans-serif;
@@ -30,11 +32,11 @@
         padding: 0 20px;
       }
 
-      /* Navbar Styles */
       .navbar {
         background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 0 20px;
+        border: 1px solid black;
       }
 
       .navbar .flex {
@@ -80,18 +82,18 @@
         .navbar .hidden.md\:flex {
           display: none;
         }
-      
+
         .mobile-menu {
           display: block;
         }
-      
+
         .mobile-menu .nav-link {
           display: block;
           padding: 10px 15px;
           color: #ffffff;
           text-decoration: none;
         }
-      
+
         .mobile-menu .nav-link:hover {
           color: #e0e0e0;
         }
@@ -106,7 +108,42 @@
         outline: none;
       }
 
-      /* Messages Styles */
+      .bottom-navbar {
+        background-color: #ffffff;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        border-top: 1px solid #e5e5e5;
+        padding: 0.5rem;
+      }
+
+      .bottom-navbar .nav-link {
+        color: #333;
+        text-decoration: none;
+        padding: 10px;
+        transition: color 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .bottom-navbar .nav-link:hover {
+        color: #000;
+      }
+
+      .bottom-navbar .nav-link i {
+        margin-right: 5px;
+      }
+
+      #mobile-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #333;
+        color: #fff;
+        display: none;
+        z-index: 1000;
+      }
+
       .messages {
         list-style: none;
         padding: 0;
@@ -118,8 +155,8 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        margin-bottom: 1rem; /* Added margin to space out messages */
-        position: relative; /* Required for positioning close button */
+        margin-bottom: 1rem;
+        position: relative;
       }
 
       .messages li i {
@@ -143,23 +180,13 @@
       .messages .close-message:hover {
         background: #d0d0d0;
       }
-
-      /* Ensure the modal behaves responsively */
-      #mobile-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: #333;
-        color: #fff;
-        display: none;
-        z-index: 1000;
-      }
+      
+      {% block style %}{% endblock style %}
     </style>
   </head>
   <body>
     <!-- Navbar -->
-    <nav class="navbar bg-white shadow-md mb-2">
+    <nav class="navbar bg-white shadow-md">
       <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-16">
           <!-- Logo -->
@@ -170,8 +197,7 @@
                   {% if request.user.profile_image %}
                     <img src="{{ request.user.profile_image.url }}" alt="User Icon">
                   {% else %}
-                    <img src="{% static 'static_profile_image/default_profile_image.jpg' %}"
-                         alt="User Icon">
+                    <img src="{% static 'static_profile_image/default_profile_image.jpg' %}" alt="User Icon">
                   {% endif %}
                 </a>
                 <h2 class="text-xl font-bold">{{ request.user }}</h2>
@@ -179,9 +205,13 @@
             {% endif %}
           </div>
           <!-- Navbar links -->
-          <div class="hidden md:flex">
+          <div class="hidden md:flex items-center space-x-6">
             <a href="{% url 'home_page' %}" class="nav-link">Home</a>
             {% if request.user.is_authenticated %}
+              <a href="{% url 'all_requests' %}" class="nav-link relative">
+                <i class="fas fa-bell"></i>
+                <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{ request_count }}</span>
+              </a>
               <a href="{% url 'upload_image' %}" class="nav-link">Upload Image</a>
               <a href="{% url 'logout_confirm' %}" class="nav-link">Log Out</a>
               <a href="{% url 'profile' %}" class="nav-link">Profile</a>
@@ -203,6 +233,10 @@
       <div class="flex flex-col">
         <a href="{% url 'home_page' %}" class="nav-link">Home</a>
         {% if request.user.is_authenticated %}
+          <a href="{% url 'all_requests' %}" class="nav-link relative">
+            <i class="fas fa-bell"></i>
+            <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{ request_count }}</span>
+          </a>
           <a href="{% url 'upload_image' %}" class="nav-link">Upload Image</a>
           <a href="{% url 'logout_confirm' %}" class="nav-link">Log Out</a>
           <a href="{% url 'profile' %}" class="nav-link">Profile</a>
@@ -216,8 +250,7 @@
       {% if messages %}
         <ul class="messages">
           {% for message in messages %}
-            <li id="message-{{ forloop.counter }}"
-                class="p-4 rounded-lg flex items-center space-x-4 {% if message.tags %}bg-{{ message.tags }}-100 border border-{{ message.tags }}-300 text-{{ message.tags }}-700{% endif %}">
+            <li id="message-{{ forloop.counter }}" class="p-4 rounded-lg flex items-center space-x-4 {% if message.tags %}bg-{{ message.tags }}-100 border border-{{ message.tags }}-300 text-{{ message.tags }}-700{% endif %}">
               {% if message.tags == "success" %}
                 <i class="fas fa-check-circle text-{{ message.tags }}-500"></i>
               {% elif message.tags == "error" %}
@@ -272,3 +305,4 @@
     </script>
   </body>
 </html>
+  
