@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% load custom_tags %}
-
 {% block content %}
     <div class="flex items-center justify-center">
         <div class="max-w-3xl mx-auto rounded-lg overflow-hidden bg-white bg-opacity-30 backdrop-blur-md border border-white border-opacity-20 shadow-lg p-6 flex flex-col md:flex-row items-center space-x-6">
@@ -41,7 +40,6 @@
             </div>
         </div>
     </div>
-
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {% for item in data %}
@@ -70,37 +68,20 @@
                         <p class="text-gray-800 text-sm line-clamp-2">{{ item.desc }}</p>
                     </div>
                     <div class="px-3 py-2 bg-white bg-opacity-40 backdrop-blur-md">
-                        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
-                            <form method="POST" action="{% url 'image_portfolio' item.id %}">
-                                {% csrf_token %}
-                                <button type="submit" value="like" name="like" class="focus:outline-none bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded text-xs">
-                                    {% is_liked item.id as liked %}
-                                    <i class="fa fa-heart {% if liked %}text-red-600{% else %}text-gray-400{% endif %} text-lg"></i>
-                                    {% if item.like %}{{ item.like }}{% endif %}
-                                </button>
-                            </form>
-                            <form method="POST" action="{% url 'image_portfolio' item.id %}">
-                                {% csrf_token %}
-                                <button type="submit" value="comment" name="like" class="focus:outline-none bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded text-xs">
-                                    <i style="background-image: url('{% static 'icons/three-dots-in-a-speech-bubble-svgrepo-com.svg' %}');
-                                              background-size: cover;
-                                              width: 20px;
-                                              height: 20px;
-                                              display: inline-block"></i>
-                                    {% if item.comment %}{{ item.comment }}{% endif %}
-                                </button>
-                            </form>
-                        </div>
                         <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mt-2">
-                            <form method="POST" action="{% url 'confirmation_page' item.id %}" class="inline">
+                            <form method="POST"
+                                  action="{% url 'confirmation_page' item.id %}"
+                                  class="inline">
                                 {% csrf_token %}
-                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-xs">
+                                <button type="submit"
+                                        class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-xs">
                                     <i class="fa fa-trash text-white text-sm"></i>
                                     <span>Delete</span>
                                 </button>
                             </form>
                             <form method="GET" action="{% url 'edit_image' item.id %}" class="inline">
-                                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded text-xs">
+                                <button type="submit"
+                                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded text-xs">
                                     <i class="fa fa-edit text-white text-sm"></i>
                                     <span>Edit</span>
                                 </button>

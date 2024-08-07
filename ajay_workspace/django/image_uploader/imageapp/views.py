@@ -20,8 +20,8 @@ from django.core import serializers
 from django.core.mail import send_mail
 
 
-# Create your views here.
-class Home(ListView):
+# ----------------Explore Page----------------
+class Explore(ListView):
     model = ImageModel
     context_object_name = "data"
     template_name = "user/index.html"
@@ -29,6 +29,17 @@ class Home(ListView):
 
     def get_queryset(self):
         return self.model.objects.all().order_by("-id")
+
+
+# ----------------Home Page----------------
+class Home(View):
+    def get(self, request):
+        follower = FollowerModel.objects.filter(user=request.user).values("follower")
+        print(follower)
+        queryset = ImageModel.objects.filter(user__in=follower)
+        print(queryset)
+        context = {"data": queryset}
+        return render(request, "admin/home_page.html",context   )
 
 
 # ----------------following Posts----------------
@@ -87,7 +98,7 @@ def all_requests(request):
 def accept_request(request, id):
     current_user = request.user
     requested_user = User.objects.get(id=id)
-    print(requested_user)
+
     requests = RequestModel.objects.filter(receiver_user=current_user)
     if request.method == "POST":
         if request.POST.get("accept") == "accept":
@@ -109,7 +120,7 @@ def accept_request(request, id):
 def image_portfolio(request, id):
     data = ImageModel.objects.get(id=id)
     if request.method == "POST":
-        print("request.post : ", request.POST.get("like"))
+
         response_data = {}
         if request.POST.get("like") == "like":
             like_data, created = ImageLike.objects.get_or_create(
@@ -141,7 +152,7 @@ def get_like_dislike_count(request, id):
     response = {}
     response["like"] = image.like
     response["dislike"] = image.dislike
-    print(image.like)
+
     return JsonResponse(response, safe=False)
 
 

@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="{% static 'css/tailwind.min.css' %}" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          rel="stylesheet">
     <script src="{% static 'jquery/jquery.min.js' %}"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+          rel="stylesheet">
     <style>
       * {
         font-family: "Balsamiq Sans", sans-serif;
@@ -197,7 +199,8 @@
                   {% if request.user.profile_image %}
                     <img src="{{ request.user.profile_image.url }}" alt="User Icon">
                   {% else %}
-                    <img src="{% static 'static_profile_image/default_profile_image.jpg' %}" alt="User Icon">
+                    <img src="{% static 'static_profile_image/default_profile_image.jpg' %}"
+                         alt="User Icon">
                   {% endif %}
                 </a>
                 <h2 class="text-xl font-bold">{{ request.user }}</h2>
@@ -206,8 +209,9 @@
           </div>
           <!-- Navbar links -->
           <div class="hidden md:flex items-center space-x-6">
-            <a href="{% url 'home_page' %}" class="nav-link">Home</a>
+            <a href="{% url 'explore_page' %}" class="nav-link">Explore</a>
             {% if request.user.is_authenticated %}
+              <a href="{% url 'home_page' %}" class="nav-link">Home</a>
               <a href="{% url 'all_requests' %}" class="nav-link relative">
                 <i class="fas fa-bell"></i>
                 <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{ request_count }}</span>
@@ -231,8 +235,9 @@
     <!-- Responsive menu -->
     <div id="mobile-menu" class="mobile-menu md:hidden shadow-md">
       <div class="flex flex-col">
-        <a href="{% url 'home_page' %}" class="nav-link">Home</a>
+        <a href="{% url 'explore_page' %}" class="nav-link">Explore</a>
         {% if request.user.is_authenticated %}
+          <a href="{% url 'home_page' %}" class="nav-link">Home</a>
           <a href="{% url 'all_requests' %}" class="nav-link relative">
             <i class="fas fa-bell"></i>
             <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{ request_count }}</span>
@@ -250,7 +255,8 @@
       {% if messages %}
         <ul class="messages">
           {% for message in messages %}
-            <li id="message-{{ forloop.counter }}" class="p-4 rounded-lg flex items-center space-x-4 {% if message.tags %}bg-{{ message.tags }}-100 border border-{{ message.tags }}-300 text-{{ message.tags }}-700{% endif %}">
+            <li id="message-{{ forloop.counter }}"
+                class="p-4 rounded-lg flex items-center space-x-4 {% if message.tags %}bg-{{ message.tags }}-100 border border-{{ message.tags }}-300 text-{{ message.tags }}-700{% endif %}">
               {% if message.tags == "success" %}
                 <i class="fas fa-check-circle text-{{ message.tags }}-500"></i>
               {% elif message.tags == "error" %}
@@ -305,4 +311,3 @@
     </script>
   </body>
 </html>
-  

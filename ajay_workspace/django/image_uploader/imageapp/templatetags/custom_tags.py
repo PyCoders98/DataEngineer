@@ -44,3 +44,7 @@ def is_disliked(context, id):
                     return liked
     except:
         return liked
+
+
+# @register.simple_tag(takes_context=True)
+# def is_followed(context, id):
