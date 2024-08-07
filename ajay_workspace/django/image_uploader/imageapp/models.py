@@ -79,7 +79,7 @@ class RequestModel(models.Model):
 
 
 class FollowerModel(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_admin") 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="post_admin",verbose_name="post_admin") 
     follower = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, related_name="follower"
     )

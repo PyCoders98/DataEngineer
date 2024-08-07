@@ -2,7 +2,7 @@
 {% load static %}
 {% load custom_tags %}
 {% block style %}
-    <style>
+
         /* Modal animations */
         .modal-enter-active {
             @apply opacity-100 scale-100;
@@ -29,11 +29,13 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            transition: transform 0.2s ease; /* Smooth transition for scaling */
+            transition: transform 0.4s ease; /* Smooth transition for scaling */
         }
 
-        .card:hover {
-            transform: scale(1.02); /* Scale the entire card on hover */
+        .card:hover {/* Scale the entire card on hover */
+            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+        
+        
         }
 
         .card-content {
@@ -205,8 +207,7 @@
             font-size: 1rem; /* Larger font size for better readability */
             color: #1f2937; /* Tailwind gray-900 */
         }
-    </style>
-{% endblock style %}
+    {% endblock style %}
 {% block content %}
     <div class="max-w-6xl mx-auto p-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -222,7 +223,14 @@
                             <p class="profile-date">{{ item.created_at.date }}</p>
                         </div>
                         <form class="follow-request-form" data-id="{{ item.id }}">
-                            <button type="submit" class="follow-button">Follow</button>
+                            {% if request.user.is_authenticated %}
+                                {% is_followed item.id as followed %}
+                                {% if followed %}
+                                    <button type="submit" class="follow-button">Unfollow</button>
+                                {% else %}
+                                    <button type="submit" class="follow-button">Follow</button>
+                                {% endif %}
+                            {% endif %}
                         </form>
                     </div>
                     <a href="{% url 'get_image' item.id %}" class="block">

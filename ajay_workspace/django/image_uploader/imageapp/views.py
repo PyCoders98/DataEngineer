@@ -34,12 +34,10 @@ class Explore(ListView):
 # ----------------Home Page----------------
 class Home(View):
     def get(self, request):
-        follower = FollowerModel.objects.filter(user=request.user).values("follower")
-        print(follower)
+        follower = FollowerModel.objects.filter(follower=request.user).values('user')
         queryset = ImageModel.objects.filter(user__in=follower)
-        print(queryset)
         context = {"data": queryset}
-        return render(request, "admin/home_page.html",context   )
+        return render(request, "admin/home_page.html", context)
 
 
 # ----------------following Posts----------------
@@ -53,6 +51,7 @@ def follow(request, id):
 
 
 # ----------------follow saving requests----------------
+@login_required(login_url="/login/")
 def follow_request(request, id):
     current_user = request.user
     post = ImageModel.objects.get(id=id)

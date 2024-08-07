@@ -6,8 +6,8 @@ from .context_processor import *
 
 
 urlpatterns = [
-    path("", Home.as_view(), name="home_page"),
-    path("explore/", Explore.as_view(), name="explore_page"),
+    path("home/", Home.as_view(), name="home_page"),
+    path("", Explore.as_view(), name="explore_page"),
     path("image-portfolio/<int:id>", image_portfolio, name="image_portfolio"),
     path("comment-page/<int:id>/", comment_page, name="comment_page"),
     path("get_image/<int:id>/", get_image, name="get_image"),

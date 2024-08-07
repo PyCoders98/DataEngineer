@@ -1,7 +1,7 @@
 # myapp/templatetags/custom_tags.py
 
 from django import template
-from imageapp.models import ImageLike
+from imageapp.models import *
 
 register = template.Library()
 
@@ -46,5 +46,17 @@ def is_disliked(context, id):
         return liked
 
 
-# @register.simple_tag(takes_context=True)
-# def is_followed(context, id):
+@register.simple_tag(takes_context=True)
+def is_followed(context, id):
+    request = context["request"]
+    lst = []
+    if request.user.is_authenticated:
+        post_admin = FollowerModel.objects.filter(follower=request.user).values("user")
+
+        for admin in post_admin:
+            post_admin_id = admin['user']
+            lst.append(post_admin_id)
+        if id in lst:
+            return True
+        return False
+    return False

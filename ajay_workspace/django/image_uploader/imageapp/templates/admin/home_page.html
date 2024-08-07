@@ -2,208 +2,176 @@
 {% load static %}
 {% load custom_tags %}
 {% block style %}
-        /* Modal animations */
-        .modal-enter-active {
-            @apply opacity-100 scale-100;
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-        }
-
-        .modal-exit-active {
-            @apply opacity-0 scale-95;
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-        }
-
-        /* Glassmorphism effect */
-        .glassmorphism {
-            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Light border for contrast */
-            backdrop-filter: blur(10px); /* Blur effect for glassmorphism */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Card styles */
-        .card {
-            border: none; /* Remove any border */
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            transition: transform 0.2s ease; /* Smooth transition for scaling */
-        }
-
-        .card:hover {
-            transform: scale(1.02); /* Scale the entire card on hover */
-        }
-
-        .card-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-        }
-
-        /* Profile header */
-        .profile-header {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 1rem;
-            padding: 1rem;
-            align-items: center;
-        }
-
-        .profile-image {
-            grid-row: span 2; /* Span two rows for the profile image */
-        }
-
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .profile-username {
-            font-weight: 700;
-            color: #1f2937; /* Tailwind gray-900 */
-        }
-
-        .profile-date {
-            color: #4b5563; /* Tailwind gray-600 */
-            font-size: 0.875rem; /* Tailwind text-sm */
-        }
-
-        .follow-button {
-            background-color: #1f2937; /* Tailwind gray-900 */
-            color: white;
-            border: none;
-            border-radius: 0.375rem; /* Tailwind rounded-md */
-            padding: 0.5rem 1rem; /* Tailwind px-4 py-2 */
-            cursor: pointer;
-            font-size: 0.875rem; /* Tailwind text-sm */
-            transition: background-color 0.3s ease; /* Smooth transition */
-        }
-
-        .follow-button:hover {
-            background-color: #374151; /* Tailwind gray-700 */
-        }
-
-        .card-image {
-            margin-top: -20px; /* Moves the image up */
-            transition: none; /* Disable transition effects on the image */
-        }
-
-        .action-buttons {
-            background: transparent; /* Semi-transparent background */
-            padding: 0.25rem; /* Reduced padding */
-        }
-
-        .like-dislike-form, .comment-form {
-            background: transparent; /* Remove default background */
-            border: none; /* Remove border */
-        }
-
-        .like-dislike-form button, .comment-form button {
-            display: flex;
-            align-items: center;
-            background: transparent; /* Glassmorphism effect */
-            border-radius: 10px;
-            padding: 0.25rem; /* Reduced padding */
-            font-size: 0.75rem; /* Reduced font size */
-        }
-
-        .like-dislike-form button i, .comment-form button i {
-            width: 20px; /* Adjust icon size */
-            height: 20px; /* Adjust icon size */
-        }
-
-        .like-count, .comment-form span {
-            margin-left: 0.5rem; /* Reduced margin */
-        }
-
-        /* Responsive styles */
-        @media (max-width: 640px) {
-            .profile-header {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto auto auto;
-                gap: 0.5rem;
-                padding: 0.5rem; /* Reduced padding */
-            }
-
-            .profile-image {
-                grid-row: auto; /* Adjust profile image row span on smaller screens */
-                width: 48px; /* Smaller profile image size */
-                height: 48px; /* Smaller profile image size */
-            }
-
-            .profile-info {
-                font-size: 0.875rem; /* Smaller font size */
-            }
-
-            .card-image {
-                margin-top: 0; /* Reset margin for smaller screens */
-                height: auto; /* Adjust image height for smaller screens */
-            }
-
-            .description-container {
-                padding: 0.5rem; /* Reduced padding */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .profile-header {
-                padding: 0.25rem; /* Even smaller padding on very small screens */
-            }
-
-            .profile-image {
-                width: 40px; /* Further reduced profile image size */
-                height: 40px; /* Further reduced profile image size */
-            }
-
-            .card-image {
-                height: 200px; /* Fixed height for card image on very small screens */
-            }
-
-            .description {
-                font-size: 0.625rem; /* Further reduced font size */
-                height: 4rem; /* Adjust height for better fit */
-            }
-        }
-
-        /* Description styles */
-        .description-container {
-            overflow: hidden; /* Hide overflow */
-            position: relative; /* Ensure absolute positioning of child */
-        }
-
-        .description {
-            color: #1f2937; /* Tailwind gray-900 */
-            font-size: 0.75rem; /* Reduced font size */
-            background: rgba(255, 255, 255, 0.7); /* Semi-transparent background for contrast */
-            backdrop-filter: blur(10px); /* Blur effect */
-            height: 3rem; /* Fixed height */
-            overflow: hidden; /* Hide overflow text */
-            display: -webkit-box;
-            -webkit-line-clamp: 2; /* Limit to 2 lines */
-            -webkit-box-orient: vertical; /* Vertical box orientation */
-            text-overflow: ellipsis; /* Clip text with ellipsis */
-            white-space: normal; /* Allow text to wrap */
-            background: transparent;
-        }
-
-        .description:hover {
-            cursor: pointer; /* Change cursor to indicate clickability */
-        }
-
-        /* Modal styles */
-        #modalContent {
-            max-height: 90vh; /* Limit height to viewport height */
-            overflow-y: auto; /* Enable vertical scrolling if needed */
-        }
-
-        #modalDescription {
-            padding: 1rem;
-            font-size: 1rem; /* Larger font size for better readability */
-            color: #1f2937; /* Tailwind gray-900 */
-        }
+    /* Modal animations */
+    .modal-enter-active {
+    @apply opacity-100 scale-100;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+    .modal-exit-active {
+    @apply opacity-0 scale-95;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+    /* Glassmorphism effect */
+    .glassmorphism {
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Light border for contrast */
+    backdrop-filter: blur(10px); /* Blur effect for glassmorphism */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    /* Card styles */
+    .card {
+    border: none; /* Remove any border */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.4s ease; /* Smooth transition for scaling */
+    }
+    .card:hover {/* Scale the entire card on hover */
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+    }
+    .card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    }
+    /* Profile header */
+    .profile-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    padding: 1rem;
+    align-items: center;
+    }
+    .profile-image {
+    grid-row: span 2; /* Span two rows for the profile image */
+    }
+    .profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    }
+    .profile-username {
+    font-weight: 700;
+    color: #1f2937; /* Tailwind gray-900 */
+    }
+    .profile-date {
+    color: #4b5563; /* Tailwind gray-600 */
+    font-size: 0.875rem; /* Tailwind text-sm */
+    }
+    .follow-button {
+    background-color: #1f2937; /* Tailwind gray-900 */
+    color: white;
+    border: none;
+    border-radius: 0.375rem; /* Tailwind rounded-md */
+    padding: 0.5rem 1rem; /* Tailwind px-4 py-2 */
+    cursor: pointer;
+    font-size: 0.875rem; /* Tailwind text-sm */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    }
+    .follow-button:hover {
+    background-color: #374151; /* Tailwind gray-700 */
+    }
+    .card-image {
+    margin-top: -20px; /* Moves the image up */
+    transition: none; /* Disable transition effects on the image */
+    }
+    .action-buttons {
+    background: transparent; /* Semi-transparent background */
+    padding: 0.25rem; /* Reduced padding */
+    }
+    .like-dislike-form, .comment-form {
+    background: transparent; /* Remove default background */
+    border: none; /* Remove border */
+    }
+    .like-dislike-form button, .comment-form button {
+    display: flex;
+    align-items: center;
+    background: transparent; /* Glassmorphism effect */
+    border-radius: 10px;
+    padding: 0.25rem; /* Reduced padding */
+    font-size: 0.75rem; /* Reduced font size */
+    }
+    .like-dislike-form button i, .comment-form button i {
+    width: 20px; /* Adjust icon size */
+    height: 20px; /* Adjust icon size */
+    }
+    .like-count, .comment-form span {
+    margin-left: 0.5rem; /* Reduced margin */
+    }
+    /* Responsive styles */
+    @media (max-width: 640px) {
+    .profile-header {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 0.5rem;
+    padding: 0.5rem; /* Reduced padding */
+    }
+    .profile-image {
+    grid-row: auto; /* Adjust profile image row span on smaller screens */
+    width: 48px; /* Smaller profile image size */
+    height: 48px; /* Smaller profile image size */
+    }
+    .profile-info {
+    font-size: 0.875rem; /* Smaller font size */
+    }
+    .card-image {
+    margin-top: 0; /* Reset margin for smaller screens */
+    height: auto; /* Adjust image height for smaller screens */
+    }
+    .description-container {
+    padding: 0.5rem; /* Reduced padding */
+    }
+    }
+    @media (max-width: 480px) {
+    .profile-header {
+    padding: 0.25rem; /* Even smaller padding on very small screens */
+    }
+    .profile-image {
+    width: 40px; /* Further reduced profile image size */
+    height: 40px; /* Further reduced profile image size */
+    }
+    .card-image {
+    height: 200px; /* Fixed height for card image on very small screens */
+    }
+    .description {
+    font-size: 0.625rem; /* Further reduced font size */
+    height: 4rem; /* Adjust height for better fit */
+    }
+    }
+    /* Description styles */
+    .description-container {
+    overflow: hidden; /* Hide overflow */
+    position: relative; /* Ensure absolute positioning of child */
+    }
+    .description {
+    color: #1f2937; /* Tailwind gray-900 */
+    font-size: 0.75rem; /* Reduced font size */
+    background: rgba(255, 255, 255, 0.7); /* Semi-transparent background for contrast */
+    backdrop-filter: blur(10px); /* Blur effect */
+    height: 3rem; /* Fixed height */
+    overflow: hidden; /* Hide overflow text */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical; /* Vertical box orientation */
+    text-overflow: ellipsis; /* Clip text with ellipsis */
+    white-space: normal; /* Allow text to wrap */
+    background: transparent;
+    }
+    .description:hover {
+    cursor: pointer; /* Change cursor to indicate clickability */
+    }
+    /* Modal styles */
+    #modalContent {
+    max-height: 90vh; /* Limit height to viewport height */
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+    }
+    #modalDescription {
+    padding: 1rem;
+    font-size: 1rem; /* Larger font size for better readability */
+    color: #1f2937; /* Tailwind gray-900 */
+    }
 {% endblock style %}
 {% block content %}
     <div class="max-w-6xl mx-auto p-4">
@@ -220,7 +188,14 @@
                             <p class="profile-date">{{ item.created_at.date }}</p>
                         </div>
                         <form class="follow-request-form" data-id="{{ item.id }}">
-                            <button type="submit" class="follow-button">Follow</button>
+                            {% if request.user.is_authenticated %}
+                                {% is_followed item.user.id as followed %}
+                                {% if followed %}
+                                    <button type="submit" class="follow-button">Unfollow</button>
+                                {% else %}
+                                    <button type="submit" class="follow-button">Follow</button>
+                                {% endif %}
+                            {% endif %}
                         </form>
                     </div>
                     <a href="{% url 'get_image' item.id %}" class="block">

@@ -34,7 +34,7 @@
                    required>
             <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-700 cursor-pointer"
                   id="togglePassword">
-              <i class="bi bi-eye" style="font-size: 1.25rem; color: #4a5568;"></i>
+              <i class="fas fa-eye" style="font-size: 1.25rem; color: #4a5568;"></i>
             </span>
           </div>
         </div>
@@ -50,7 +50,7 @@
                    required>
             <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-700 cursor-pointer"
                   id="toggleConfirmPassword">
-              <i class="bi bi-eye" style="font-size: 1.25rem; color: #4a5568;"></i>
+              <i class="fas fa-eye" style="font-size: 1.25rem; color: #4a5568;"></i>
             </span>
           </div>
         </div>
@@ -64,40 +64,49 @@
       </a>
     </div>
   </div>
+  <!-- Include Font Awesome -->
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   <script>
+    document.addEventListener('DOMContentLoaded', function () {
         // Toggle password visibility
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            var passwordField = document.getElementById('password');
-            var icon = this.querySelector('i');
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password');
+        const passwordIcon = togglePassword.querySelector('i');
 
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
-                icon.style.color = '#3182ce'; // Change to your preferred visible color
+        togglePassword.addEventListener('click', function () {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+
+            // Toggle the eye icon
+            if (type === 'password') {
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+                passwordIcon.style.color = '#4a5568'; // Default color
             } else {
-                passwordField.type = 'password';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
-                icon.style.color = '#4a5568'; // Change back to default color
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+                passwordIcon.style.color = '#3182ce'; // Visible color
             }
         });
 
         // Toggle confirm password visibility
-        document.getElementById('toggleConfirmPassword').addEventListener('click', function () {
-            var confirmPasswordField = document.getElementById('confirm_password');
-            var icon = this.querySelector('i');
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const confirmPasswordField = document.getElementById('confirm_password');
+        const confirmPasswordIcon = toggleConfirmPassword.querySelector('i');
 
-            if (confirmPasswordField.type === 'password') {
-                confirmPasswordField.type = 'text';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
-                icon.style.color = '#3182ce'; // Change to your preferred visible color
+        toggleConfirmPassword.addEventListener('click', function () {
+            const type = confirmPasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPasswordField.setAttribute('type', type);
+
+            // Toggle the eye icon
+            if (type === 'password') {
+                confirmPasswordIcon.classList.remove('fa-eye-slash');
+                confirmPasswordIcon.classList.add('fa-eye');
+                confirmPasswordIcon.style.color = '#4a5568'; // Default color
             } else {
-                confirmPasswordField.type = 'password';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
-                icon.style.color = '#4a5568'; // Change back to default color
+                confirmPasswordIcon.classList.remove('fa-eye');
+                confirmPasswordIcon.classList.add('fa-eye-slash');
+                confirmPasswordIcon.style.color = '#3182ce'; // Visible color
             }
         });
     });

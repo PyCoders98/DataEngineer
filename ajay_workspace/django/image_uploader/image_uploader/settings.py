@@ -24,6 +24,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://d713-60-254-111-210.ngrok-free.app",
     "https://d713-60-254-111-210.ngrok-free.app/",
     "https://cgtbdwv8-8000.inc1.devtunnels.ms/",
+    "https://f827-60-254-111-210.ngrok-free.app",
 ]
 
 
@@ -79,6 +80,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "imageapp.context_processor.profile_image",
                 "imageapp.context_processor.follow_count",
+                "imageapp.context_processor.followers_count",
+                "imageapp.context_processor.following_count",
             ],
         },
     },
