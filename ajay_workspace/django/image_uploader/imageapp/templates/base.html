@@ -6,18 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="{% static 'css/tailwind.min.css' %}" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-          rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="{% static 'jquery/jquery.min.js' %}"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+      /* Existing styles */
       * {
         font-family: "Balsamiq Sans", sans-serif;
         font-weight: 400;
         font-style: normal;
       }
-
       body {
         margin: 0;
         padding: 0;
@@ -27,80 +25,66 @@
         background-position: center;
         background-attachment: fixed;
       }
-
       .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 20px;
       }
-
       .navbar {
         background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 0 20px;
         border: 1px solid black;
       }
-
       .navbar .flex {
         justify-content: space-between;
         align-items: center;
       }
-
       .navbar .user-info {
         display: flex;
         align-items: center;
       }
-
       .navbar .user-info img {
         border-radius: 50%;
         width: 32px;
         height: 32px;
         margin-right: 10px;
       }
-
       .navbar .user-info h2 {
         font-size: 1.5rem;
         font-weight: bold;
         color: #ffffff;
         margin: 0;
       }
-
       .navbar .nav-link {
         color: #ffffff;
         text-decoration: none;
         padding: 10px 15px;
         transition: color 0.3s ease;
       }
-
       .navbar .nav-link:hover {
         color: #e0e0e0;
       }
-
       .mobile-menu {
         display: none;
       }
-
       @media (max-width: 768px) {
         .navbar .hidden.md\:flex {
           display: none;
         }
-
         .mobile-menu {
           display: block;
         }
-
         .mobile-menu .nav-link {
           display: block;
           padding: 10px 15px;
           color: #ffffff;
           text-decoration: none;
         }
-
         .mobile-menu .nav-link:hover {
           color: #e0e0e0;
         }
       }
-
       .mobile-menu-button {
         background: none;
         border: none;
@@ -109,14 +93,12 @@
         cursor: pointer;
         outline: none;
       }
-
       .bottom-navbar {
         background-color: #ffffff;
         box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
         border-top: 1px solid #e5e5e5;
         padding: 0.5rem;
       }
-
       .bottom-navbar .nav-link {
         color: #333;
         text-decoration: none;
@@ -126,15 +108,12 @@
         align-items: center;
         justify-content: center;
       }
-
       .bottom-navbar .nav-link:hover {
         color: #000;
       }
-
       .bottom-navbar .nav-link i {
         margin-right: 5px;
       }
-
       #mobile-menu {
         position: absolute;
         top: 100%;
@@ -145,12 +124,10 @@
         display: none;
         z-index: 1000;
       }
-
       .messages {
         list-style: none;
         padding: 0;
       }
-
       .messages li {
         padding: 1rem;
         border-radius: 0.375rem;
@@ -160,11 +137,9 @@
         margin-bottom: 1rem;
         position: relative;
       }
-
       .messages li i {
         font-size: 1.25rem;
       }
-
       .messages .close-message {
         position: absolute;
         top: 0.5rem;
@@ -178,11 +153,9 @@
         font-size: 1rem;
         transition: background 0.3s ease;
       }
-
       .messages .close-message:hover {
         background: #d0d0d0;
       }
-      
       {% block style %}{% endblock style %}
     </style>
   </head>
@@ -199,8 +172,7 @@
                   {% if request.user.profile_image %}
                     <img src="{{ request.user.profile_image.url }}" alt="User Icon">
                   {% else %}
-                    <img src="{% static 'static_profile_image/default_profile_image.jpg' %}"
-                         alt="User Icon">
+                    <img src="{% static 'static_profile_image/default_profile_image.jpg' %}" alt="User Icon">
                   {% endif %}
                 </a>
                 <h2 class="text-xl font-bold">{{ request.user }}</h2>
@@ -217,7 +189,7 @@
                 <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{ request_count }}</span>
               </a>
               <a href="{% url 'upload_image' %}" class="nav-link">Upload Image</a>
-              <a href="{% url 'logout_confirm' %}" class="nav-link">Log Out</a>
+              <a href="#" id="logout-button" class="nav-link">Log Out</a>
               <a href="{% url 'profile' %}" class="nav-link">Profile</a>
             {% else %}
               <a href="{% url 'login' %}" class="nav-link"><i class="fa fa-sign-in-alt"></i> Login</a>
@@ -243,11 +215,22 @@
             <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{ request_count }}</span>
           </a>
           <a href="{% url 'upload_image' %}" class="nav-link">Upload Image</a>
-          <a href="{% url 'logout_confirm' %}" class="nav-link">Log Out</a>
+          <a href="#" id="mobile-logout-button" class="nav-link">Log Out</a>
           <a href="{% url 'profile' %}" class="nav-link">Profile</a>
         {% else %}
           <a href="{% url 'login' %}" class="nav-link">Login</a>
         {% endif %}
+      </div>
+    </div>
+    <!-- Log Out Confirmation Modal -->
+    <div id="logoutModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+      <div class="bg-white rounded-lg p-6 max-w-sm w-full">
+        <h2 class="text-xl font-bold mb-4">Confirm Logout</h2>
+        <p class="mb-6">Are you sure you want to log out?</p>
+        <div class="flex justify-end space-x-4">
+          <button id="cancelLogout" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg">No</button>
+          <a href="{% url 'logout' %}" id="confirmLogout" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg">Yes</a>
+        </div>
       </div>
     </div>
     <!-- Content block -->
@@ -255,8 +238,7 @@
       {% if messages %}
         <ul class="messages">
           {% for message in messages %}
-            <li id="message-{{ forloop.counter }}"
-                class="p-4 rounded-lg flex items-center space-x-4 {% if message.tags %}bg-{{ message.tags }}-100 border border-{{ message.tags }}-300 text-{{ message.tags }}-700{% endif %}">
+            <li id="message-{{ forloop.counter }}" class="p-4 rounded-lg flex items-center space-x-4 {% if message.tags %}bg-{{ message.tags }}-100 border border-{{ message.tags }}-300 text-{{ message.tags }}-700{% endif %}">
               {% if message.tags == "success" %}
                 <i class="fas fa-check-circle text-{{ message.tags }}-500"></i>
               {% elif message.tags == "error" %}
@@ -300,6 +282,26 @@
               }, 500);
             });
           }
+        });
+
+        // Logout button click event listener
+        var logoutButton = document.getElementById('logout-button');
+        var mobileLogoutButton = document.getElementById('mobile-logout-button');
+        var logoutModal = document.getElementById('logoutModal');
+        var cancelLogout = document.getElementById('cancelLogout');
+        
+        logoutButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          logoutModal.classList.remove('hidden');
+        });
+
+        mobileLogoutButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          logoutModal.classList.remove('hidden');
+        });
+
+        cancelLogout.addEventListener('click', function() {
+          logoutModal.classList.add('hidden');
         });
       });
 

@@ -188,86 +188,85 @@
                             <p class="profile-date">{{ item.created_at.date }}</p>
                         </div>
                         <form class="follow-request-form" data-id="{{ item.id }}">
-                            {% if request.user.is_authenticated %}
-                                {% is_followed item.user.id as followed %}
-                                {% if followed %}
-                                    <button type="submit" class="follow-button">Unfollow</button>
-                                {% else %}
-                                    <button type="submit" class="follow-button">Follow</button>
-                                {% endif %}
+                            {% is_followed item.user.id as followed %}
+                            {% if followed %}
+                                <button type="submit" class="follow-button">Unfollow</button>
+                            {% else %}
+                                <button type="submit" class="follow-button">Follow</button>
                             {% endif %}
                         </form>
-                    </div>
-                    <a href="{% url 'get_image' item.id %}" class="block">
-                        <img src="/media/{{ item.image }}"
-                             alt="{{ item.desc }}"
-                             class="w-full h-36 object-contain card-image">
-                    </a>
-                    <div class="action-buttons flex justify-left items-center p-2">
-                        <form class="like-dislike-form mr-4 flex items-center space-x-4"
-                              data-id="{{ item.id }}">
-                            {% csrf_token %}
-                            <input type="hidden" name="action" value="like">
-                            <input type="hidden" name="like" value="{{ item.like }}">
-                            {% is_liked item.id as liked %}
-                            <button type="submit"
-                                    name="like"
-                                    class="flex items-center space-x-1 text-gray-600 hover:text-red-600 transition duration-300">
-                                <i class="icon"
-                                   style="background-image: url('{% if liked %}{% static 'icons/liketrue.png' %}{% else %}{% static 'icons/likefalse.png' %}{% endif %}');
-                                          width: 20px;
-                                          height: 20px;
-                                          background-size: contain;
-                                          background-repeat: no-repeat"></i>
-                                <span class="like-count">{{ item.like|default:"0" }}</span>
-                            </button>
-                        </form>
-                        <form method="POST"
-                              action="{% url 'image_portfolio' item.id %}"
-                              class="comment-form">
-                            {% csrf_token %}
-                            <button type="submit"
-                                    value="comment"
-                                    name="comment"
-                                    class="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition duration-300">
-                                <i class="icon"
-                                   style="background-image: url('{% static 'icons/three-dots-in-a-speech-bubble-svgrepo-com.svg' %}');
-                                          width: 20px;
-                                          height: 20px;
-                                          background-size: contain;
-                                          background-repeat: no-repeat"></i>
-                                {% if item.comment %}<span>{{ item.comment }}</span>{% endif %}
-                            </button>
-                        </form>
-                    </div>
-                    <div class="description-container">
-                        <p class="description"
-                           onclick="openModal('{{ item.id }}', '{{ item.desc|escapejs }}', '/media/{{ item.image }}')">
-                            {{ item.desc|truncatewords:10 }}
-                        </p>
-                    </div>
+                   
                 </div>
-            {% endfor %}
-        </div>
+                <a href="{% url 'get_image' item.id %}" class="block">
+                    <img src="/media/{{ item.image }}"
+                         alt="{{ item.desc }}"
+                         class="w-full h-36 object-contain card-image">
+                </a>
+                <div class="action-buttons flex justify-left items-center p-2">
+                    <form class="like-dislike-form mr-4 flex items-center space-x-4"
+                          data-id="{{ item.id }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="like">
+                        <input type="hidden" name="like" value="{{ item.like }}">
+                        {% is_liked item.id as liked %}
+                        <button type="submit"
+                                name="like"
+                                class="flex items-center space-x-1 text-gray-600 hover:text-red-600 transition duration-300">
+                            <i class="icon"
+                               style="background-image: url('{% if liked %}{% static 'icons/liketrue.png' %}{% else %}{% static 'icons/likefalse.png' %}{% endif %}');
+                                      width: 20px;
+                                      height: 20px;
+                                      background-size: contain;
+                                      background-repeat: no-repeat"></i>
+                            <span class="like-count">{{ item.like|default:"0" }}</span>
+                        </button>
+                    </form>
+                    <form method="POST"
+                          action="{% url 'image_portfolio' item.id %}"
+                          class="comment-form">
+                        {% csrf_token %}
+                        <button type="submit"
+                                value="comment"
+                                name="comment"
+                                class="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition duration-300">
+                            <i class="icon"
+                               style="background-image: url('{% static 'icons/three-dots-in-a-speech-bubble-svgrepo-com.svg' %}');
+                                      width: 20px;
+                                      height: 20px;
+                                      background-size: contain;
+                                      background-repeat: no-repeat"></i>
+                            {% if item.comment %}<span>{{ item.comment }}</span>{% endif %}
+                        </button>
+                    </form>
+                </div>
+                <div class="description-container">
+                    <p class="description"
+                       onclick="openModal('{{ item.id }}', '{{ item.desc|escapejs }}', '/media/{{ item.image }}')">
+                        {{ item.desc|truncatewords:10 }}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-    <!-- Modal -->
-    <div id="descriptionModal"
-         class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
-        <div id="modalContent"
-             class="glassmorphism max-w-lg w-full mx-4 p-6 relative transform scale-95 opacity-0 transition">
-            <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-                    onclick="closeModal()">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-            <img id="modalImage"
-                 src=""
-                 alt="Modal Image"
-                 class="w-full h-64 object-cover rounded-lg shadow-md mb-4">
-            <p id="modalDescription" class="text-white text-center"></p>
-        </div>
+</div>
+<!-- Modal -->
+<div id="descriptionModal"
+     class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+    <div id="modalContent"
+         class="glassmorphism max-w-lg w-full mx-4 p-6 relative transform scale-95 opacity-0 transition">
+        <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+                onclick="closeModal()">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <img id="modalImage"
+             src=""
+             alt="Modal Image"
+             class="w-full h-64 object-cover rounded-lg shadow-md mb-4">
+        <p id="modalDescription" class="text-white text-center"></p>
     </div>
+</div>
 {% endblock %}
 {% block script %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

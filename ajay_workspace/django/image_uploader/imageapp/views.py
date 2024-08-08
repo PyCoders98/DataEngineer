@@ -18,6 +18,8 @@ from django.http import JsonResponse
 from django.forms import model_to_dict
 from django.core import serializers
 from django.core.mail import send_mail
+from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import datetime
 
 
 # ----------------Explore Page----------------
@@ -32,9 +34,11 @@ class Explore(ListView):
 
 
 # ----------------Home Page----------------
-class Home(View):
+class Home(LoginRequiredMixin, View):
+    login_url = "/login"
+
     def get(self, request):
-        follower = FollowerModel.objects.filter(follower=request.user).values('user')
+        follower = FollowerModel.objects.filter(follower=request.user).values("user")
         queryset = ImageModel.objects.filter(user__in=follower)
         context = {"data": queryset}
         return render(request, "admin/home_page.html", context)
@@ -58,33 +62,37 @@ def follow_request(request, id):
     post_admin = post.user
     response_data = {}
 
+    response_data["data"] = list(FollowerModel.objects.values())
     if request.method == "POST":
         try:
-            data = RequestModel.objects.get(
-                receiver_user=post_admin, sender_user=request.user
-            )
-            data.delete()
-            response_data["total_requests"] = RequestModel.objects.filter(
-                receiver_user=post_admin, sender_user=request.user
-            ).count()
-            return HttpResponse(
-                json.dumps(response_data), content_type="application/json"
-            )
+            if data := FollowerModel.objects.filter(
+                user=post_admin, follower=current_user
+            ).first():
+
+                data.delete()
+                response_data["data"] = list(FollowerModel.objects.values())
+            else:
+                if follow_request := RequestModel.objects.get(
+                    receiver_user=post_admin, sender_user=current_user
+                ):
+                    follow_request.send_at = datetime.now()
+                    follow_request.save()
+
         except:
-            data = RequestModel.objects.create(
-                receiver_user=post_admin, sender_user=request.user
+            RequestModel.objects.create(
+                receiver_user=post_admin, sender_user=current_user
             )
-            response_data["total_requests"] = RequestModel.objects.filter(
-                receiver_user=post_admin, sender_user=request.user
-            ).count()
-            return HttpResponse(
-                json.dumps(response_data), content_type="application/json"
-            )
+
+        response_data["total_requests"] = RequestModel.objects.filter(
+            receiver_user=post_admin, sender_user=current_user
+        ).count()
+        return JsonResponse(response_data)
+
     else:
         response_data["total_requests"] = RequestModel.objects.filter(
-            receiver_user=post_admin, sender_user=request.user
+            receiver_user=post_admin, sender_user=current_user
         ).count()
-        return HttpResponse(json.dumps(response_data), content_type="application/json")
+        return JsonResponse(response_data)
 
 
 def all_requests(request):

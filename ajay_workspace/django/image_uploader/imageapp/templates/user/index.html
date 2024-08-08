@@ -222,16 +222,19 @@
                             <p class="profile-username">{{ item.user.username }}</p>
                             <p class="profile-date">{{ item.created_at.date }}</p>
                         </div>
+                        {% if request.user.is_authenticated %}
                         <form class="follow-request-form" data-id="{{ item.id }}">
-                            {% if request.user.is_authenticated %}
-                                {% is_followed item.id as followed %}
+                                {% is_followed item.user.id as followed %}
                                 {% if followed %}
                                     <button type="submit" class="follow-button">Unfollow</button>
                                 {% else %}
                                     <button type="submit" class="follow-button">Follow</button>
                                 {% endif %}
-                            {% endif %}
-                        </form>
+                                
+                            </form>
+                            {% else %}
+                            <a href="{% url 'login' %}"><button type="submit" class="follow-button">Follow</button></a>
+                        {% endif %}
                     </div>
                     <a href="{% url 'get_image' item.id %}" class="block">
                         <img src="/media/{{ item.image }}"

@@ -75,11 +75,16 @@ class RequestModel(models.Model):
     sender_user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="sender"
     )
-    send_at = models.DateTimeField(auto_now_add=True)
+    send_at = models.DateTimeField(auto_now=True)
 
 
 class FollowerModel(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="post_admin",verbose_name="post_admin") 
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="post_admin",
+        verbose_name="post_admin",
+    )
     follower = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, related_name="follower"
     )

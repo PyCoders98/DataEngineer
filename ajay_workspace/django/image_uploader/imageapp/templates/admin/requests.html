@@ -118,7 +118,7 @@
                         <img src="{% if req.sender_user.profile_image %}{{ req.sender_user.profile_image.url }}{% else %}{% static 'default_profile_image.jpg' %}{% endif %}"
                              alt="User Photo">
                         <div class="request-details">
-                            <h3>{{ req.sender_user }}</h3>
+                            <h3>{{ req.sender_user }} <sub>{{req.send_at}}</sub></h3>
                             <p>Wants to connect with you</p>
                         </div>
                         <div class="request-actions">
