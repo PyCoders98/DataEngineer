@@ -1,3 +1,4 @@
 ignore.py
 ajay_workspace/django/venv
 ajay_workspace/django/image_uploader/.env
+ajay_workspace/django/image_uploader/db.sqlite3
