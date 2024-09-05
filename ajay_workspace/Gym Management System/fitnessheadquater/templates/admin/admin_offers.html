@@ -1,0 +1,207 @@
+{% extends "admin/home_page.html" %}
+{% block admin_content %}
+<style>
+    .admin-membership-container {
+        padding-top: 2%;
+        font-family: sans-serif;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        max-width: 90%;
+    }
+
+    .login-box {
+        width: 400px;
+        padding: 40px;
+        background: rgba(10, 0, 34, 0.874);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+        border-radius: 10px;
+
+
+    }
+
+    .login-box h2 {
+        margin: 0 0 30px;
+        padding: 0;
+        color: #fff;
+        text-align: center;
+    }
+
+    .login-box .user-box {
+        position: relative;
+    }
+
+    .login-box .user-box input {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 16px;
+        color: #fff;
+        margin-bottom: 30px;
+        border: none;
+        border-bottom: 1px solid #fff;
+        outline: none;
+        background: transparent;
+    }
+
+    .login-box .user-box label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 10px 0;
+        font-size: 16px;
+        color: #fff;
+        pointer-events: none;
+        transition: .5s;
+    }
+
+
+
+    .login-box form a {
+        position: relative;
+
+        padding: 10px 20px;
+        font-size: 16px;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: .5s;
+        margin-top: 40px;
+        letter-spacing: 4px
+    }
+
+    .login-box a:hover {
+        background: #03e9f4;
+        color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 5px #03e9f4,
+            0 0 25px #03e9f4,
+            0 0 50px #03e9f4,
+            0 0 100px #03e9f4;
+    }
+
+
+
+    .addbtn {
+        font-size: larger;
+        background: transparent;
+        color: white;
+        border: none;
+        font: bold;
+        text-transform: uppercase;
+    }
+
+    .admin-home-page-dynamic-part::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: #667EEA;
+    }
+
+    .admin-home-page-dynamic-part::-webkit-scrollbar {
+        width: 4px;
+        background-color: rgba(236, 235, 235, 0.87);
+        border-radius: 20px;
+
+    }
+</style>
+
+<div class="admin-membership-container bg-transparent " >
+    <div class="w-full flex justify-center">
+        <div class="w-4/12">
+            <ul class="messages">
+                {% for message in messages %}
+                <div class="alert alert-success flex justify-center" role="alert">
+                    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                </div>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="login-box p-4 max-w-full">
+        <h2 class="uppercase text-bold tracking-wide">Offer</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="user-box">
+                <input type="text" name="name" required="" placeholder="Offer Name">
+
+            </div>
+            <div class="user-box">
+                <input type="text" name="duration" required="" placeholder="Duration in Months">
+
+            </div>
+            <div class="user-box">
+                <input type="text" name="price" required="" placeholder="Price">
+
+            </div>
+            <div class="user-box">
+                <input type="text" name="regular_price" required="" placeholder="Regular Price">
+
+            </div>
+
+            <a href="#" class="border-2 border-gray-400 rounded-md">
+                <button type="submit" class="addbtn">
+                    Add
+                </button>
+
+            </a>
+        </form>
+    </div>
+    {% if reminder == True %}
+
+
+    <div
+        class="admin-home-page-dynamic-part scroll-bar py-4 max-w-full bg-gradient-to-br from-teal-500 to-purple-600  flex  justify-center overflow-auto">
+        <div class="max-w-full border-2 border-gray-900 rounded-md">
+            <table class="max-w-full bg-gray-300 shadow-md rounded-md border-2 border-gray-900 ">
+                <thead>
+                    <tr class="bg-indigo-500 text-white ">
+                        <th class="px-4 py-2 cursor-pointer border border-gray-900 border-collapse">No</th>
+                        <th class="px-4 py-2 cursor-pointer border border-gray-900 border-collapse">Offer Title</th>
+                        <th class="px-4 py-2 cursor-pointer border border-gray-900 border-collapse">Duration</th>
+                        <th class="px-4 py-2 cursor-pointer border border-gray-900 border-collapse">Offer Price</th>
+                        <th class="px-4 py-2 cursor-pointer border border-gray-900 border-collapse">Regular Price</th>
+                        <th class="px-4 py-2 cursor-pointer border border-gray-900 border-collapse">Discount</th>
+                        <th class="px-4 py-2 cursor-pointer border border-gray-900 border-collapse">Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for offer in offer %}
+
+                    <tr class="membership  text-2xl border-2 border-gray-600">
+                        <td class="px-4 py-2 border border-gray-600 text-center">{{forloop.counter}}</td>
+                        <td class="px-4 py-2 border border-gray-600 text-center">{{offer.title}}</td>
+                        <td class="px-4 py-2 border border-gray-600 text-center">{{offer.duration}}</td>
+                        <td class="px-4 py-2 border border-gray-600 text-center">{{offer.price}}</td>
+                        <td class="px-4 py-2 border border-gray-600 text-center">{{offer.regular_price}}</td>
+                        <td class="px-4 py-2 border border-gray-600 text-center font-bold">{{offer.discount}}%OFF</td>
+                        <td class="px-4 py-2 border border-gray-600 text-center">
+                            <a href="{% url 'delete_offers' offer.id %}">
+                                <button
+                                    class="text-red-600 text-4xl p-2 px-3 rounded-md duration-300 hover:bg-red-600 hover:text-black">
+                                    <i class="fa fa-trash-o "></i></button>
+                            </a>
+                            <a href="{% url 'update_offers'  offer.id %}">
+                                <button
+                                    class="text-green-600 text-4xl p-2 rounded-md duration-300 hover:bg-green-600 hover:text-black">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <!-- Add more rows here if needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            var messages = document.querySelectorAll('.alert');
+            messages.forEach(function (message) {
+                message.remove();
+            });
+        }, 2000);
+    });
+</script>
+{% endblock %}

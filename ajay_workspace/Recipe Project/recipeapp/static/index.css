@@ -1,0 +1,226 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Merriweather", serif;
+}
+
+body {
+  background: url("https://r4.wallpaperflare.com/wallpaper/592/25/112/abstract-texture-design-wallpaper-093038ad812a5d6b5647480f905146dd.jpg");
+  min-width: 67vw;
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  object-fit: cover;
+  overflow-x: hidden;
+  
+
+}
+
+.banner {
+  width: 100%;
+  text-align: center;
+  overflow-x: hidden;
+  font-weight: normal;
+  font-size: 450%;
+  letter-spacing: 3px;
+  background-image: url("https://c1.wallpaperflare.com/path/811/606/534/marble-texture-white-pattern-83cb633d1d09bb35af16622708cb2898.jpg");
+  box-shadow: rgba(219, 219, 220, 0.25) 0px 13px 27px -5px, rgba(225, 213, 213, 0.3) 0px 8px 16px -8px;
+  text-shadow: 2px 7px 5px rgba(0, 0, 0, 0.529),
+    0px -4px 10px rgba(208, 186, 186, 0.3);
+  padding: .5em 0 0.5em 0;
+}
+
+.banner small {
+  display: block;
+  /* see you dont really need the br*/
+  font-family: sans-serif;
+  font-size: 40%;
+
+  /* determines space from site name, 1st # is the value for the space left at the top... 1ex=same space as the height of the  letter'x' ( might as well use good typography!)  */
+}
+
+.banner h1+div {
+  font-weight: bold;
+  font-family: sans;
+}
+
+.banner-link,
+a:link {
+  text-decoration: none;
+  color: black;
+}
+
+
+.index-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background: url("https://r4.wallpaperflare.com/wallpaper/592/25/112/abstract-texture-design-wallpaper-093038ad812a5d6b5647480f905146dd.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  object-fit: cover;
+  margin: -5px;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.8) 0px 16px 48px;
+}
+
+.index-search-container,
+.index-filter {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+  padding: 2px 20px;
+  border-radius: 20px;
+  border: 1px solid white;
+  color: white;
+  overflow: hidden;
+  background-color: rgba(99, 84, 84, 0.082);
+
+  /* box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px; */
+
+
+}
+
+.index-search-container:focus {
+  background: transparent;
+}
+
+.index-filter {
+  display: flex;
+  /* justify-content: center; */
+  justify-content: space-around;
+  align-self: center;
+  padding: 8px 10px;
+}
+
+select option {
+  font-size: larger;
+  color: black;
+
+}
+
+.index-login-button {
+  display: flex;
+  padding: 1rem 0;
+
+}
+
+button,
+input,
+select {
+
+  all: unset;
+
+}
+
+.index-login-button button {
+  padding: 0 20px;
+  border-radius: 20px;
+  /* box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px; */
+  border: 1px solid white;
+
+
+}
+
+button a {
+  text-decoration: none;
+
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 10%;
+  /* justify-content: space-around; */
+  color: #fff;
+}
+
+.card-item {
+  background: transparent;
+  position: relative;
+  border-radius: 5px;
+  margin: 1rem;
+  /* border: 2px solid rgba(17, 11, 11, 0.95); */
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  row-gap: 20px;
+}
+
+.card-item .receipe-name {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: white;
+  font-family: "Merriweather", serif;
+  letter-spacing: 1px;
+  text-shadow: -1px 1px 0 #000000,
+  1px 1px 0 #000000,
+ 1px -1px 0 #000000,
+-1px -1px 0 #000000;
+
+
+}
+
+.card-item img {
+  max-width: 100%;
+  height: auto;
+  width: 220px;
+  height: 220px;
+  border-radius: 20%;
+  background-size: cover;
+
+  transform:
+    perspective(800px) rotateY(25deg) scale(1) rotateX(10deg);
+  /* filter: blur(0px); */
+  filter: drop-shadow(0.35rem 0.35rem 0.4rem rgba(186, 172, 172, 0.5));
+
+  transition: 0.6s ease all;
+
+  &:hover {
+    border-radius: 5%;
+    transform:
+      perspective(800px) rotateY(-5deg) translateY(-25px) rotateX(10deg) scale(1.1);
+  }
+
+
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.me-2 {
+  margin-right: 0.5rem;
+}
+
+/* @media only screen and (max-width: 600px) {
+    .card {
+      width: 100%;
+    }
+  } */
+
+
+.pagination-div {
+  width: 100vw;
+  height: 80px;
+  /* border: 1px solod red; */
+  /* background-color: red; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+
+}
+
+.page-item {
+  display: flex;
+  padding: 10px;
+}

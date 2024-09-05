@@ -1,0 +1,89 @@
+{% extends "admin/home_page.html" %}
+{% block admin_content %}
+<div class="w-full m px-20 mt-4 " style="height: 78vh;">
+    <div class="p-2 mb-2  rounded-t-lg flex justify-between items-center flex-wrap" style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
+        <div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if applicant.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{applicant.previous_page_number}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if applicant != None %}
+
+                    <li class="page-item"><a class="page-link" href="#">{{page_number}}</a></li>
+                    {% endif %}
+                    {% if applicant.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{applicant.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <div class="bg-white px-2 py-2 mb-2 rounded-lg font-bold text-blue-600 ">
+            <form action="" method="get">
+                {% csrf_token %}
+                <input name="search" class="  bg-white  rounded-lg font-bold text-blue-600 "
+                    placeholder="Search"><button type="submit"><i style="font-size:24px;"
+                        class="fa text-2xl">&#xf002;</i></button>
+            </form>
+        </div>
+
+        <div class="flex  items-center mb-0.5">
+            <span class="uppercase  bg-white px-2 py-2 rounded-lg font-bold text-blue-600 ">total records
+                <span class="text-black">{{total_records}}</span>
+            </span>
+        </div>
+    </div>
+    <table class="table table-striped border">
+        <thead class="border bg-black text-white">
+            <tr>
+                <th scope="col" class="text-white">No</th>
+                <th scope="col" class="text-white">Name</th>
+                <th scope="col" class="text-white">Apply date</th>
+                <th scope="col" class="text-white">Contact</th>
+                <th scope="col" class="text-white">Email</th>
+                <th scope="col" class="text-white">Age</th>
+                <th scope="col" class="text-white">Gender</th>
+                <th scope="col" class="text-white">address</th>
+                <th scope="col" class="text-white">CV</th>
+
+            </tr>
+        </thead>
+        <tbody class="bg-white">
+            {% for applicant in applicant %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{applicant.name}}</td>
+                <td>{{applicant.apply_date}}</td>
+                <td>{{applicant.contact}}</td>
+                <td>{{applicant.email}}</td>
+                <td>{{applicant.age}}</td>
+                <td>{{applicant.gender}}</td>
+                <td>{{applicant.address}}</td>
+                <td>
+                    <a href="/media/{{ applicant.file }}"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded inline-flex items-center">
+                        <span>View</span>
+                    </a>
+                    <a href="/media/{{ applicant.file }}"
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded inline-flex items-center ml-2"
+                        download>
+                        <span>Download</span>
+                    </a>
+                </td>
+
+
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+{% endblock admin_content %}

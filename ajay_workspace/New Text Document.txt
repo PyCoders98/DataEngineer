@@ -1,0 +1,35 @@
+C:\Python311\Scripts\
+C:\Users\dIZZY wORLD\AppData\Local\Programs\Python\Python311\Lib\site-packages
+C:\Users\dIZZY wORLD\AppData\Local\Programs\Python\Python312\Lib
+C:\Users\dIZZY wORLD\AppData\Local\Programs\Python\Python311\Lib\site-packages
+C:\Program Files\Python39\Lib\site-packages
+C:\Program Files\Python39\Lib\site-packages\django
+
++--------------------------+---------------+--------------------------------+
+| Field                    | Type          | Description                    |
++--------------------------+---------------+--------------------------------+
+| name                     | CharField     | Name of the labour             |
+| age                      | IntegerField  | Age of the labour              |
+| img                      | ImageField    | Image of the labour            |
+| phone_no                 | IntegerField  | Phone number of the labour     |
+| experience               | IntegerField  | Years of experience            |
+| total_project_done       | IntegerField  | Total projects completed       |
+| Audio_visual             | BooleanField  | Specialization in audio visual |
+| Electrical               | BooleanField  | Specialization in electrical   |
+| Maintenance              | BooleanField  | Specialization in maintenance  |
+| Plumbing                 | BooleanField  | Specialization in plumbing     |
+| Tiling                   | BooleanField  | Specialization in tiling       |
+| Wiring                   | BooleanField  | Specialization in wiring       |
+| arrival_price            | IntegerField  | Price for arrival              |
+| desc                     | TextField     | Description of the labour      |
+| total_certificate        | IntegerField  | Total certificates attained    |
+| certificate_1_name       | CharField     | Name of certificate 1          |
+| certificate_1_img        | ImageField    | Image of certificate 1         |
+| certificate_2_name       | CharField     | Name of certificate 2          |
+| certificate_2_img        | ImageField    | Image of certificate 2         |
+| certificate_3_name       | CharField     | Name of certificate 3          |
+| certificate_3_img        | ImageField    | Image of certificate 3         |
+| certificate_4_name       | CharField     | Name of certificate 4          |
+| certificate_4_img        | ImageField    | Image of certificate 4         |
+| Facebook_link            | URLField      | Facebook profile link          |
++--------------------------+---------------+--------------------------------+

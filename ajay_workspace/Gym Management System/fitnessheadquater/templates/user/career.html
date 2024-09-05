@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    @media (min-width: 640px) {
+        .custom-container {
+            width: 50%;
+        }
+    }
+
+    label {
+        font-weight: bold;
+    }
+</style>
+<div class="bg-current p-12 flex justify-center flex-wrap bg-cover bg-center bg-no-repeat"
+    style="background-image: url('http://thekitemap.com/images/feedback-img.jpg');"
+>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+
+        <div class="alert alert-success" role="alert">
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+
+        </div>
+
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="flex justify-center items-center min-h-screen w-full">
+        <div class="bg-opacity-60 bg-gray-700 p-4 rounded-lg shadow-lg sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 custom-container">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800 tracking-wide uppercase">CAREER Form</h2>
+            <form id="registration-form" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required
+                        class="mt-1 p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <span class="text-red-500" id="name-error"></span>
+                </div>
+                <div class="mb-4">
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required
+                        class="mt-1 p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <span class="text-red-500" id="email-error"></span>
+                </div>
+                <div class="mb-4">
+                    <input type="tel" id="contact" name="contact" placeholder="Enter your contact number" required
+                        class="mt-1 p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <span class="text-red-500" id="contact-error"></span>
+                </div>
+                <div class="mb-4">
+                    <input type="number" id="age" name="age" placeholder="Enter your age" required
+                        class="mt-1 p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <span class="text-red-500" id="age-error"></span>
+                </div>
+                <div class="mb-4">
+                    <textarea id="address" name="address" placeholder="Enter city only" required
+                        class="mt-1 p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
+                    <span class="text-red-500" id="address-error"></span>
+                </div>
+                <div class="mb-4">
+                    <div class="mt-1 p-2 rounded-md bg-white">
+                        <label class="inline-flex items-center">
+                            <input type="radio" class="form-radio" name="gender" value="male">
+                            <span class="ml-2">Male</span>
+                        </label>
+                        <label class="inline-flex items-center ml-6">
+                            <input type="radio" class="form-radio" name="gender" value="female">
+                            <span class="ml-2">Female</span>
+                        </label>
+                        <label class="inline-flex items-center ml-6">
+                            <input type="radio" class="form-radio" name="gender" value="other">
+                            <span class="ml-2">Other</span>
+                        </label>
+                    </div>
+                    <span class="text-red-500" id="gender-error"></span>
+                </div>
+                <div class="mb-4">
+
+                    <input type="file" id="cv" name="cv" placeholder="Upload Resume"  required
+                        class="mt-1 p-2 w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <span class="text-red-500" id="cv-error"></span>
+                </div>
+                <button type="submit"
+                    class="bg-indigo-500 text-white py-2 px-4 rounded-full hover:bg-indigo-600 w-full">Submit</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            var messages = document.querySelectorAll('.alert');
+            messages.forEach(function (message) {
+                message.remove();
+            });
+        }, 5000);
+    });
+
+
+    const form = document.getElementById('registration-form');
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        // Validate form fields
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const contact = document.getElementById('contact').value.trim();
+        const age = document.getElementById('age').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const cv = document.getElementById('cv').value.trim();
+
+        let isValid = true;
+
+        if (name === '') {
+            document.getElementById('name-error').textContent = 'Name is required';
+            isValid = false;
+        } else {
+            document.getElementById('name-error').textContent = '';
+        }
+
+        // Add more validation for other fields
+
+        if (isValid) {
+            // Form is valid, submit it
+            this.submit();
+        }
+    });
+</script>
+{% endblock content %}

@@ -1,0 +1,311 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Noto Sans", sans-serif;
+
+    /* background-image: url("https://images.pexels.com/photos/1242348/pexels-photo-1242348.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"); */
+    background-image: linear-gradient(to right, #43434381 0%, #43434381 100%);
+    
+}
+
+.receipe-container {
+
+    /* background-image: url(https://r4.wallpaperflare.com/wallpaper/544/347/829/food-noodles-spaghetti-wallpaper-28760c6aef6c07b98e60191272c96b00.jpg); */
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 93vh;
+    overflow-x: hidden;
+    background-size: 100% 100%;
+    object-fit: cover;
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-top: 4px;
+    background: white;
+    box-shadow: 0 0 10px
+}
+
+.showall {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+}
+
+.show-all-container {
+    width: 100%;
+    height: 100vh;
+    /* background-image: linear-gradient(to right, #00b4db, #0083b0); */
+
+}
+
+#popup-modal {
+    /* width: 100vw;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
+    justify-content: center;
+    background-color: #00b4db; */
+
+
+}
+
+svg {
+    width: 200px;
+    height: 200px;
+}
+
+
+
+.form-label {
+    font-size: 13px;
+    display: block;
+    margin-bottom: 1px;
+    font-weight: bold;
+}
+
+.add-category {
+
+    border: 1px solid #ccc;
+    padding: 0 0 2px 10px;
+    cursor: pointer;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 0;
+}
+
+textarea {
+    min-height: 100px;
+}
+
+input[type="file"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    background-color: rgb(106, 74, 248);
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.1s;
+    font-size: large;
+    font-weight: 600;
+}
+
+.btn:hover {
+    transform: scale(1.02);
+    color: rgb(251, 239, 239);
+    font-weight: bold;
+}
+
+nav {
+    /* background-image: url("https://c1.wallpaperflare.com/path/811/606/534/marble-texture-white-pattern-83cb633d1d09bb35af16622708cb2898.jpg"); */
+    background: transparent;
+
+    padding: 10px 20px;
+    display: flex;
+    width: 100%;
+    overflow-x: hidden;
+    justify-content: space-between;
+
+}
+
+ul {
+    list-style: none;
+
+
+    margin: 0;
+    /* Remove default margin */
+    padding: 0;
+    /* Remove default padding */
+}
+
+li {
+    display: inline-block;
+    /* Display links horizontally */
+    margin-right: 20px;
+    /* Add space between links */
+    font-size: larger;
+}
+
+a {
+    text-decoration: none;
+    /* Remove underline from links */
+
+    color: #f0eaea;
+    font-weight: bold;
+    transition: box-shadow 0.3s;
+}
+
+.nav_link:hover {
+
+    box-shadow: 0 3px 0px rgb(71, 231, 231);
+}
+
+table {
+    border-collapse: collapse;
+    /* Remove gaps between table cells */
+    width: 100%;
+    /* Make the table fit the container width */
+    margin-top: 20px;
+}
+
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    /* Add borders to cells */
+    text-align: left;
+    /* Align text to the left */
+}
+
+th {
+    background-color: #eee;
+    /* Light background color for headers */
+    font-weight: bold;
+    /* Bold font for headers */
+}
+
+.button {
+    appearance: none;
+    backface-visibility: hidden;
+    background-color: #27ae60;
+    border-radius: 8px;
+    border-style: none;
+    box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Inter, -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: normal;
+    line-height: 1.5;
+    outline: none;
+    overflow: hidden;
+    padding: 13px 20px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transform: translate3d(0, 0, 0);
+    transition: all .3s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.button:hover {
+    background-color: #1e8449;
+    opacity: 1;
+    transform: translateY(0);
+    transition-duration: .35s;
+}
+
+.button:active {
+    transform: translateY(2px);
+    transition-duration: .35s;
+}
+
+.button:hover {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+}
+
+.search-container {
+    background-color: red;
+    display: flex;
+    align-items: center;
+    /* width: 50%; */
+    /* Adjust width as needed */
+    background-color: #f1f1f1;
+    /* Light background color (optional) */
+    border-radius: 5px;
+    /* Rounded corners (optional) */
+    overflow: hidden;
+    /* Prevent text overflow */
+    border: 2px solid black;
+}
+
+.search-field {
+    flex: 1;
+    /* Expands to fill remaining space */
+    border: none;
+    /* Remove default border */
+    outline: none;
+    /* Remove default outline */
+    padding: 10px;
+    /* Inner padding */
+    font-size: 16px;
+    /* Font size */
+}
+
+.search-button {
+
+    width: 10vw;
+    appearance: none;
+
+    background-color: transparent;
+    border-radius: 8px;
+    border-style: none;
+    box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Inter, -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: normal;
+    line-height: 1.5;
+    outline: none;
+    overflow: hidden;
+    padding: 4px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transform: translate3d(0, 0, 0);
+    transition: all .3s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.search-button i {
+    font-size: 18px;
+    /* Font size for icon */
+    color: #333;
+    /* Icon color */
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Thank You Card</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --background-color: black;
+      --text-color: hsl(0, 0%, 100%);
+    }
+
+    .wrapper {
+      width: 100%;
+      display: grid;
+      place-content: center;
+      max-width: 100%;
+      background-color: var(--background-color);
+      font-family: "Oswald", sans-serif;
+      font-size: 4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-color);
+    }
+
+    .wrapper>div {
+      grid-area: 1/1/-1/-1;
+    }
+
+    .top {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 48%, 0% 58%);
+    }
+
+    .bottom {
+      clip-path: polygon(0% 60%, 100% 50%, 100% 100%, 0% 100%);
+      color: transparent;
+      background: -webkit-linear-gradient(170deg, black 53%, var(--text-color) 65%);
+      background: linear-gradient(180deg, black 53%, var(--text-color) 65%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      transform: translateX(-0.02em);
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 80px;
+      max-width: 100%;
+      margin:  3% 0 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+    }
+
+    .thank-you-img {
+      width: 50px;
+      height: 50px;
+      margin-right: 20px;
+    }
+
+    .title {
+      font-size: 50px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .message {
+      color: #666666;
+    }
+
+    .name {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-400 flex justify-center flex-col">
+  <div class="max-w-12/12 h-1/5 flex justify-center bg-black">
+    <section class="wrapper">
+      <div class="top">Fitness Headquater</div>
+      <div class="bottom" aria-hidden="true">Fitness Headquater</div>
+    </section>
+  </div>
+  <div class="card flex flex-col">
+    <div class="card border-4  " style="background-color: rgb(166, 182, 197);">
+      <div>
+        <h1 class="title">Thank You!</h1>
+        <p class="message">Thank you <span class="name">Ajay Singh Karan</span> for your purchase.</p>
+      </div>
+    </div>
+    <div>
+      <p class="px-4 my-2 border-2 rounded-md border-black bg-white text-xl">Go to <a href="{% url 'home_page' %}" class="font-bold text-blue-600 hover:text-blue-800">Home</a> </p>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+{% extends "admin/home_page.html" %}
+{% block admin_content %}
+<div class="w-full m px-20 mt-4 " style="height: 78vh;">
+    <div class="p-2 mb-2 flex justify-between flex-wrap" style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
+        <div>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if queryset.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{queryset.previous_page_number}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if queryset != None %}
+
+                    <li class="page-item"><a class="page-link" href="#">{{page_number}}</a></li>
+                    {% endif %}
+                    {% if queryset.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{queryset.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <div class="flex  items-center mb-2">
+            <span class="uppercase  bg-white px-2 py-2 rounded-lg font-bold text-blue-600 " >total records <span class=" text-black">{{total_records}}</span>
+            </span>
+        </div>
+    </div>
+
+    <table class="table table-striped border">
+        <thead class="border bg-black text-white">
+            <tr>
+                <th scope="col" class="text-white">No</th>
+                <th scope="col" class="text-white">Name</th>
+                <th scope="col" class="text-white">Email</th>
+                <th scope="col" class="text-white">Date</th>
+                <th scope="col" class="text-white">Comment</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white">
+            {% for data in queryset %}
+
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{data.name}}</td>
+                <td>{{data.email}}</td>
+                <td>{{data.date}}</td>
+                <td>{{data.comment}}</td>
+
+            </tr>
+          
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+{% endblock admin_content %}

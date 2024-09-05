@@ -1,0 +1,374 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Custom Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes pulseFade {
+        0% {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        100% {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+    }
+
+    /* Custom Animation Classes */
+    .animate-fade-in-up {
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .animate-pulse {
+        animation: pulse 1.5s infinite;
+    }
+
+    .animate-pulse-fade {
+        animation: pulseFade 1.5s infinite;
+    }
+
+    .offer-container {
+        max-height: 90%;
+        backdrop-filter: blur(4px);
+    }
+
+    .offer-card {
+        max-height: 90%;
+        background-color: #000000e1;
+        box-shadow: rgba(41, 41, 42, 0.674) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(237, 240, 243, 0.35) 0px -2px 6px 0px inset;
+    }
+
+    .animation-container {
+        background: #009688;
+        width: 600px;
+        height: 400px;
+        font-family: 'Open Sans', sans-serif;
+        border: 2px solid red;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+    }
+
+    .loop-wrapper {
+        margin-top: -30%;
+        position: relative;
+        display: block;
+        width: 600px;
+        height: 250px;
+        overflow: hidden;
+        border-bottom: 3px solid #fff;
+        color: #fff;
+    }
+
+    .mountain {
+        position: absolute;
+        right: -900px;
+        bottom: -20px;
+        width: 2px;
+        height: 2px;
+        box-shadow:
+            0 0 0 50px #4DB6AC,
+            60px 50px 0 70px #4DB6AC,
+            90px 90px 0 50px #4DB6AC,
+            250px 250px 0 50px #4DB6AC,
+            290px 320px 0 50px #4DB6AC,
+            320px 400px 0 50px #4DB6AC;
+        transform: rotate(130deg);
+        animation: mtn 20s linear infinite;
+    }
+
+    .hill {
+        position: absolute;
+        right: -900px;
+        bottom: -50px;
+        width: 400px;
+        border-radius: 50%;
+        height: 20px;
+        box-shadow:
+            0 0 0 50px #4DB6AC,
+            -20px 0 0 20px #4DB6AC,
+            -90px 0 0 50px #4DB6AC,
+            250px 0 0 50px #4DB6AC,
+            290px 0 0 50px #4DB6AC,
+            620px 0 0 50px #4DB6AC;
+        animation: hill 4s 2s linear infinite;
+    }
+
+    .tree,
+    .tree:nth-child(2),
+    .tree:nth-child(3) {
+        position: absolute;
+        height: 100px;
+        width: 35px;
+        bottom: 0;
+        background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/130015/tree.svg) no-repeat;
+    }
+
+    .rock {
+        margin-top: -17%;
+        height: 2%;
+        width: 2%;
+        bottom: -2px;
+        border-radius: 20px;
+        position: absolute;
+        background: #ddd;
+    }
+
+    .truck,
+    .wheels {
+        transition: all ease;
+        width: 85px;
+        margin-right: -60px;
+        bottom: 0px;
+        right: 50%;
+        position: absolute;
+        background: #eee;
+    }
+
+    .truck {
+        background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/130015/truck.svg) no-repeat;
+        background-size: contain;
+        height: 60px;
+    }
+
+    .truck:before {
+        content: " ";
+        position: absolute;
+        width: 25px;
+        box-shadow:
+            -30px 28px 0 1.5px #fff,
+            -35px 18px 0 1.5px #fff;
+    }
+
+    .wheels {
+        background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/130015/wheels.svg) no-repeat;
+        height: 15px;
+        margin-bottom: 0;
+    }
+
+    .tree {
+        animation: tree 3s 0.000s linear infinite;
+    }
+
+    .tree:nth-child(2) {
+        animation: tree2 2s 0.150s linear infinite;
+    }
+
+    .tree:nth-child(3) {
+        animation: tree3 8s 0.050s linear infinite;
+    }
+
+    .rock {
+        animation: rock 4s -0.530s linear infinite;
+    }
+
+    .truck {
+        animation: truck 4s 0.080s ease infinite;
+    }
+
+    .wheels {
+        animation: truck 4s 0.001s ease infinite;
+    }
+
+    .truck:before {
+        animation: wind 1.5s 0.000s ease infinite;
+    }
+
+
+    @keyframes tree {
+        0% {
+            transform: translate(1350px);
+        }
+
+        50% {}
+
+        100% {
+            transform: translate(-50px);
+        }
+    }
+
+    @keyframes tree2 {
+        0% {
+            transform: translate(650px);
+        }
+
+        50% {}
+
+        100% {
+            transform: translate(-50px);
+        }
+    }
+
+    @keyframes tree3 {
+        0% {
+            transform: translate(2750px);
+        }
+
+        50% {}
+
+        100% {
+            transform: translate(-50px);
+        }
+    }
+
+    @keyframes rock {
+        0% {
+            right: -200px;
+        }
+
+        100% {
+            right: 2000px;
+        }
+    }
+
+    @keyframes truck {
+        0% {}
+
+        6% {
+            transform: translateY(0px);
+        }
+
+        7% {
+            transform: translateY(-6px);
+        }
+
+        9% {
+            transform: translateY(0px);
+        }
+
+        10% {
+            transform: translateY(-1px);
+        }
+
+        11% {
+            transform: translateY(0px);
+        }
+
+        100% {}
+    }
+
+    @keyframes wind {
+        0% {}
+
+        50% {
+            transform: translateY(3px)
+        }
+
+        100% {}
+    }
+
+    @keyframes mtn {
+        100% {
+            transform: translateX(-2000px) rotate(130deg);
+        }
+    }
+
+    @keyframes hill {
+        100% {
+            transform: translateX(-2000px);
+        }
+    }
+</style>
+<div class=" w-full flex justify-center">
+    <div class="pt-4 w-4/12">
+        <ul class="messages">
+            {% for message in messages %}
+            <div class="alert alert-success flex justify-center" role="alert">
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            </div>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class=" offer-container bg-transparent flex justify-center flex-wrap p-16">
+
+    {% for offer in offer %}
+    <div class="offer-card p-8 md:w-1/3 lg:w-1/3 m-4 rounded-3xl flex justify-center flex-col  animate-fade-in-up">
+        <h1 class="offer-text p-4 uppercase text-center font-bold text-4xl text-gray-200">Special Offer!</h1>
+        <div class="offer-details flex justify-around flex-wrap">
+            <div class="text-2xl text-red-600 offer-heading uppercase font-bold text-gray-200">{{offer.title}}</div>
+            <div class="text-2xl offer-off uppercase text-yellow-400 animate-pulse">50% Off</div>
+        </div>
+        <div class="text-lg offer-price flex justify-center flex-wrap p-2">
+            <span class="mx-2 font-bold text-gray-200">Offer Price:</span><span
+                class="text-yellow-400">Rs.{{offer.price}}</span>
+        </div>
+        <div class="text-lg offer-price flex justify-center flex-wrap p-2">
+            <span class="mx-2 font-bold text-gray-200">Original Price:</span><span
+                class="line-through text-gray-400">Rs.{{offer.regular_price}}</span>
+        </div>
+        <div class="offer-subscribe flex justify-center p-2">
+            <a href="{% url 'buy_page' offer.id %}">
+
+                <button id="rzp-button1"
+                    class=" bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-4 rounded animate-pulse-fade">
+                    Subscribe Now
+                </button>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+    {% if offer == None %}
+
+    <div>
+
+        <h1 class="text-center text-2xl font-bold m-4">Offers Are On the Way...</h1>
+        <div class="animation-container">
+            <div class="loop-wrapper">
+                <div class="mountain"></div>
+                <div class="hill"></div>
+                <div class="tree"></div>
+                <div class="tree"></div>
+                <div class="tree"></div>
+                <div class="rock"></div>
+                <div class="truck"></div>
+                <div class="wheels"></div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            var messages = document.querySelectorAll('.alert');
+            messages.forEach(function (message) {
+                message.remove();
+            });
+        }, 2000);
+    });
+</script>
+{% endblock content %}

@@ -1,0 +1,213 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  <title>Fitness Headquater</title>
+  <link rel="icon" href="{% static 'images/f2.png' %}" type="image/x-icon">
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.CSS" rel=" stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&family=Briem+Hand:wght@100..900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Sedan+SC&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&family=Briem+Hand:wght@100..900&family=Crete+Round:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Sedan+SC&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background-color: black;
+      --text-color: hsl(0, 0%, 100%);
+    }
+body{
+  font-family: Arial, Helvetica, sans-serif;
+}
+    .wrapper {
+      width: 100%;
+      display: grid;
+      place-content: center;
+      background-color: var(--background-color);
+      font-family: "Libre Baskerville", serif;
+      font-weight: 400;
+      font-style: normal;
+      font-size:2rem;
+      text-transform: uppercase;
+      color: var(--text-color);
+    }
+
+    .wrapper>div {
+      grid-area: 1/1/-1/-1;
+    }
+
+    .top {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 48%, 0% 58%);
+    }
+
+    .bottom {
+      clip-path: polygon(0% 60%, 100% 50%, 100% 100%, 0% 100%);
+      color: transparent;
+      background: -webkit-linear-gradient(170deg, black 53%, var(--text-color) 65%);
+      background: linear-gradient(180deg, black 53%, var(--text-color) 65%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      transform: translateX(-0.02em);
+    }
+
+    ul li {
+
+      font-weight: 600;
+      transition: 0.3s;
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-color: white;
+      }
+    }
+
+    .nav-item {
+      margin: 0 10px;
+      /* Add margin between navigation items */
+    }
+
+    @media (max-width: 770px) {
+      .nav-item {
+        margin: 10px 0;
+        /* Adjust margin for smaller screens */
+      }
+    }
+  </style>
+</head>
+
+<body class="p-0 m-0 border-0 bd-example m-0 ">
+  <div class="nav-container ">
+    <nav class=" navbar navbar-expand-lg bg-gradient-to-r from-gray-900 to-gray-700"
+      style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
+      <div class=" container-fluid">
+        <a class="navbar-brand" href="{% url 'home_page' %}">
+          <section class="wrapper">
+            <div class="top">Fitness Headquater</div>
+            <div class="bottom" aria-hidden="true">Fitness Headquater</div>
+          </section>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav text-xl">
+            <li class="nav-item">
+              <a class="nav-link text-white" aria-current="page" href="{% url  'home_page' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'offer_page' %}">Offers</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'membership_page' %}"> Membership</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'career_page' %}"> Career</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'aboutus_page' %}"> About-Us</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'contactus_page' %}"> Contact</a>
+            </li>
+            {% if member %}
+            <li class="nav-item">
+              <a class="nav-link text-white " href="{% url 'personnel_info' request.user.id %}"> Personnel
+                Info</a>
+            </li>
+            {% endif %}
+            {% if staff %}
+
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'admin_page' %}"> Admin Page</a>
+            </li>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link text-white " href="{% url 'logout_page' %}"> Log Out</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'login_page' %}"> Login</a>
+            </li>
+            {% endif %}
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+  </div>
+  <div class="" style="height: 100%; max-height: 100%; background-image: url('{% static "images/background_image.jpg" %}');
+  background-size: 100vw 100%; background-repeat: no-repeat;">
+    {% block content %}
+    {% endblock %}
+  </div>
+  <footer id="footer" class=" py-8 pt-12 pb-16 bg-gray-900">
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 px-6 ">
+        <div>
+
+          <div class="mt-6 text-gray-600">
+            <p class="text-sm">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+              Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
+          </div>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold text-gray-300 mb-4">Useful Links</h2>
+          <div class="border-b border-gray-400 mb-4"></div>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-400 hover:text-white"><i class="fas fa-angle-right mr-2"></i>
+                Home</a></li>
+            <li><a href="about.html" class="text-gray-400 hover:text-white"><i class="fas fa-angle-right mr-2"></i>
+                About Us</a></li>
+            <li><a href="gallery.html" class="text-gray-400 hover:text-white"><i class="fas fa-angle-right mr-2"></i>
+                Gallery</a></li>
+            <li><a href="contact.html" class="text-gray-400 hover:text-white"><i class="fas fa-angle-right mr-2"></i>
+                Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold text-gray-300 mb-4">Follow Us</h2>
+          <div class="border-b border-gray-400 mb-4"></div>
+          <ul class="space-y-2">
+            <li><a href="" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f mr-2"></i>
+                Facebook</a></li>
+            <li><a href="" class="text-gray-400 hover:text-white"><i class="fab fa-instagram mr-2"></i>
+                Instagram</a></li>
+            <li><a href="" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in mr-2"></i>
+                Linkedin</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold text-gray-300 mb-4">Address</h2>
+          <div class="border-b border-gray-400 mb-4"></div>
+          <ul class="space-y-2">
+            <li class="text-gray-400"><i class="fas fa-location-dot mr-2"></i> Kolathur ramankulam- Malappuram
+              Dt Kerala 679338</li>
+            <li><a href="" class="text-gray-400 hover:text-white"><i class="fas fa-phone mr-2"></i> +91
+                90904500112</a></li>
+            <li><a href="" class="text-gray-400 hover:text-white"><i class="fas fa-envelope mr-2"></i>
+                mail@1234567.com</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
