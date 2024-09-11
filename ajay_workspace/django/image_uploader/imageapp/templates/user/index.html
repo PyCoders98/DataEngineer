@@ -2,9 +2,7 @@
 {% load static %}
 {% load custom_tags %}
 {% block style %}
-
-        /* Modal animations */
-        .modal-enter-active {
+    .modal-enter-active {
             @apply opacity-100 scale-100;
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
@@ -302,14 +300,12 @@
             <img id="modalImage"
                  src=""
                  alt="Modal Image"
-                 class="w-full h-64 object-cover rounded-lg shadow-md mb-4">
+                 class="w-full h-64 object-contain rounded-lg shadow-md mb-4">
             <p id="modalDescription" class="text-white text-center"></p>
         </div>
     </div>
 {% endblock %}
 {% block script %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
         $(document).ready(function () {
             $(".like-dislike-form").submit(function (e) {
                 e.preventDefault();
@@ -369,7 +365,6 @@
             });
         });
         
-        {% comment %} follow request {% endcomment %}
 
         function openModal(id, description, imageSrc) {
             var modal = document.getElementById('descriptionModal');
@@ -395,5 +390,4 @@
                 modalContent.classList.add('scale-95');
             }, 300); // Delay hiding to allow transition to complete
         }
-    </script>
 {% endblock %}

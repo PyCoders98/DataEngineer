@@ -269,8 +269,6 @@
 </div>
 {% endblock %}
 {% block script %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
         $(document).ready(function () {
             $(".like-dislike-form").submit(function (e) {
                 e.preventDefault();
@@ -330,7 +328,6 @@
             });
         });
         
-        {% comment %} follow request {% endcomment %}
 
         function openModal(id, description, imageSrc) {
             var modal = document.getElementById('descriptionModal');
@@ -356,5 +353,4 @@
                 modalContent.classList.add('scale-95');
             }, 300); // Delay hiding to allow transition to complete
         }
-    </script>
 {% endblock %}

@@ -20,6 +20,7 @@ from django.core import serializers
 from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
+from django.urls import reverse
 
 
 # ----------------Explore Page----------------
