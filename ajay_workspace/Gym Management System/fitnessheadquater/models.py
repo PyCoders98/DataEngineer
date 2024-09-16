@@ -16,6 +16,10 @@ class SiteMember(models.Model):
     def __str__(self):
         return self.user.username
 
+    class Meta:
+        verbose_name = "Registered Members"
+        verbose_name_plural = "Registered Members"
+
 
 class Applicant(models.Model):
     name = models.CharField(max_length=30)
@@ -33,6 +37,11 @@ class Categori(models.Model):
 
     def __str__(self) -> str:
         return self.category
+    
+
+    class Meta:
+        verbose_name = "Categories for packs"
+        verbose_name_plural = "Categories for packs"
 
 
 
@@ -63,6 +72,10 @@ class Member(models.Model):
 
     def __str__(self) -> str:
         return self.user.user.username
+    
+    class Meta:
+        verbose_name = "People who bought packs"
+        verbose_name_plural = "People who bought packs"
 
 
 class ContactUs(models.Model):

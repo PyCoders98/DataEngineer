@@ -145,14 +145,14 @@ def buy_pack_confirm(request, id):
         duration = pack_data.duration
         end_date = datetime.now() + timedelta(days=int(duration * 30))
 
-        member = Member.objects.create(
-            user=user,
-            pack_duraton=pack_data.duration,
-            pack_title=pack_data.title,
-            pack_price=pack_data.price,
-            member=True,
-            end_date=end_date,
-        )
+        # member = Member.objects.create(
+        #     user=user,
+        #     pack_duraton=pack_data.duration,
+        #     pack_title=pack_data.title,
+        #     pack_price=pack_data.price,
+        #     member=True,
+        #     end_date=end_date,
+        # )
         context = {
             "pack_data": pack_data,
             "payment": payment,
