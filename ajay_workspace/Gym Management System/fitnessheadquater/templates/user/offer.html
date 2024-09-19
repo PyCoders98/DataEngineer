@@ -75,7 +75,7 @@
         width: 600px;
         height: 400px;
         font-family: 'Open Sans', sans-serif;
-        border: 2px solid red;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -316,8 +316,11 @@
 <div class=" offer-container bg-transparent flex justify-center flex-wrap p-16">
 
     {% for offer in offer %}
-    <div class="offer-card p-8 md:w-1/3 lg:w-1/3 m-4 rounded-3xl flex justify-center flex-col  animate-fade-in-up">
-        <h1 class="offer-text p-4 uppercase text-center font-bold text-4xl text-gray-200">Special Offer!</h1>
+    <div class="offer-card p-8 md:w-1/3 lg:w-1/3 m-4 rounded-3xl flex justify-center flex-col  animate-fade-in-up0">
+        <h1 class="offer-text p-4 uppercase text-center font-bold text-4xl text-gray-200 "><section class="wrapper"style="background:transparent">
+            <div class="top">Special Offer</div>
+<div class="bottom">Special Offer</div>
+        </section></h1>
         <div class="offer-details flex justify-around flex-wrap">
             <div class="text-2xl text-red-600 offer-heading uppercase font-bold text-gray-200">{{offer.title}}</div>
             <div class="text-2xl offer-off uppercase text-yellow-400 animate-pulse">50% Off</div>
@@ -345,30 +348,35 @@
 
     <div>
 
-        <h1 class="text-center text-2xl font-bold m-4">Offers Are On the Way...</h1>
-        <div class="animation-container">
-            <div class="loop-wrapper">
-                <div class="mountain"></div>
-                <div class="hill"></div>
-                <div class="tree"></div>
-                <div class="tree"></div>
-                <div class="tree"></div>
-                <div class="rock"></div>
-                <div class="truck"></div>
-                <div class="wheels"></div>
+        <section class="wrapper rounded">
+            <div class="top">Offers are on the way...
             </div>
+            <div class="bottom">Offers are on the way...</div>
+        </section>
+        <div class="animation-container mt-4">
+            <div class="loop-wrapper ">
+                <div class="mountain "></div>
+                <div class="hill "></div>
+                <div class="tree "></div>
+                <div class="tree "></div>
+                <div class="tree "></div>
+                <div class="rock "></div>
+                <div class="truck "></div>
+                <div class="wheels "></div>
+             
+            </div>
+
         </div>
+        {% endif %}
     </div>
-    {% endif %}
-</div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        setTimeout(function () {
-            var messages = document.querySelectorAll('.alert');
-            messages.forEach(function (message) {
-                message.remove();
-            });
-        }, 2000);
-    });
-</script>
-{% endblock content %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                var messages = document.querySelectorAll('.alert');
+                messages.forEach(function (message) {
+                    message.remove();
+                });
+            }, 2000);
+        });
+    </script>
+    {% endblock content %}

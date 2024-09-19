@@ -13,8 +13,9 @@ from django.urls import reverse
 import razorpay
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-
 
 
 key = "rzp_test_zoEqBo2vt3lNJ5"
@@ -145,14 +146,14 @@ def buy_pack_confirm(request, id):
         duration = pack_data.duration
         end_date = datetime.now() + timedelta(days=int(duration * 30))
 
-        # member = Member.objects.create(
-        #     user=user,
-        #     pack_duraton=pack_data.duration,
-        #     pack_title=pack_data.title,
-        #     pack_price=pack_data.price,
-        #     member=True,
-        #     end_date=end_date,
-        # )
+        member = Member.objects.create(
+            user=user,
+            pack_duraton=pack_data.duration,
+            pack_title=pack_data.title,
+            pack_price=pack_data.price,
+            member=True,
+            end_date=end_date,
+        )
         context = {
             "pack_data": pack_data,
             "payment": payment,
@@ -163,11 +164,18 @@ def buy_pack_confirm(request, id):
 
 @csrf_exempt
 def greeting_page(request):
-    subject = 'Welcome to the fitness Headquater'
-    message = f'Hi {request.user.username}, thank you for Choosing Fitness Headquater .Let us start the journey of you fitness.'
+    subject = "Fitness Headquater"
+    html_content = render_to_string(
+        "mail_template/greeting_mail.html",
+        {"receipient_name": request.user.username},
+    )
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = [request.user.email, ]
-    send_mail( subject, message, email_from, recipient_list )
+    recipient_list = [
+        request.user.email,
+    ]
+    email = EmailMultiAlternatives(subject, "", email_from, recipient_list)
+    email.attach_alternative(html_content, "text/html")
+    email.send()
     return render(request, "user/greeting_page.html")
 
 
@@ -306,7 +314,7 @@ def admin_memberships(request):
             regular_price=regular_price,
             discount=discount,
         )
-        messages.success(request,"Added Successfully")
+        messages.success(request, "Added Successfully")
     query_set = Packs.objects.filter(category__category="Membership")
 
     return render(request, "admin/admin_memberships.html", {"membership": query_set})
@@ -358,7 +366,7 @@ def admin_offers(request):
             regular_price=regular_price,
             discount=discount,
         )
-        messages.success(request,"Added Successfully")
+        messages.success(request, "Added Successfully")
     query_set = Packs.objects.filter(category__category="Offer")
     if not query_set.exists():
         reminder = False
