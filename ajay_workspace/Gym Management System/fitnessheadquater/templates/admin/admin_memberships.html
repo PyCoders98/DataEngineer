@@ -8,12 +8,9 @@
         align-items: center;
         flex-direction: column;
         max-width: 90%;
-
     }
 
-
-    /* modal cancel button
- */
+    /* modal cancel button */
     .close-button {
         position: absolute;
         top: 0;
@@ -23,9 +20,7 @@
         border: none;
         color: white;
         cursor: pointer;
-
     }
-
 
     .login-box {
         width: 400px;
@@ -33,8 +28,6 @@
         background: rgba(10, 0, 34, 0.874);
         box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
         border-radius: 10px;
-
-
     }
 
     .login-box h2 {
@@ -71,21 +64,18 @@
         transition: .5s;
     }
 
-
-
-    .login-box form a {
+    .login-box form button {
         position: relative;
-
         padding: 10px 20px;
         font-size: 16px;
         text-decoration: none;
         text-transform: uppercase;
         transition: .5s;
         margin-top: 40px;
-        letter-spacing: 4px
+        letter-spacing: 4px;
     }
 
-    .login-box a:hover,
+    .login-box .addbtn:hover,
     .membership-update-btn:hover {
         background: #03e9f4;
         color: #000000;
@@ -93,7 +83,7 @@
         box-shadow: 0 0 5px #03e9f4,
             0 0 25px #03e9f4,
             0 0 50px #03e9f4,
-            0 0 100px #03e9f4;
+            0 0 10px #03e9f4;
     }
 
     .addbtn {
@@ -101,16 +91,19 @@
         background: transparent;
         color: white;
         border: none;
-        font: bold;
+        font-weight: bold;
         text-transform: uppercase;
+
     }
 
     .close-button:hover {
-        scale: 1.2;
+        transform: scale(1.2);
     }
 
     #dialog {
-        box-shadow: hsla(184, 98%, 49%, 0.935) 0px 4px 16px, hsla(184, 98%, 49%, 0.935) 0px 8px 24px, hsla(184, 98%, 49%, 0.935) 0px 16px 56px;
+        box-shadow: hsla(184, 98%, 49%, 0.935) 0px 4px 16px,
+            hsla(184, 98%, 49%, 0.935) 0px 8px 24px,
+            hsla(184, 98%, 49%, 0.935) 0px 16px 56px;
         backdrop-filter: blur(13px);
     }
 
@@ -123,11 +116,10 @@
         width: 4px;
         background-color: rgba(236, 235, 235, 0.87);
         border-radius: 20px;
-
     }
 </style>
 
-<div class="admin-membership-container bg-transparent max-w-full ">
+<div class="admin-membership-container bg-transparent max-w-full">
     <div class="w-full flex justify-center">
         <div class="w-4/12">
             <ul class="messages">
@@ -141,36 +133,26 @@
     </div>
     <div class="login-box p-4 max-w-full">
         <h2 class="uppercase text-bold tracking-wide">Membership</h2>
-        <form method="post">
-            {% csrf_token %}
+        <form>
             <div class="user-box">
                 <input type="text" name="name" required="" placeholder="Membership Name">
-
             </div>
             <div class="user-box">
                 <input type="text" name="duration" required="" placeholder="Duration in Months">
-
             </div>
             <div class="user-box">
                 <input type="text" name="price" required="" placeholder="Price">
-
             </div>
             <div class="user-box">
                 <input type="text" name="regular_price" required="" placeholder="Regular Price">
-
             </div>
-            <a href="#" class="border-2 border-gray-400 rounded-md">
-                <button type="submit" class="addbtn">
-                    Add
-                </button>
-
-            </a>
+            <button type="submit" class="addbtn hover:border-2">Add</button>
         </form>
     </div>
     <div
-        class="admin-home-page-dynamic-part scroll-bar py-4 max-w-full bg-gradient-to-br from-teal-500 to-purple-600  flex  justify-center overflow-auto">
+        class="admin-home-page-dynamic-part scroll-bar py-4 max-w-full bg-gradient-to-br from-teal-500 to-purple-600 flex justify-center overflow-auto">
         <div class="max-w-full border-2 border-gray-900 rounded-md">
-            <table class="max-w-full bg-gray-300 shadow-md rounded-md border-2 border-gray-900 ">
+            <table class="max-w-full bg-gray-300 shadow-md rounded-md border-2 border-gray-900">
                 <thead>
                     <tr class="bg-indigo-500 text-white border-2 border-gray-600">
                         <th class="px-4 py-2 cursor-pointer border border-gray-600">No</th>
@@ -180,53 +162,100 @@
                         <th class="px-4 py-2 cursor-pointer border border-gray-600">Regular Price</th>
                         <th class="px-4 py-2 cursor-pointer border border-gray-600">Discount</th>
                         <th class="px-4 py-2 cursor-pointer border border-gray-600">Action</th>
-
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="membership-table-body">
                     {% for membership in membership %}
-                    <tr class="membership  text-2xl border-2 border-gray-600">
-                        <td class="px-4 py-2 border border-gray-600 text-center">{{forloop.counter}}</td>
-                        <td class="px-4 py-2 border border-gray-600 text-center">{{membership.title}}</td>
-                        <td class="px-4 py-2 border border-gray-600 text-center">{{membership.duration}}</td>
-                        <td class="px-4 py-2 border border-gray-600 text-center">{{membership.price}}</td>
-                        <td class="px-4 py-2 border border-gray-600 text-center">{{membership.regular_price}}</td>
-                        <td class="px-4 py-2 border border-gray-600 text-center font-bold">{{membership.discount}} <span
-                                class="text-red-600">%OFF</span>
+                    <tr class="membership text-2xl border-2 border-gray-600">
+                        <td class="px-4 py-2 border border-gray-600 text-center">{{ forloop.counter }}</td>
+                        <td class="px-4 py-2 border border-gray-600 text-center">{{ membership.title }}</td>
+                        <td class="px-4 py-2 border border-gray-600 text-center">{{ membership.duration }}</td>
+                        <td class="px-4 py-2 border border-gray-600 text-center">{{ membership.price }}</td>
+                        <td class="px-4 py-2 border border-gray-600 text-center">{{ membership.regular_price }}</td>
+                        <td class="px-4 py-2 border border-gray-600 text-center font-bold">{{ membership.discount }}
+                            <span class="text-red-600">%OFF</span>
                         </td>
-
                         <td class="px-4 py-2 border border-gray-600 text-center">
-                            <a href="{% url 'delete_memberships' membership.id %}">
-                                <button
-                                    class="text-red-600 text-4xl p-2 px-3 rounded-md duration-300 hover:bg-red-600 hover:text-black"><i
-                                        class="fa fa-trash-o "></i></button>
-                            </a>
-                            <a href="{% url 'update_memberships' membership.id %} ">
-                                <button
-                                    class="text-green-600 text-4xl p-2 rounded-md duration-300 hover:bg-green-600 hover:text-black"><i
-                                        class="fa fa-edit"></i></button>
-                            </a>
 
+                            <button
+                                class="text-red-600 text-4xl p-2 px-3 rounded-md duration-300 hover:bg-red-600 hover:text-black removebtn"
+                                data-id="{{ membership.id }}">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                            <button
+                                class="text-green-600 text-4xl p-2 rounded-md duration-300 hover:bg-green-600 hover:text-black"><i
+                                    class="fa fa-edit"></i></button>
                         </td>
                     </tr>
-
-
                     {% endfor %}
-                    <!-- Add more rows here if needed -->
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+{% block script %}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        setTimeout(function () {
-            var messages = document.querySelectorAll('.alert');
-            messages.forEach(function (message) {
-                message.remove();
+    $(document).ready(function () {
+        $(".addbtn").click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                method: "POST",
+                url: "{% url 'admin_memberships' %}",
+                data: $(this).closest('form').serialize(),
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    // $(this).closest('form')[0].reset();
+                    var currentCount = $("#membership-table-body tr").length; // Get current row count
+                    var newRow = `<tr class="membership text-2xl border-2 border-gray-600">
+                    <td class="px-4 py-2 border border-gray-600 text-center">` + (currentCount + 1) + `</td>
+                    <td class="px-4 py-2 border border-gray-600 text-center">` + response.title + `</td>
+                    <td class="px-4 py-2 border border-gray-600 text-center">` + response.duration + `</td>
+                    <td class="px-4 py-2 border border-gray-600 text-center">` + response.price + `</td>
+                    <td class="px-4 py-2 border border-gray-600 text-center">` + response.regular_price + `</td>
+                    <td class="px-4 py-2 border border-gray-600 text-center font-bold">` + response.discount + ` <span class="text-red-600">%OFF</span></td>
+                    <td class="px-4 py-2 border border-gray-600 text-center">
+                        <a href="/delete_memberships/` + response.id + `">
+                            <button class="text-red-600 text-4xl p-2 px-3 rounded-md duration-300 hover:bg-red-600 hover:text-black"><i class="fa fa-trash-o"></i></button>
+                        </a>
+                        <a href="/update_memberships/` + response.id + `">
+                            <button class="text-green-600 text-4xl p-2 rounded-md duration-300 hover:bg-green-600 hover:text-black"><i class="fa fa-edit"></i></button>
+                        </a>
+                    </td>
+                </tr>`;
+                    $("#membership-table-body").append(newRow);
+                    alert("Membership added successfully.");
+                },
+                error: function (error) {
+                    alert("Error");
+                }
             });
-        }, 2000);
+        });
+        $(".removebtn").click(function (e) {
+            e.preventDefault();
+            var membershipId = $(this).data('id');
+
+            if (confirm("Are you sure you want to delete this membership?")) {
+                $.ajax({
+                    method: "DELETE",
+                    url: `{% url 'delete_memberships' 0 %}`.replace('0', membershipId),
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+                        // Remove the corresponding row from the table
+                        $("button[data-id='" + membershipId + "']").closest('tr').remove();
+                        alert("Membership deleted successfully.");
+                    },
+                    error: function (error) {
+                        alert("Error deleting membership.");
+                    }
+                });
+            }
+        });
     });
 </script>
-
+{% endblock script %}
 {% endblock %}

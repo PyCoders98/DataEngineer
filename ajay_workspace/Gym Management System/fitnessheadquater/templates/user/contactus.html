@@ -15,29 +15,41 @@
     </div>
     <div id="form-main" class="min-h-screen flex justify-center items-center">
         <div id="form-div" class="bg-opacity-60 bg-gray-700 p-8 rounded-lg shadow-lg w-full sm:max-w-md">
-            <h2 class="uppercase w-full text-center mb-4 font-bold text-2xl">contact US</h2>
+            <h2 class="uppercase w-full text-center mb-4 font-bold text-2xl">
+                <section class="wrapper bg-transparent">
+                    <div class="top">Contact US</div>
+                    <div class="bottom">Contact US</div>
+                </section>
+            </h2>
             <form class="form" id="form1" method="post">
                 {% csrf_token %}
-    
+
                 <p class="name">
-                    <input name="name" type="text" class="feedback-input block w-full bg-white rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Name" id="name" />
+                    <input name="name" type="text"
+                        class="feedback-input block w-full bg-white rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Name" id="name" />
                 </p>
-    
+
                 <p class="email">
-                    <input name="email" type="text" class="feedback-input block w-full bg-white rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Email" />
+                    <input name="email" type="text"
+                        class="feedback-input block w-full bg-white rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        id="email" placeholder="Email" />
                 </p>
-    
+
                 <p class="text">
-                    <textarea name="text" class="feedback-input block w-full bg-white rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" id="comment" placeholder="Comment"></textarea>
+                    <textarea name="text"
+                        class="feedback-input block w-full bg-white rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        id="comment" placeholder="Comment"></textarea>
                 </p>
-    
+
                 <div class="submit">
-                    <input type="submit" value="SEND" id="button-blue" class="cursor-pointer w-full bg-blue-500 text-white font-bold text-xl py-3 rounded-lg transition duration-300 ease-in-out hover:bg-transparent hover:text-blue-500 border border-blue-500 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500" />
+                    <input type="submit" value="SEND" id="button-blue"
+                        class="cursor-pointer w-full bg-blue-500 text-white font-bold text-xl py-3 rounded-lg transition duration-300 ease-in-out hover:bg-transparent hover:text-blue-500 border border-blue-500 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500" />
                 </div>
             </form>
         </div>
     </div>
-    
+
 </div>
 
 <script>

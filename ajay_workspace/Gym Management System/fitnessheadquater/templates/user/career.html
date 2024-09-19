@@ -12,8 +12,7 @@
     }
 </style>
 <div class="bg-current p-12 flex justify-center flex-wrap bg-cover bg-center bg-no-repeat"
-    style="background-image: url('http://thekitemap.com/images/feedback-img.jpg');"
->
+    style="background-image: url('http://thekitemap.com/images/feedback-img.jpg');">
 
     {% if messages %}
     <ul class="messages">
@@ -28,8 +27,15 @@
     </ul>
     {% endif %}
     <div class="flex justify-center items-center min-h-screen w-full">
-        <div class="bg-opacity-60 bg-gray-700 p-4 rounded-lg shadow-lg sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 custom-container">
-            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800 tracking-wide uppercase">CAREER Form</h2>
+        <div
+            class="bg-opacity-60 bg-gray-700 p-4 rounded-lg shadow-lg sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 custom-container">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800 tracking-wide uppercase">
+                <section class="wrapper bg-transparent">
+                    <div class="top">career form</div>
+                    <div class="bottom">career form</div>
+
+                </section>
+            </h2>
             <form id="registration-form" enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 <div class="mb-4">
@@ -76,7 +82,7 @@
                 </div>
                 <div class="mb-4">
 
-                    <input type="file" id="cv" name="cv" placeholder="Upload Resume"  required
+                    <input type="file" id="cv" name="cv" placeholder="Upload Resume" required
                         class="mt-1 p-2 w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     <span class="text-red-500" id="cv-error"></span>
                 </div>

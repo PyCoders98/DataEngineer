@@ -3,8 +3,13 @@
 
 <div class=" bg-current w-full h-screen flex justify-center items-center">
 
-    <div class="bg-white p-8 rounded-lg shadow-md">
-        <h1 class="header text-center mb-6 uppercase font-bold"> {{info.user.user.username}} </h1>
+    <div class="bg-gray-400 drop-shadow	 blur-sm p-8 rounded-lg shadow-md">
+        <h1 class="header text-center mb-6 uppercase font-bold">
+            <section class="wrapper bg-transparent">
+                <div class="top">{{info.user.user.username}}</div>
+                <div class="bottom">{{info.user.user.username}}</div>
+            </section>
+        </h1>
         <table class="w-full border-collapse border border-gray-300">
             <tr>
                 <td class="font-semibold text-gray-700 py-2 px-4 border border-gray-300">📛 Name:</td>

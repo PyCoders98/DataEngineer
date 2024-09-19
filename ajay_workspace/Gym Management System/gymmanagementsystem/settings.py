@@ -32,6 +32,8 @@ INSTALLED_APPS = [
 ]
 EXTERNAL_APPS = [
     "fitnessheadquater",
+    "rest_framework",
+    
 ]
 
 INSTALLED_APPS += EXTERNAL_APPS

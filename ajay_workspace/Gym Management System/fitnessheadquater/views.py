@@ -16,6 +16,8 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from rest_framework.response import Response
+from django.http import JsonResponse
 
 
 key = "rzp_test_zoEqBo2vt3lNJ5"
@@ -299,6 +301,7 @@ def admin_home(request):
 
 
 def admin_memberships(request):
+    response_data = {}
     if request.method == "POST":
         category = Categori.objects.get(category="Membership")
         name = request.POST.get("name")
@@ -314,9 +317,16 @@ def admin_memberships(request):
             regular_price=regular_price,
             discount=discount,
         )
-        messages.success(request, "Added Successfully")
-    query_set = Packs.objects.filter(category__category="Membership")
+        response_data["title"] = name
+        response_data["duration"] = duration
+        response_data["price"] = price
+        response_data["regular_price"] = regular_price
+        response_data["discount"] = discount
 
+        # messages.success(request, "Added Successfully")
+        print(response_data)
+        return JsonResponse(response_data)
+    query_set = Packs.objects.filter(category__category="Membership")
     return render(request, "admin/admin_memberships.html", {"membership": query_set})
 
 
@@ -343,9 +353,7 @@ def update_memberships(request, id):
 
 def delete_memberships(request, id):
     data = Packs.objects.get(id=id)
-    if request.method == "POST":
-        data.delete()
-        return redirect("/admin-home/memberships/")
+    data.delete()        
     return render(request, "admin/delete_membership.html")
 
 
