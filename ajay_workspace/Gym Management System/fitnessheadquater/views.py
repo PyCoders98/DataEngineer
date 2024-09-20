@@ -317,15 +317,13 @@ def admin_memberships(request):
             regular_price=regular_price,
             discount=discount,
         )
-        response_data["title"] = name
-        response_data["duration"] = duration
-        response_data["price"] = price
-        response_data["regular_price"] = regular_price
-        response_data["discount"] = discount
 
         # messages.success(request, "Added Successfully")
         print(response_data)
-        return JsonResponse(response_data)
+        return JsonResponse(
+            list(Packs.objects.filter(category__category="Membership").values()),
+            safe=False,
+        )
     query_set = Packs.objects.filter(category__category="Membership")
     return render(request, "admin/admin_memberships.html", {"membership": query_set})
 
@@ -353,8 +351,11 @@ def update_memberships(request, id):
 
 def delete_memberships(request, id):
     data = Packs.objects.get(id=id)
-    data.delete()        
-    return render(request, "admin/delete_membership.html")
+    data.delete()
+    return JsonResponse(
+        list(Packs.objects.filter(category__category="Membership").values()),
+        safe=False,
+    )
 
 
 def admin_offers(request):
