@@ -197,6 +197,16 @@ def profile(request):
     return render(request, "admin/profile.html", context)
 
 
+# ----------------User profile ----------------
+def user_profile(request, id):
+    user_data = User.objects.filter(id=ImageModel.objects.filter(id=id).first().user.id).first()
+    image_data = ImageModel.objects.filter(
+        user=ImageModel.objects.filter(id=id).first().user
+    )
+    context = {"image": image_data, "user": user_data}
+    return render(request, "admin/user_profile.html", context)
+
+
 # ----------------View profile image----------------
 def view_profile_image(request, id):
     return render(request, "admin/view_profile_image.html")

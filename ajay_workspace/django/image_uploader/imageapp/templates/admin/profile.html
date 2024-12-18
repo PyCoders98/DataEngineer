@@ -2,49 +2,42 @@
 {% load static %}
 {% load custom_tags %}
 {% block content %}
-    <div class="flex items-center justify-center">
-        <div class="max-w-3xl mx-auto rounded-lg overflow-hidden bg-white bg-opacity-30 backdrop-blur-md border border-white border-opacity-20 shadow-lg p-6 flex flex-col md:flex-row items-center space-x-6">
-            <a href="{% url 'view_profile_image' request.user.id %}">
-                {% if request.user.profile_image %}
-                  <img src="{{ request.user.profile_image.url }}" alt="User Icon" class="w-24 h-24 object-cover rounded-full border-2 border-blue-500 mb-4 md:mb-0">
-                {% else %}
-                  <img src="{% static 'static_profile_image/default_profile_image.jpg' %}"
-                       alt="User Icon">
-                {% endif %}
-              </a>
-            <div class="flex-grow">
-                <div class="flex flex-col md:flex-row items-center justify-between mb-4">
-                    <div class="text-center md:text-left">
-                        <div class="font-bold text-2xl">{{request.user.username}}</div>
-                        <div class="text-gray-600">{{request.user.email}}</div>
-                    </div>
-                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 text-center">
-                        <div>
-                            <div class="text-xl font-semibold" id="followersCount">{{followers_count}}</div>
-                            <div class="text-sm text-gray-600">Followers</div>
-                        </div>
-                        <div>
-                            <div class="text-xl font-semibold" id="followingCount">{{following_count}}</div>
-                            <div class="text-sm text-gray-600">Following</div>
-                        </div>
-                    </div>
+<div class="flex flex-col md:flex-row items-center justify-center p-4">
+    <div
+        class="max-w-3xl w-full mx-auto rounded-lg overflow-hidden bg-white bg-opacity-30 backdrop-blur-md border border-white border-opacity-20 shadow-lg p-6 flex flex-col md:flex-row items-center md:space-x-6">
+        <a href="{% url 'view_profile_image' request.user.id %}">
+            {% if user.profile_image %}
+            <img src="{{ user.profile_image.url }}" alt="User Icon"
+                class="w-24 h-24 md:w-32 md:h-32 object-cover rounded-full border-2 border-blue-500 mb-4 md:mb-0">
+            {% else %}
+            <img src="{% static 'static_profile_image/default_profile_image.jpg' %}" alt="User Icon">
+            {% endif %}
+        </a>
+        <div class="flex-grow w-full text-center md:text-left">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+                <div>
+                    <div class="font-bold text-2xl">{{ user.username }}</div>
+                    <div class="text-gray-600">{{ user.email }}</div>
                 </div>
-                <div class="text-gray-600 text-sm mb-4">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, pulvinar facilisis.</p>
-                </div>
-                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-                    <button id="followButton"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Follow
-                    </button>
-                    <button id="messageButton"
-                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                        Message
-                    </button>
+                <div class="flex flex-row space-x-8 text-center mt-4 md:mt-0">
+                    <div>
+                        <div class="text-xl font-semibold" id="followersCount">{{ followers_count }}</div>
+                        <div class="text-sm text-gray-600">Followers</div>
+                    </div>
+                    <div>
+                        <div class="text-xl font-semibold" id="followingCount">{{ following_count }}</div>
+                        <div class="text-sm text-gray-600">Following</div>
+                    </div>
                 </div>
             </div>
+            <div class="text-gray-600 text-sm mb-4">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, pulvinar facilisis.</p>
+            </div>
+
         </div>
     </div>
+</div>
+
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {% for item in data %}

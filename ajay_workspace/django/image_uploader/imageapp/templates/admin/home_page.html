@@ -1,356 +1,176 @@
 {% extends "base.html" %}
 {% load static %}
 {% load custom_tags %}
-{% block style %}
-    /* Modal animations */
-    .modal-enter-active {
-    @apply opacity-100 scale-100;
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-    }
-    .modal-exit-active {
-    @apply opacity-0 scale-95;
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-    }
-    /* Glassmorphism effect */
-    .glassmorphism {
-    background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Light border for contrast */
-    backdrop-filter: blur(10px); /* Blur effect for glassmorphism */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    /* Card styles */
-    .card {
-    border: none; /* Remove any border */
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    transition: transform 0.4s ease; /* Smooth transition for scaling */
-    }
-    .card:hover {/* Scale the entire card on hover */
-    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
-    }
-    .card-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    }
-    /* Profile header */
-    .profile-header {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 1rem;
-    padding: 1rem;
-    align-items: center;
-    }
-    .profile-image {
-    grid-row: span 2; /* Span two rows for the profile image */
-    }
-    .profile-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    }
-    .profile-username {
-    font-weight: 700;
-    color: #1f2937; /* Tailwind gray-900 */
-    }
-    .profile-date {
-    color: #4b5563; /* Tailwind gray-600 */
-    font-size: 0.875rem; /* Tailwind text-sm */
-    }
-    .follow-button {
-    background-color: #1f2937; /* Tailwind gray-900 */
-    color: white;
-    border: none;
-    border-radius: 0.375rem; /* Tailwind rounded-md */
-    padding: 0.5rem 1rem; /* Tailwind px-4 py-2 */
-    cursor: pointer;
-    font-size: 0.875rem; /* Tailwind text-sm */
-    transition: background-color 0.3s ease; /* Smooth transition */
-    }
-    .follow-button:hover {
-    background-color: #374151; /* Tailwind gray-700 */
-    }
-    .card-image {
-    margin-top: -20px; /* Moves the image up */
-    transition: none; /* Disable transition effects on the image */
-    }
-    .action-buttons {
-    background: transparent; /* Semi-transparent background */
-    padding: 0.25rem; /* Reduced padding */
-    }
-    .like-dislike-form, .comment-form {
-    background: transparent; /* Remove default background */
-    border: none; /* Remove border */
-    }
-    .like-dislike-form button, .comment-form button {
-    display: flex;
-    align-items: center;
-    background: transparent; /* Glassmorphism effect */
-    border-radius: 10px;
-    padding: 0.25rem; /* Reduced padding */
-    font-size: 0.75rem; /* Reduced font size */
-    }
-    .like-dislike-form button i, .comment-form button i {
-    width: 20px; /* Adjust icon size */
-    height: 20px; /* Adjust icon size */
-    }
-    .like-count, .comment-form span {
-    margin-left: 0.5rem; /* Reduced margin */
-    }
-    /* Responsive styles */
-    @media (max-width: 640px) {
-    .profile-header {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 0.5rem;
-    padding: 0.5rem; /* Reduced padding */
-    }
-    .profile-image {
-    grid-row: auto; /* Adjust profile image row span on smaller screens */
-    width: 48px; /* Smaller profile image size */
-    height: 48px; /* Smaller profile image size */
-    }
-    .profile-info {
-    font-size: 0.875rem; /* Smaller font size */
-    }
-    .card-image {
-    margin-top: 0; /* Reset margin for smaller screens */
-    height: auto; /* Adjust image height for smaller screens */
-    }
-    .description-container {
-    padding: 0.5rem; /* Reduced padding */
-    }
-    }
-    @media (max-width: 480px) {
-    .profile-header {
-    padding: 0.25rem; /* Even smaller padding on very small screens */
-    }
-    .profile-image {
-    width: 40px; /* Further reduced profile image size */
-    height: 40px; /* Further reduced profile image size */
-    }
-    .card-image {
-    height: 200px; /* Fixed height for card image on very small screens */
-    }
-    .description {
-    font-size: 0.625rem; /* Further reduced font size */
-    height: 4rem; /* Adjust height for better fit */
-    }
-    }
-    /* Description styles */
-    .description-container {
-    overflow: hidden; /* Hide overflow */
-    position: relative; /* Ensure absolute positioning of child */
-    }
-    .description {
-    color: #1f2937; /* Tailwind gray-900 */
-    font-size: 0.75rem; /* Reduced font size */
-    background: rgba(255, 255, 255, 0.7); /* Semi-transparent background for contrast */
-    backdrop-filter: blur(10px); /* Blur effect */
-    height: 3rem; /* Fixed height */
-    overflow: hidden; /* Hide overflow text */
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Limit to 2 lines */
-    -webkit-box-orient: vertical; /* Vertical box orientation */
-    text-overflow: ellipsis; /* Clip text with ellipsis */
-    white-space: normal; /* Allow text to wrap */
-    background: transparent;
-    }
-    .description:hover {
-    cursor: pointer; /* Change cursor to indicate clickability */
-    }
-    /* Modal styles */
-    #modalContent {
-    max-height: 90vh; /* Limit height to viewport height */
-    overflow-y: auto; /* Enable vertical scrolling if needed */
-    }
-    #modalDescription {
-    padding: 1rem;
-    font-size: 1rem; /* Larger font size for better readability */
-    color: #1f2937; /* Tailwind gray-900 */
-    }
-{% endblock style %}
 {% block content %}
-    <div class="max-w-6xl mx-auto p-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {% for item in data %}
-                <div class="glassmorphism rounded-lg shadow-lg overflow-hidden flex flex-col card"
-                     style="height: 375px">
-                    <div class="profile-header">
-                        <img src="{% if item.user.profile_image %}/media/{{ item.user.profile_image }}{% else %}{% static 'static_profile_image/default_profile_image.jpg' %}{% endif %}"
-                             alt="{{ item.user.username }}"
-                             class="w-12 h-12 rounded-full border-2 border-blue-500 profile-image">
-                        <div class="profile-info">
+<div class="max-width-container">
+    <div class="grid-container">
+        {% for item in data %}
+        <div class="glassmorphism card">
+            <!-- Part 1: User Info (Username, Date, Follow Button) -->
+            <div class="profile-header">
+                <div class="user-info">
+                    <img src="{% if item.user.profile_image %}/media/{{ item.user.profile_image }}{% else %}{% static 'static_profile_image/default_profile_image.jpg' %}{% endif %}"
+                        alt="{{ item.user.username }}" class="profile-image">
+                    <div class="profile-details">
+                        <a href="{% url 'user_profile' item.id %}">
                             <p class="profile-username">{{ item.user.username }}</p>
-                            <p class="profile-date">{{ item.created_at.date }}</p>
-                        </div>
-                        <form class="follow-request-form" data-id="{{ item.id }}">
-                            {% is_followed item.user.id as followed %}
-                            {% if followed %}
-                                <button type="submit" class="follow-button">Unfollow</button>
-                            {% else %}
-                                <button type="submit" class="follow-button">Follow</button>
-                            {% endif %}
-                        </form>
-                   
+                        </a>
+                        <p class="profile-date">{{ item.created_at.date }}</p>
+                    </div>
                 </div>
-                <a href="{% url 'get_image' item.id %}" class="block">
-                    <img src="/media/{{ item.image }}"
-                         alt="{{ item.desc }}"
-                         class="w-full h-36 object-contain card-image">
-                </a>
-                <div class="action-buttons flex justify-left items-center p-2">
-                    <form class="like-dislike-form mr-4 flex items-center space-x-4"
-                          data-id="{{ item.id }}">
+                <div class="follow-button-container">
+                    <form class="follow-request-form" data-id="{{ item.id }}">
+                        {% is_followed item.user.id as followed %}
+                        {% if followed %}
+                        <button type="submit" class="follow-button">Unfollow</button>
+                        {% else %}
+                        <button type="submit" class="follow-button">Follow</button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+
+            <!-- Part 2: Image Section -->
+            <a href="{% url 'get_image' item.id %}" class="image-link">
+                <img src="/media/{{ item.image }}" alt="{{ item.desc }}" class="card-image">
+            </a>
+
+            <!-- Part 3: Actions (Like, Comment, Description) -->
+            <div class="action-buttons">
+                <div class="like-comment-actions">
+                    <form class="like-dislike-form" data-id="{{ item.id }}">
                         {% csrf_token %}
                         <input type="hidden" name="action" value="like">
                         <input type="hidden" name="like" value="{{ item.like }}">
                         {% is_liked item.id as liked %}
-                        <button type="submit"
-                                name="like"
-                                class="flex items-center space-x-1 text-gray-600 hover:text-red-600 transition duration-300">
+                        <button type="submit" name="like" class="like-button">
                             <i class="icon"
-                               style="background-image: url('{% if liked %}{% static 'icons/liketrue.png' %}{% else %}{% static 'icons/likefalse.png' %}{% endif %}');
-                                      width: 20px;
-                                      height: 20px;
-                                      background-size: contain;
-                                      background-repeat: no-repeat"></i>
+                                style="background-image: url('{% if liked %}{% static 'icons/liketrue.png' %}{% else %}{% static 'icons/likefalse.png' %}{% endif %}');"></i>
                             <span class="like-count">{{ item.like|default:"0" }}</span>
                         </button>
                     </form>
-                    <form method="POST"
-                          action="{% url 'image_portfolio' item.id %}"
-                          class="comment-form">
+                    <form method="POST" action="{% url 'image_portfolio' item.id %}" class="comment-form">
                         {% csrf_token %}
-                        <button type="submit"
-                                value="comment"
-                                name="comment"
-                                class="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition duration-300">
+                        <button type="submit" class="comment-button">
                             <i class="icon"
-                               style="background-image: url('{% static 'icons/three-dots-in-a-speech-bubble-svgrepo-com.svg' %}');
-                                      width: 20px;
-                                      height: 20px;
-                                      background-size: contain;
-                                      background-repeat: no-repeat"></i>
-                            {% if item.comment %}<span>{{ item.comment }}</span>{% endif %}
+                                style="background-image: url('{% static 'icons/three-dots-in-a-speech-bubble-svgrepo-com.svg' %}');"></i>
+                            {% if item.comment %}<span class="comment-count">{{ item.comment }}</span>{% endif %}
                         </button>
                     </form>
                 </div>
+
+                <!-- Description Section -->
                 <div class="description-container">
                     <p class="description"
-                       onclick="openModal('{{ item.id }}', '{{ item.desc|escapejs }}', '/media/{{ item.image }}')">
+                        onclick="openModal('{{ item.id }}', '{{ item.desc|escapejs }}', '/media/{{ item.image }}')">
                         {{ item.desc|truncatewords:10 }}
                     </p>
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
 </div>
+
+
 <!-- Modal -->
-<div id="descriptionModal"
-     class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+<div id="descriptionModal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
     <div id="modalContent"
-         class="glassmorphism max-w-lg w-full mx-4 p-6 relative transform scale-95 opacity-0 transition">
-        <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-                onclick="closeModal()">
+        class="glassmorphism max-w-lg w-full mx-4 p-6 relative transform scale-95 opacity-0 transition">
+        <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-800" onclick="closeModal()">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
         </button>
-        <img id="modalImage"
-             src=""
-             alt="Modal Image"
-             class="w-full h-64 object-cover rounded-lg shadow-md mb-4">
+        <img id="modalImage" src="" alt="Modal Image" class="w-full h-64 object-cover rounded-lg shadow-md mb-4">
         <p id="modalDescription" class="text-white text-center"></p>
     </div>
 </div>
+
 {% endblock %}
 {% block script %}
-        $(document).ready(function () {
-            $(".like-dislike-form").submit(function (e) {
-                e.preventDefault();
-                var $form = $(this);
-                var id = $form.data("id");
-                var action = $form.find('input[name="action"]').val();
-                var $likeButton = $form.find('button[name="like"]');
-                var $likeInput = $form.find('input[name="like"]');
-                var currentLikeCount = parseInt($likeInput.val(), 10);
-        
-                $.ajax({
-                    type: "POST",
-                    url: `{% url 'image_portfolio' 0 %}`.replace('0', id),
-                    data: {
-                        "like": action
-                    },
-                    headers: {
-                        "X-CSRFToken": "{{ csrf_token }}"
-                    },
-                    success: function (response) {
-                        var newLikeCount = response.like;
-                        $likeInput.val(newLikeCount); // Update the hidden input with the new like count
-                        $form.find("span.like-count").text(newLikeCount); // Update the displayed like count
-                        if (newLikeCount > currentLikeCount) {
-                            $likeButton.find('i').css("background-image", `url('{% static 'icons/liketrue.png' %}')`);
-                        } else {
-                            $likeButton.find('i').css("background-image", `url('{% static 'icons/likefalse.png' %}')`);
-                        }
-                    },
-                    error: function () {
-                        alert("An error occurred while processing your request.");
-                    }
-                });
-            });
-        
-            $(".follow-request-form").submit(function (e) {
-                e.preventDefault();
-                var $form = $(this);
-                var id = $form.data("id");
-        
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'follow_request' 0 %}".replace('0', id),
-                    headers: {
-                        "X-CSRFToken": "{{ csrf_token }}"
-                    },
-                    success: function (response) {
-                        console.log("successful.")
-                        // Handle success for follow request
-                        alert("Follow request successful.");
-                    },
-                    error: function () {
-                        console.log("failed")
-                        alert("An error occurred while processing your follow request.");
-                    }
-                });
-            });
-        });
-        
+$(document).ready(function () {
+$(".like-dislike-form").submit(function (e) {
+e.preventDefault();
+var $form = $(this);
+var id = $form.data("id");
+var action = $form.find('input[name="action"]').val();
+var $likeButton = $form.find('button[name="like"]');
+var $likeInput = $form.find('input[name="like"]');
+var currentLikeCount = parseInt($likeInput.val(), 10);
 
-        function openModal(id, description, imageSrc) {
-            var modal = document.getElementById('descriptionModal');
-            var modalContent = document.getElementById('modalContent');
-            document.getElementById('modalDescription').innerText = description;
-            document.getElementById('modalImage').src = imageSrc;
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modalContent.classList.add('modal-enter-active');
-                modalContent.classList.remove('opacity-0');
-                modalContent.classList.remove('scale-95');
-            }, 10); // Delay to allow transition to take effect
-        }
+$.ajax({
+type: "POST",
+url: `{% url 'image_portfolio' 0 %}`.replace('0', id),
+data: {
+"like": action
+},
+headers: {
+"X-CSRFToken": "{{ csrf_token }}"
+},
+success: function (response) {
+var newLikeCount = response.like;
+$likeInput.val(newLikeCount); // Update the hidden input with the new like count
+$form.find("span.like-count").text(newLikeCount); // Update the displayed like count
+if (newLikeCount > currentLikeCount) {
+$likeButton.find('i').css("background-image", `url('{% static 'icons/liketrue.png' %}')`);
+} else {
+$likeButton.find('i').css("background-image", `url('{% static 'icons/likefalse.png' %}')`);
+}
+},
+error: function () {
+alert("An error occurred while processing your request.");
+}
+});
+});
 
-        function closeModal() {
-            var modal = document.getElementById('descriptionModal');
-            var modalContent = document.getElementById('modalContent');
-            modalContent.classList.add('modal-exit-active');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modalContent.classList.remove('modal-exit-active');
-                modalContent.classList.add('opacity-0');
-                modalContent.classList.add('scale-95');
-            }, 300); // Delay hiding to allow transition to complete
-        }
+$(".follow-request-form").submit(function (e) {
+e.preventDefault();
+var $form = $(this);
+var id = $form.data("id");
+
+$.ajax({
+type: "POST",
+url: "{% url 'follow_request' 0 %}".replace('0', id),
+headers: {
+"X-CSRFToken": "{{ csrf_token }}"
+},
+success: function (response) {
+console.log("successful.")
+// Handle success for follow request
+alert("Follow request successful.");
+},
+error: function () {
+console.log("failed")
+alert("An error occurred while processing your follow request.");
+}
+});
+});
+});
+
+
+function openModal(id, description, imageSrc) {
+var modal = document.getElementById('descriptionModal');
+var modalContent = document.getElementById('modalContent');
+document.getElementById('modalDescription').innerText = description;
+document.getElementById('modalImage').src = imageSrc;
+modal.classList.remove('hidden');
+setTimeout(() => {
+modalContent.classList.add('modal-enter-active');
+modalContent.classList.remove('opacity-0');
+modalContent.classList.remove('scale-95');
+}, 10); // Delay to allow transition to take effect
+}
+
+function closeModal() {
+var modal = document.getElementById('descriptionModal');
+var modalContent = document.getElementById('modalContent');
+modalContent.classList.add('modal-exit-active');
+setTimeout(() => {
+modal.classList.add('hidden');
+modalContent.classList.remove('modal-exit-active');
+modalContent.classList.add('opacity-0');
+modalContent.classList.add('scale-95');
+}, 300); // Delay hiding to allow transition to complete
+}
 {% endblock %}

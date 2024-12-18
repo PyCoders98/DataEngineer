@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+<div class="flex flex-col md:flex-row items-center justify-center p-4">
+    <div
+        class="max-w-3xl w-full mx-auto rounded-lg overflow-hidden bg-white bg-opacity-30 backdrop-blur-md border border-white border-opacity-20 shadow-lg p-6 flex flex-col md:flex-row items-center md:space-x-6">
+        <a href="{% url 'view_profile_image' request.user.id %}">
+            {% if user.profile_image %}
+            <img src="{{ user.profile_image.url }}" alt="User Icon"
+                class="w-24 h-24 md:w-32 md:h-32 object-cover rounded-full border-2 border-blue-500 mb-4 md:mb-0">
+            {% else %}
+            <img src="{% static 'static_profile_image/default_profile_image.jpg' %}" alt="User Icon">
+            {% endif %}
+        </a>
+        <div class="flex-grow w-full text-center md:text-left">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+                <div>
+                    <div class="font-bold text-2xl">{{ user.username }}</div>
+                    <div class="text-gray-600">{{ user.email }}</div>
+                </div>
+                <div class="flex flex-row space-x-8 text-center mt-4 md:mt-0">
+                    <div>
+                        <div class="text-xl font-semibold" id="followersCount">{{ followers_count }}</div>
+                        <div class="text-sm text-gray-600">Followers</div>
+                    </div>
+                    <div>
+                        <div class="text-xl font-semibold" id="followingCount">{{ following_count }}</div>
+                        <div class="text-sm text-gray-600">Following</div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-gray-600 text-sm mb-4">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, pulvinar facilisis.</p>
+            </div>
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <button id="followButton"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full md:w-auto">
+                    Follow
+                </button>
+                <button id="messageButton"
+                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full md:w-auto">
+                    Message
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {% for image in image %}
+        <div
+            class="bg-white bg-opacity-30 backdrop-blur-md border border-white border-opacity-20 shadow-md rounded-lg overflow-hidden flex flex-col">
+            <div
+                class="flex items-center px-3 py-2 bg-white bg-opacity-40 backdrop-blur-md border-b border-white border-opacity-20">
+                <div class="ml-2">
+                    <p class="text-xs text-gray-500 ">{{ image.created_at.date }}</p>
+                </div>
+            </div>
+            <div class="my-2">
+                <img class="object-cover w-full h-64" src="/media/{{ image.image }}" alt="{{ image.desc }}">
+            </div>
+            <div class="px-3 py-2 bg-white bg-opacity-40 backdrop-blur-md flex-1">
+                <div class="flex flex-col md:flex-row justify-between text-xs text-gray-600 mb-1">
+                    <p class="text-gray-800 text-sm line-clamp-2">{{ image.desc }}</p>
+                </div>
+            </div>
+            <div class="action-buttons flex justify-left items-center p-2">
+                <!-- Actions here -->
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div id="descriptionModal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+    <div id="modalContent"
+        class="glassmorphism max-w-lg w-full mx-4 p-6 relative transform scale-95 opacity-0 transition">
+        <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-800" onclick="closeModal()">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                </path>
+            </svg>
+        </button>
+        <img id="modalImage" src="" alt="Modal Image" class="w-full h-64 object-cover rounded-lg shadow-md mb-4">
+        <p id="modalDescription" class="text-white text-center"></p>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+$(document).ready(function () {
+$(".like-dislike-form").submit(function (e) {
+e.preventDefault();
+var $form = $(this);
+var id = $form.data("id");
+var action = $form.find('input[name="action"]').val();
+var $likeButton = $form.find('button[name="like"]');
+var $likeInput = $form.find('input[name="like"]');
+var currentLikeCount = parseInt($likeInput.val(), 10);
+
+$.ajax({
+type: "POST",
+url: `{% url 'image_portfolio' 0 %}`.replace('0', id),
+data: {
+"like": action
+},
+headers: {
+"X-CSRFToken": "{{ csrf_token }}"
+},
+success: function (response) {
+var newLikeCount = response.like;
+$likeInput.val(newLikeCount); // Update the hidden input with the new like count
+$form.find("span.like-count").text(newLikeCount); // Update the displayed like count
+if (newLikeCount > currentLikeCount) {
+$likeButton.find('i').css("background-image", `url('{% static 'icons/liketrue.png' %}')`);
+} else {
+$likeButton.find('i').css("background-image", `url('{% static 'icons/likefalse.png' %}')`);
+}
+},
+error: function () {
+alert("An error occurred while processing your request.");
+}
+});
+});
+
+$(".follow-request-form").submit(function (e) {
+e.preventDefault();
+var $form = $(this);
+var id = $form.data("id");
+
+$.ajax({
+type: "POST",
+url: "{% url 'follow_request' 0 %}".replace('0', id),
+headers: {
+"X-CSRFToken": "{{ csrf_token }}"
+},
+success: function (response) {
+console.log("successful.")
+// Handle success for follow request
+alert("Follow request successful.");
+location.reload();
+},
+error: function () {
+console.log("failed")
+alert("An error occurred while processing your follow request.");
+}
+});
+});
+});
+
+
+function openModal(id, description, imageSrc) {
+var modal = document.getElementById('descriptionModal');
+var modalContent = document.getElementById('modalContent');
+document.getElementById('modalDescription').innerText = description;
+document.getElementById('modalImage').src = imageSrc;
+modal.classList.remove('hidden');
+setTimeout(() => {
+modalContent.classList.add('modal-enter-active');
+modalContent.classList.remove('opacity-0');
+modalContent.classList.remove('scale-95');
+}, 10); // Delay to allow transition to take effect
+}
+
+function closeModal() {
+var modal = document.getElementById('descriptionModal');
+var modalContent = document.getElementById('modalContent');
+modalContent.classList.add('modal-exit-active');
+setTimeout(() => {
+modal.classList.add('hidden');
+modalContent.classList.remove('modal-exit-active');
+modalContent.classList.add('opacity-0');
+modalContent.classList.add('scale-95');
+}, 300); // Delay hiding to allow transition to complete
+}
+{% endblock %}

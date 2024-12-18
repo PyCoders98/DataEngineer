@@ -11,7 +11,7 @@ admin.site.register(User, UserDetails)
 
 
 class ImageModelDetails(admin.ModelAdmin):
-    list_display = ("user", "like", "dislike", "created_at")
+    list_display = ("id", "user", "like", "dislike", "created_at")
     prepopulated_fields = {
         "slug": ("user", "like", "dislike")
     }  # Use '__' to access related fields

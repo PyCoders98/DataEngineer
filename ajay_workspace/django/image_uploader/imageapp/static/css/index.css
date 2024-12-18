@@ -1,0 +1,218 @@
+/* General styles */
+.max-width-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Ensures no overlap */
+    gap: 20px;
+}
+
+.card {
+    padding: 2%;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.1); /* Glassmorphism */
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: auto; /* Allow height to adjust based on content */
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    align-items: center;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.profile-image {
+    width: 50px; /* Uniform size for profile image */
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #3b82f6;
+}
+
+.profile-details {
+    margin-left: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-username {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.profile-date {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* Follow Button */
+.follow-button-container {
+    display: flex;
+    align-items: right;
+    justify-content: right;
+}
+
+.follow-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    background-color: #4b5563;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.follow-button:hover {
+    background-color: #374151;
+}
+
+/* Image Section */
+.image-link {
+    display: block;
+    width: 100%;
+}
+
+.card-image {
+    width: 100%;
+    height: 200px; /* Fixed height for card images */
+    object-fit: stretch;
+    transition: transform 0.3s ease;
+    padding: 2% 0 2% 0;
+}
+
+.card-image:hover {
+    transform: scale(1.05);
+}
+
+/* Action Buttons (Like/Dislike & Comment) */
+.action-buttons {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.like-comment-actions {
+    display: flex;
+    gap: 10%;    
+}
+
+.like-button, .comment-button {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #4b5563;
+    transition: color 0.3s ease;
+}
+
+.comment-count{
+    padding-left: 7px;
+}
+
+.like-button:hover, .comment-button:hover {
+    color: #ef4444;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.like-count {
+    margin-left: 8px;
+}
+
+/* Description */
+.description-container {
+    overflow: hidden;
+    position: relative;
+}
+
+.description {
+    font-size: 12px;
+    color: #1f2937;
+    background: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(10px);
+    height: 3rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.description:hover {
+    cursor: pointer;
+}
+
+/* Responsive Styles */
+@media (max-width: 640px) {
+    .profile-header {
+        flex-direction: column;
+    }
+
+    .profile-image {
+        width: 40px;
+        height: 40px;
+    }
+
+    .profile-username {
+        font-size: 12px;
+    }
+
+    .card-image {
+        height: auto;
+    }
+
+    .description-container {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-image {
+        width: 35px;
+        height: 35px;
+    }
+
+    .profile-username {
+        font-size: 11px;
+    }
+
+    .card-image {
+        height: 180px;
+        object-fit: fill;
+    }
+
+    .description {
+        font-size: 10px;
+    }
+}

@@ -19,6 +19,7 @@ urlpatterns = [
         name="get_like_dislike_count",
     ),
     path("profile/", profile, name="profile"),
+    path("user-profile/<int:id>", user_profile, name="user_profile"),
     path("view-profile-image/<int:id>", view_profile_image, name="view_profile_image"),
     path(
         "update-profile-image/",
