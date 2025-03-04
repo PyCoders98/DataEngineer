@@ -1,0 +1,38 @@
+{% extends "admin/home_page.html" %}
+{% block admin_content %}
+<div class="w-full m px-20 mt-4 " style="height: 78vh;">
+        <table class="table table-striped border">
+            <thead class="border bg-black text-white">
+            <tr>
+                <th scope="col" class="text-white">No</th>
+                <th scope="col" class="text-white">Name</th>
+                <th scope="col" class="text-white">Email</th>
+                <th scope="col" class="text-white">Contact</th>
+                <th scope="col" class="text-white">Age</th>
+                <th scope="col" class="text-white">Gender</th>
+                <th scope="col" class="text-white">Pack</th>
+                <th scope="col" class="text-white">Starting</th>
+                <th scope="col" class="text-white">Ending</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white">
+            {% for member in members %}
+              
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{member.user.user.username}}</td>
+                <td>{{member.user.user.email}}</td>
+                <td>{{member.user.contact}}</td>
+                <td>{{member.user.age}}</td>
+                <td>{{member.user.gender}}</td>
+                <td>{{member.pack}}</td>
+                <td>{{member.buy_date}}</td>
+                <td>{{member.end_date}}</td>
+
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock admin_content %}

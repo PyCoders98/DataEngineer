@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="receipe-container">
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Category</label>
+      <div class="custom-select">
+        <select class="add-category" name="category" id="">
+          <option value="Veg">Veg</option>
+          <option value="Non Veg">Non Veg</option>
+        </select>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Recipe Name</label>
+      <input type="text" class="form-control" aria-describedby="emailHelp" name="receipe_name" required />
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Recipe Description</label>
+      <textarea class="form-control" name="receipe_description" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Recipe Ingredients</label>
+      <textarea class="form-control" name="receipe_ingredients" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Making Process</label>
+      <textarea class="form-control" name="making_process" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Recipe Image</label>
+      <input type="file" class="form-control" name="receipe_image" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Add Recipe</button>
+  </form>
+</div>
+{% endblock %}

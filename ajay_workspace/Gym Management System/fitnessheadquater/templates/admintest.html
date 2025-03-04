@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .admin-home-page-dynamic-part::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #667EEA;
+  }
+
+  .admin-home-page-dynamic-part::-webkit-scrollbar {
+    width: 4px;
+    background-color: rgba(236, 235, 235, 0.87);
+    border-radius: 20px;
+
+  }
+</style>
+<div class="overflow-auto bg-current ">
+  <div class="flex flex-row">
+    <header class="header bg-gray-800">
+      <div class="nav-wrap flex flex-row">
+        <nav class="main-nav flex flex-row" role="navigation">
+          <ul class="list-none overflow-hidden text-2xl">
+            <li class="hover:underline">
+              <a href="{% url 'admin_memberships' %}"
+                class="block py-4 text-gray-200 hover:text-white transition-colors">Membership</a>
+            </li>
+            <li class="hover:underline">
+              <a href="{% url 'admin_offers' %}"
+                class="block py-4 text-gray-200 hover:text-white transition-colors">Offer</a>
+            </li>
+            <li class="hover:underline">
+              <a href="{% url 'members_page' %}"
+                class="block py-4 text-gray-200 hover:text-white transition-colors">Members</a>
+            </li>
+            <li class="hover:underline">
+              <a href="{% url 'careers_page' %}"
+                class="block py-4 text-gray-200 hover:text-white transition-colors">Career Applicants</a>
+            </li>
+            <li class="hover:underline">
+              <a href="{% url 'admin_contactus_page' %}"
+                class="block py-4 text-gray-200 hover:text-white transition-colors">Contact Us</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+  </div>
+  <div class="">
+    <div class="admin-home-page-dynamic-part scroll-bar overflow-auto  ">
+      {% block admin_content %}
+      {% endblock admin_content %}
+    </div>
+  </div>
+</div>
+{% endblock content %}

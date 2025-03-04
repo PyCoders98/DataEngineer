@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class=" bg-current w-full h-screen flex justify-center items-center">
+
+    <div class="bg-gray-400 drop-shadow	 blur-sm p-8 rounded-lg shadow-md">
+        <h1 class="header text-center mb-6 uppercase font-bold">
+            <section class="wrapper bg-transparent">
+                <div class="top">{{info.user.user.username}}</div>
+                <div class="bottom">{{info.user.user.username}}</div>
+            </section>
+        </h1>
+        <table class="w-full border-collapse border border-gray-300">
+            <tr>
+                <td class="font-semibold text-gray-700 py-2 px-4 border border-gray-300">📛 Name:</td>
+                <td class="text-gray-800 py-2 px-4 border border-gray-300">{{info.user.user.username}}</td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-700 py-2 px-4 border border-gray-300">📧 Email:</td>
+                <td class="text-gray-800 py-2 px-4 border border-gray-300">{{info.user.user.email}}</td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-700 py-2 px-4 border border-gray-300">📞 Phone:</td>
+                <td class="text-gray-800 py-2 px-4 border border-gray-300">{{info.user.contact}}</td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-700 py-2 px-4 border border-gray-300">🎂 Age:</td>
+                <td class="text-gray-800 py-2 px-4 border border-gray-300">{{info.user.age}}</td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-700 py-2 px-4 border border-gray-300">⚥ Gender:</td>
+                <td class="text-gray-800 py-2 px-4 border border-gray-300">{{info.user.gender}}</td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-700 py-2 px-4 border border-gray-300">🏠 Address:</td>
+                <td class="text-gray-800 py-2 px-4 border border-gray-300">{{info.user.address}}</td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-700 py-2 px-4 border border-gray-300">🎒 Pack Info:</td>
+                <td class="text-gray-800 py-2 px-4 border border-gray-300"> <span>{{info.pack_duraton}}</span> Month
+                </td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-700 py-2 px-4 border border-gray-300"><i class="fa fa-calendar "
+                        style="color: green;" aria-hidden="true"></i> Buy Date:</td>
+                <td class="text-gray-800 py-2 px-4 border border-gray-300">{{buy_date}}</td>
+            </tr>
+            <tr>
+                <td class="font-semibold text-gray-700 py-2 px-4 border border-gray-300"><i class="fa fa-calendar"
+                        style="color: red;" aria-hidden="true"></i> End Date:</td>
+                <td class="text-gray-800 py-2 px-4 border border-gray-300">{{end_date}}</td>
+            </tr>
+        </table>
+        <div class="mt-6 text-center">
+            <a href="{% url 'update_personnel_info' request.user.id %}">
+                <button class="btn-edit text-white font-bold py-2 px-4 rounded bg-green-500">
+                    🖊️ Edit
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

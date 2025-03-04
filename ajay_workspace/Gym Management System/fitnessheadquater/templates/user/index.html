@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .base-container {
+        background-image: url('{% static "images/user_index_image_minnions.jpg" %}');
+        background-repeat: no-repeat;
+        height: 100vh;
+        margin-top: -3px;
+        background-size: 100vw 100%;
+    }
+
+    .index-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column; /* Center items vertically */
+        height: 100%; /* Take full height of the container */
+    }
+
+.facility-card-img {
+    --g: 4px;
+    /* the gap */
+    --b: 12px;
+    /* border thickness*/
+    --c: #031a22;
+    /* the color */
+
+
+    padding: calc(var(--g) + var(--b));
+    --_c: #0000 0 25%, var(--c) 0 50%;
+    --_g1: repeating-linear-gradient(90deg, var(--_c)) repeat-x;
+    --_g2: repeating-linear-gradient(180deg, var(--_c)) repeat-y;
+    background:
+        var(--_g1) var(--_p, 25%) 0, var(--_g2) 0 var(--_p, 125%),
+        var(--_g1) var(--_p, 125%) 100%, var(--_g2) 100% var(--_p, 25%);
+    background-size: 200% var(--b), var(--b) 200%;
+    cursor: pointer;
+    filter: grayscale(50%);
+    transition: .3s;
+
+    &:hover {
+        --_p: 75%;
+        filter: grayscale(0%);
+    }
+}
+
+    .glow-on-hover {
+        width: 220px;
+        height: 50px;
+        border: none;
+        outline: none;
+        color: #fff;
+        background: #111;
+        cursor: pointer;
+        position: relative;
+        z-index: 0;
+        border-radius: 10px;
+    }
+
+    .glow-on-hover:before {
+        content: '';
+        background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+        position: absolute;
+        background-size: 400%;
+        z-index: -1;
+        filter: blur(10px);
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        animation: glowing 20s linear infinite;
+        opacity: 1;
+        transition: opacity .3s ease-in-out;
+        border-radius: 10px;
+    }
+
+    .glow-on-hover:active {
+        color: #000
+    }
+
+    .glow-on-hover:active:after {
+        background: transparent;
+    }
+
+    .glow-on-hover:hover:before {
+        opacity: 1;
+    }
+
+    .glow-on-hover:after {
+        z-index: -1;
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #f3c7c7;
+        left: 0;
+        top: 0;
+        border-radius: 10px;
+    }
+
+    @keyframes glowing {
+        0% { background-position: 0 0; }
+        50% { background-position: 400% 0; }
+        100% { background-position: 0 0; }
+    }
+</style>
+<div class="base-container">
+    <div class="index-container">
+        <div class="index-text">
+            <a href="{% url 'membership_page' %}" class="glow-on-hover">
+                <span class="wrapper rounded p-2">
+                    <div class="top">Join Us Today!</div>
+                    <div class="bottom">Join Us Today!</div>
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="our-facility w-full  flex justify-center bg-current">
+    <section class="wrapper w-fit p-4">
+        <div class="top">Our Facilities</div>
+        <div class="bottom" aria-hidden="true">Our Facilities</div>
+    </section>
+</div>
+<div class="index-facility-container bg-current flex flex-col justify-center">
+    <div class="index-facility mb-3 mt-3 flex justify-center ">
+        <div class="facility-card  w-8/12 h-9/12 bg-white rounded-lg  overflow-hidden shadow-md w-96">
+            <h2 class="text-2xl font-bold py-4 text-center">Certified trainers</h2>
+            <div class="card-details w-full flex flex-wrap px-6 py-4">
+                <div class="facility-description w-full md:w-7/12 pr-4">
+                    <p class="text-gray-700">
+                        The trainer is responsible for ensuring that new employees receive onboarding training to
+                        prepare them for their role. To be successful as a trainer you must be observant and have
+                        excellent analytical skills. A good trainer is able to use alternative teaching methods to cater
+                        to various individuals.
+                    </p>
+                </div>
+                <div class="facility-image w-full md:w-5/12">
+                    <img class="facility-card-img w-full h-52" src="{% static "images/trainer.jpg" %}" alt="Trainer Image"/>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="index-facility mb-3 py-2 flex justify-center ">
+        <div class="facility-card  w-8/12 h-9/12  bg-white rounded-lg  overflow-hidden shadow-md w-96">
+            <h2 class="text-2xl font-bold py-4 text-center">Latest Equipments</h2>
+            <div class="card-details w-full flex flex-wrap px-6 py-4">
+                <div class="facility-description w-full md:w-7/12 pr-4">
+                    <p class="text-gray-700">
+                        The starting point of a fitness journey is difficult and scary. If you're at this point, ready
+                        to make some serious lifestyle changes, one visit to your local gym can freeze your intentions
+                        of working out in the gym.
+
+                        We understand what you might be going through.
+
+                        After seeing dozens of machines and exercise equipment lined up neatly in the gym, you are not
+                        sure if you are ready to conquer them all.
+                    </p>
+                </div>
+                <div class="facility-image w-full md:w-5/12">
+                    <img class="facility-card-img w-full h-52"
+                        src="{% static "images/equipement.jpg" %}"
+                        alt="Trainer Image ">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="index-facility mb-3 flex justify-center ">
+        <div class="facility-card  w-8/12 h-9/12  bg-white rounded-lg  overflow-hidden shadow-md w-96">
+            <h2 class="text-2xl font-bold py-4 text-center">Body Composition Assessment</h2>
+            <div class="card-details w-full flex flex-wrap px-6 py-4">
+                <div class="facility-description w-full md:w-7/12 pr-4">
+                    <p class="text-gray-700">
+                        Body composition is a valuable tool for assessing: Health status: Body composition assesses the
+                        percentage of fat in the body. Having excessive body fat, especially fat around organs (visceral
+                        body fat), increases the risk of many health conditions, including heart disease, diabetes, and
+                        several cancers.
+                    </p>
+                </div>
+                <div class="facility-image w-full md:w-5/12">
+                    <img class="facility-card-img w-full h-52"
+                        src="{% static "images/scanner.webp" %}"
+                        alt="Scanner Image ">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock content %}

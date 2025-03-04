@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+<div class=" w-full flex justify-center">
+    <div class="pt-4 w-4/12">
+        <ul class="messages">
+            {% for message in messages %}
+            <div class="alert alert-success flex justify-center" role="alert">
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            </div>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="membership-container px-4 flex justify-center flex-wrap p-16"
+    style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+
+    <div class="membership-container w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 mb-4 mx-3">
+        <div class="membership-card bg-white rounded-2xl shadow-md overflow-hidden">
+            <div class="bg-gradient-to-r from-gray-700 to-gray-800 text-white text-center py-4">
+                <h2 class="text-2xl font-bold uppercase tracking-wide">{{pack_data.title}}</h2>
+            </div>
+            <div class="p-8">
+
+                <div class="flex justify-between mb-2 flex flex-wrap">
+                    <span class="text-gray-600 text-xl">Duration:</span>
+                    <span class="text-blue-500 font-semibold text-xl">{{pack_data.duration}}
+                        <span> Months</span></span>
+                </div>
+                <div class="flex justify-between mb-2 flex flex-wrap">
+                    <span class="text-gray-600 text-xl">Discount:</span>
+                    <span class="px-2 text-red-500 font-bold text-xl">{{pack_data.discount}}</span>
+                </div>
+                <div class="flex justify-between mb-2 flex flex-wrap">
+                    <span class="text-gray-600 text-xl">Price:</span>
+                    <span class="text-blue-500 font-semibold text-xl">RS. {{pack_data.price}}</span>
+                </div>
+                <div class="flex justify-between mb-2 flex flex-wrap">
+                    <span class="text-gray-600 text-xl">Regular Price:</span>
+                    <span class="regular_price text-blue-500 font-semibold text-xl line-through">RS.
+                        {{pack_data.regular_price}}</span>
+                </div>
+                <div class="mt-4 text-center">
+
+                    <form id="payment-form">
+                        {% csrf_token %}
+                        <button class="btn btn-success" id='pay-btn'>pay with razorpay</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- HTML Button Element -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+
+        // Enter the Key ID generated from the Dashboard
+        key: "rzp_test_zoEqBo2vt3lNJ5",
+
+        // Amount is in currency subunits.
+        // Default currency is INR. Hence, 
+        // 50000 refers to 50000 paise
+        amount: "{{payment.amount}}",
+        currency: "INR",
+
+        // Your/store name.
+        name: "Fitness Headquater",
+
+        // Pass the `id` obtained in the response of Step 1
+        order_id: "{{ payment.id }}",
+        callback_url: "{% url 'greeting_page' %}",
+    };
+
+    // initialise razorpay with the options.
+    var rzp1 = new Razorpay(options);
+
+    // add event listener to the payment button.
+    document.getElementById("pay-btn").onclick = function (e) {
+        rzp1.open();
+        e.preventDefault();
+    };
+</script>
+
+
+
+{% endblock content %}
