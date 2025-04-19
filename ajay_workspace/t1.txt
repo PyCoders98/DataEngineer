@@ -1,0 +1,12 @@
+101,Author1,Book1,True 
+102,Author2,Book2,False 
+103,Author3,Book3,True 
+104,Author4,Book4,False 
+105,Author5,Book5,True 
+106,Author6,Book6,False 
+107,Author7,Book7,False 
+108,Author8,Book8,False 
+109,paaji,paaji,False 
+110,signa,sigma,False 
+111,Author11,Book11,False
+112,querty,querty,False 
